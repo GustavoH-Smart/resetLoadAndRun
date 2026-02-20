@@ -1,0 +1,880 @@
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 1
+
+
+   1              		.arch armv8.1-m.main
+   2              		.fpu fpv5-d16
+   3              		.arch_extension dsp
+   4              		.arch_extension fp
+   5              		.arch_extension fp.dp
+   6              		.arch_extension mve
+   7              		.arch_extension mve.fp
+   8              		.eabi_attribute 5, "cortex-m55"
+   9              		.eabi_attribute 28, 1
+  10              		.eabi_attribute 20, 1
+  11              		.eabi_attribute 21, 1
+  12              		.eabi_attribute 23, 3
+  13              		.eabi_attribute 24, 1
+  14              		.eabi_attribute 25, 1
+  15              		.eabi_attribute 26, 1
+  16              		.eabi_attribute 30, 1
+  17              		.eabi_attribute 34, 1
+  18              		.eabi_attribute 38, 1
+  19              		.eabi_attribute 18, 4
+  20              		.file	"stm32_psram_driver.c"
+  21              		.text
+  22              	.Ltext0:
+  23              		.cfi_sections	.debug_frame
+  24              		.file 1 "../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c"
+  25              		.section	.text.EXTMEM_DRIVER_PSRAM_DeInit,"ax",%progbits
+  26              		.align	1
+  27              		.global	EXTMEM_DRIVER_PSRAM_DeInit
+  28              		.syntax unified
+  29              		.thumb
+  30              		.thumb_func
+  32              	EXTMEM_DRIVER_PSRAM_DeInit:
+  33              	.LVL0:
+  34              	.LFB863:
+   1:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+   2:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   ******************************************************************************
+   3:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @file    stm32_psram_driver.c
+   4:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @author  MCD Application Team
+   5:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief   This file implements the PSRAM driver.
+   6:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   ******************************************************************************
+   7:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @attention
+   8:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   *
+   9:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * Copyright (c) 2022 STMicroelectronics.
+  10:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * All rights reserved.
+  11:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   *
+  12:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  13:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * in the root directory of this software component.
+  14:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  15:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   *
+  16:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   ******************************************************************************
+  17:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  18:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  19:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /* Includes ------------------------------------------------------------------*/
+  20:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #include "stm32_extmem.h"
+  21:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #include "stm32_extmem_conf.h"
+  22:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #if EXTMEM_DRIVER_PSRAM == 1
+  23:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #if EXTMEM_SAL_XSPI == 1
+  24:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #include "../sal/stm32_sal_xspi_api.h"
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 2
+
+
+  25:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #else
+  26:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #error "the driver PSRAM requires the enable of EXTMEM_SAL_XSPI"
+  27:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #endif /* EXTMEM_SAL_XSPI */
+  28:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #include "stm32_psram_driver_api.h"
+  29:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #if EXTMEM_DRIVER_PSRAM_DEBUG_LEVEL > 0 && defined(EXTMEM_MACRO_DEBUG)
+  30:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #include <stdio.h>
+  31:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #endif /* EXTMEM_DRIVER_PSRAM_DEBUG_LEVEL > 0 && EXTMEM_MACRO_DEBUG */
+  32:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  33:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /** @defgroup PSRAM PSRAM driver
+  34:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @ingroup EXTMEM_DRIVER
+  35:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @{
+  36:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  37:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  38:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /* Private Macro ------------------------------------------------------------*/
+  39:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /** @defgroup PSRAM_Private_Macro Private Macro
+  40:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @{
+  41:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  42:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  43:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+  44:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief Default Timeout value (ms)
+  45:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  46:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #define DRIVER_DEFAULT_TIMEOUT 300
+  47:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  48:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #if EXTMEM_DRIVER_PSRAM_DEBUG_LEVEL > 0 && defined(EXTMEM_MACRO_DEBUG)
+  49:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+  50:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief Debug macro for a string
+  51:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  52:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #define DEBUG_STR(_STR_)  {                      \
+  53:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                             EXTMEM_MACRO_DEBUG("\tPSRAM::");  \
+  54:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                             EXTMEM_MACRO_DEBUG(_STR_);        \
+  55:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                             EXTMEM_MACRO_DEBUG("\n\r");       \
+  56:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                             }
+  57:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #else
+  58:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+  59:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief Debug macro for a string
+  60:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  61:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #define DEBUG_STR(_STR_)
+  62:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** #endif /* EXTMEM_DRIVER_PSRAM_DEBUG_LEVEL > 0 && defined(EXTMEM_MACRO_DEBUG) */
+  63:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  64:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+  65:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @}
+  66:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  67:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  68:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /* Private typedefs ---------------------------------------------------------*/
+  69:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /* Private variables ---------------------------------------------------------*/
+  70:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /* Private functions ---------------------------------------------------------*/
+  71:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  72:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /** @defgroup PSRAM_Private_Functions Private Functions
+  73:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @{
+  74:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  75:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** EXTMEM_DRIVER_PSRAM_StatusTypeDef PSRAM_ExecuteCommand(EXTMEM_DRIVER_PSRAM_ObjectTypeDef *PsramObje
+  76:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+  77:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @}
+  78:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  79:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  80:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /** @defgroup PSRAM_Exported_Functions Exported Functions
+  81:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @{
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 3
+
+
+  82:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  83:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+  84:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+  85:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief Initializes the PSRAM driver.
+  86:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param Peripheral Pointer to the peripheral handle.
+  87:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param Config Link configuration.
+  88:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param ClockInput Input clock frequency.
+  89:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param PsramObject Pointer to the PSRAM driver object.
+  90:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @retval @ref EXTMEM_DRIVER_PSRAM_StatusTypeDef
+  91:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+  92:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** EXTMEM_DRIVER_PSRAM_StatusTypeDef EXTMEM_DRIVER_PSRAM_Init(void *Peripheral, EXTMEM_LinkConfig_Type
+  93:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                                            uint32_t ClockInput,
+  94:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                                            EXTMEM_DRIVER_PSRAM_ObjectTypeDef *Psram
+  95:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** {
+  96:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   EXTMEM_DRIVER_PSRAM_StatusTypeDef retr = EXTMEM_DRIVER_PSRAM_OK;
+  97:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   uint32_t ClockOut;
+  98:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   SAL_XSPI_PhysicalLinkTypeDef linkvalue;
+  99:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 100:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Initialize the instance */
+ 101:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   DEBUG_STR("initialize the instance")
+ 102:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 103:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Initialize XSPI low layer */
+ 104:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   (void)SAL_XSPI_Init(&PsramObject->psram_private.SALObject, Peripheral);
+ 105:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 106:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Abort any ongoing XSPI action */
+ 107:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   (void)SAL_XSPI_DisableMapMode(&PsramObject->psram_private.SALObject);
+ 108:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 109:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Set the frequency prescaler */
+ 110:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   DEBUG_STR("set memory speed according freqIn and freqMax supported by the memory")
+ 111:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   if (HAL_OK != SAL_XSPI_SetClock(&PsramObject->psram_private.SALObject, ClockInput, PsramObject->p
+ 112:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                   &ClockOut))
+ 113:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 114:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     retr = EXTMEM_DRIVER_PSRAM_ERROR;
+ 115:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ 116:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 117:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 118:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Set the memory size */
+ 119:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   DEBUG_STR("set memory size according")
+ 120:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_FLASHSIZE,
+ 121:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               &PsramObject->psram_public.MemorySize);
+ 122:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 123:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Set the memory size */
+ 124:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   DEBUG_STR("set xspi link config")
+ 125:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   linkvalue = PHY_LINK_RAM8;
+ 126:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue);
+ 127:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 128:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Set the configuration to perform register operation */
+ 129:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_DUMMY_CYCLES,
+ 130:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               &PsramObject->psram_public.REG_DummyCycle);
+ 131:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 132:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Execute the command sequence */
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   for (uint8_t command_index = 0u; command_index < PsramObject->psram_public.NumberOfConfig; comman
+ 134:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 135:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     retr = PSRAM_ExecuteCommand(PsramObject, command_index);
+ 136:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     if (retr != EXTMEM_DRIVER_PSRAM_OK)
+ 137:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     {
+ 138:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       goto error;
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 4
+
+
+ 139:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     }
+ 140:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 141:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 142:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   switch (Config)
+ 143:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 144:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     case EXTMEM_LINK_CONFIG_16LINES:
+ 145:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       linkvalue = PHY_LINK_RAM16;
+ 146:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue
+ 147:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       break;
+ 148:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 149:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     case EXTMEM_LINK_CONFIG_8LINES:
+ 150:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       linkvalue = PHY_LINK_RAM8;
+ 151:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue
+ 152:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       break;
+ 153:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 154:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     default:
+ 155:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       retr = EXTMEM_DRIVER_PSRAM_ERROR;
+ 156:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       goto error;
+ 157:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       break;
+ 158:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 159:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 160:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** error:
+ 161:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   return retr;
+ 162:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** }
+ 163:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 164:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+ 165:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief Deinitializes the PSRAM driver.
+ 166:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param PsramObject Pointer to the PSRAM driver object.
+ 167:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @retval @ref EXTMEM_DRIVER_PSRAM_StatusTypeDef
+ 168:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+ 169:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** EXTMEM_DRIVER_PSRAM_StatusTypeDef EXTMEM_DRIVER_PSRAM_DeInit(EXTMEM_DRIVER_PSRAM_ObjectTypeDef *Psr
+ 170:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** {
+  35              		.loc 1 170 1 view -0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 0
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  39              		.loc 1 170 1 is_stmt 0 view .LVU1
+  40 0000 08B5     		push	{r3, lr}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 8
+  43              		.cfi_offset 3, -8
+  44              		.cfi_offset 14, -4
+ 171:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Abort any ongoing XSPI action */
+ 172:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   (void)SAL_XSPI_DisableMapMode(&PsramObject->psram_private.SALObject);
+  45              		.loc 1 172 3 is_stmt 1 view .LVU2
+  46              		.loc 1 172 9 is_stmt 0 view .LVU3
+  47 0002 FFF7FEFF 		bl	SAL_XSPI_DisableMapMode
+  48              	.LVL1:
+ 173:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   return EXTMEM_DRIVER_PSRAM_OK;
+  49              		.loc 1 173 3 is_stmt 1 view .LVU4
+ 174:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** }
+  50              		.loc 1 174 1 is_stmt 0 view .LVU5
+  51 0006 0020     		movs	r0, #0
+  52 0008 08BD     		pop	{r3, pc}
+  53              		.cfi_endproc
+  54              	.LFE863:
+  56              		.section	.text.EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode,"ax",%progbits
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 5
+
+
+  57              		.align	1
+  58              		.global	EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode:
+  64              	.LVL2:
+  65              	.LFB864:
+ 175:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 176:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+ 177:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief Enables memory-mapped mode for the PSRAM device.
+ 178:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param PsramObject Pointer to the PSRAM driver object.
+ 179:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @retval @ref EXTMEM_DRIVER_PSRAM_StatusTypeDef
+ 180:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+ 181:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** EXTMEM_DRIVER_PSRAM_StatusTypeDef EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode(EXTMEM_DRIVER_PSRAM_O
+ 182:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                                                               *PsramObject)
+ 183:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** {
+  66              		.loc 1 183 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		.loc 1 183 1 is_stmt 0 view .LVU7
+  71 0000 30B5     		push	{r4, r5, lr}
+  72              	.LCFI1:
+  73              		.cfi_def_cfa_offset 12
+  74              		.cfi_offset 4, -12
+  75              		.cfi_offset 5, -8
+  76              		.cfi_offset 14, -4
+  77 0002 83B0     		sub	sp, sp, #12
+  78              	.LCFI2:
+  79              		.cfi_def_cfa_offset 24
+  80 0004 0446     		mov	r4, r0
+ 184:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   EXTMEM_DRIVER_PSRAM_StatusTypeDef retr = EXTMEM_DRIVER_PSRAM_OK;
+  81              		.loc 1 184 3 is_stmt 1 view .LVU8
+  82              	.LVL3:
+ 185:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 186:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Configure the read wrap mode */
+ 187:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   if (HAL_OK != SAL_XSPI_ConfigureWrappMode(&PsramObject->psram_private.SALObject,
+  83              		.loc 1 187 3 view .LVU9
+  84              		.loc 1 187 17 is_stmt 0 view .LVU10
+  85 0006 90F86B20 		ldrb	r2, [r0, #107]	@ zero_extendqisi2
+  86 000a 90F86D10 		ldrb	r1, [r0, #109]	@ zero_extendqisi2
+  87 000e FFF7FEFF 		bl	SAL_XSPI_ConfigureWrappMode
+  88              	.LVL4:
+  89              		.loc 1 187 6 discriminator 1 view .LVU11
+  90 0012 80B9     		cbnz	r0, .L6
+ 184:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   EXTMEM_DRIVER_PSRAM_StatusTypeDef retr = EXTMEM_DRIVER_PSRAM_OK;
+  91              		.loc 1 184 37 view .LVU12
+  92 0014 0025     		movs	r5, #0
+  93              	.L4:
+  94              	.LVL5:
+ 188:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                             PsramObject->psram_public.WrapRead_command,
+ 189:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                             PsramObject->psram_public.Write_DummyCycle))
+ 190:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 191:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     retr = EXTMEM_DRIVER_PSRAM_ERROR_MAP_ENABLE;
+ 192:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 193:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 6
+
+
+ 194:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Enable memory mapped mode */
+ 195:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   if (HAL_OK != SAL_XSPI_EnableMapMode(&PsramObject->psram_private.SALObject,
+  95              		.loc 1 195 3 is_stmt 1 view .LVU13
+  96              		.loc 1 195 17 is_stmt 0 view .LVU14
+  97 0016 94F86B30 		ldrb	r3, [r4, #107]	@ zero_extendqisi2
+  98 001a 0093     		str	r3, [sp]
+  99 001c 94F86A30 		ldrb	r3, [r4, #106]	@ zero_extendqisi2
+ 100 0020 94F86E20 		ldrb	r2, [r4, #110]	@ zero_extendqisi2
+ 101 0024 94F86C10 		ldrb	r1, [r4, #108]	@ zero_extendqisi2
+ 102 0028 2046     		mov	r0, r4
+ 103 002a FFF7FEFF 		bl	SAL_XSPI_EnableMapMode
+ 104              	.LVL6:
+ 105              		.loc 1 195 6 discriminator 1 view .LVU15
+ 106 002e 28B9     		cbnz	r0, .L9
+ 107              	.LVL7:
+ 108              	.L5:
+ 196:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                        PsramObject->psram_public.Read_command,
+ 197:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                        PsramObject->psram_public.Read_DummyCycle,
+ 198:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                        PsramObject->psram_public.Write_command,
+ 199:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                        PsramObject->psram_public.Write_DummyCycle))
+ 200:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 201:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     retr = EXTMEM_DRIVER_PSRAM_ERROR_MAP_ENABLE;
+ 202:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 203:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   return retr;
+ 109              		.loc 1 203 3 is_stmt 1 view .LVU16
+ 204:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** }
+ 110              		.loc 1 204 1 is_stmt 0 view .LVU17
+ 111 0030 2846     		mov	r0, r5
+ 112 0032 03B0     		add	sp, sp, #12
+ 113              	.LCFI3:
+ 114              		.cfi_remember_state
+ 115              		.cfi_def_cfa_offset 12
+ 116              		@ sp needed
+ 117 0034 30BD     		pop	{r4, r5, pc}
+ 118              	.LVL8:
+ 119              	.L6:
+ 120              	.LCFI4:
+ 121              		.cfi_restore_state
+ 191:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 122              		.loc 1 191 10 view .LVU18
+ 123 0036 6FF00405 		mvn	r5, #4
+ 124 003a ECE7     		b	.L4
+ 125              	.LVL9:
+ 126              	.L9:
+ 201:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 127              		.loc 1 201 10 view .LVU19
+ 128 003c 6FF00405 		mvn	r5, #4
+ 129              	.LVL10:
+ 201:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 130              		.loc 1 201 10 view .LVU20
+ 131 0040 F6E7     		b	.L5
+ 132              		.cfi_endproc
+ 133              	.LFE864:
+ 135              		.section	.text.EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode
+ 138              		.syntax unified
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 7
+
+
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode:
+ 143              	.LVL11:
+ 144              	.LFB865:
+ 205:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 206:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+ 207:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief Disables memory-mapped mode for the PSRAM device.
+ 208:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param PsramObject Pointer to the PSRAM driver object.
+ 209:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @retval @ref EXTMEM_DRIVER_PSRAM_StatusTypeDef
+ 210:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+ 211:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** EXTMEM_DRIVER_PSRAM_StatusTypeDef EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode(EXTMEM_DRIVER_PSRAM_
+ 212:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                                                                *PsramObject)
+ 213:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** {
+ 145              		.loc 1 213 1 is_stmt 1 view -0
+ 146              		.cfi_startproc
+ 147              		@ args = 0, pretend = 0, frame = 0
+ 148              		@ frame_needed = 0, uses_anonymous_args = 0
+ 149              		.loc 1 213 1 is_stmt 0 view .LVU22
+ 150 0000 08B5     		push	{r3, lr}
+ 151              	.LCFI5:
+ 152              		.cfi_def_cfa_offset 8
+ 153              		.cfi_offset 3, -8
+ 154              		.cfi_offset 14, -4
+ 214:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   EXTMEM_DRIVER_PSRAM_StatusTypeDef retr = EXTMEM_DRIVER_PSRAM_OK;
+ 155              		.loc 1 214 3 is_stmt 1 view .LVU23
+ 156              	.LVL12:
+ 215:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 216:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   /* Disable memory mapped mode */
+ 217:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   if (HAL_OK != SAL_XSPI_DisableMapMode(&PsramObject->psram_private.SALObject))
+ 157              		.loc 1 217 3 view .LVU24
+ 158              		.loc 1 217 17 is_stmt 0 view .LVU25
+ 159 0002 FFF7FEFF 		bl	SAL_XSPI_DisableMapMode
+ 160              	.LVL13:
+ 161              		.loc 1 217 6 discriminator 1 view .LVU26
+ 162 0006 00B9     		cbnz	r0, .L14
+ 163              	.L11:
+ 164              	.LVL14:
+ 218:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 219:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     retr = EXTMEM_DRIVER_PSRAM_ERROR_MAP_DISABLE;
+ 220:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 221:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   return retr;
+ 165              		.loc 1 221 3 is_stmt 1 view .LVU27
+ 222:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** }
+ 166              		.loc 1 222 1 is_stmt 0 view .LVU28
+ 167 0008 08BD     		pop	{r3, pc}
+ 168              	.LVL15:
+ 169              	.L14:
+ 219:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 170              		.loc 1 219 10 view .LVU29
+ 171 000a 6FF00500 		mvn	r0, #5
+ 172 000e FBE7     		b	.L11
+ 173              		.cfi_endproc
+ 174              	.LFE865:
+ 176              		.section	.text.PSRAM_ExecuteCommand,"ax",%progbits
+ 177              		.align	1
+ 178              		.global	PSRAM_ExecuteCommand
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 8
+
+
+ 179              		.syntax unified
+ 180              		.thumb
+ 181              		.thumb_func
+ 183              	PSRAM_ExecuteCommand:
+ 184              	.LVL16:
+ 185              	.LFB866:
+ 223:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 224:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+ 225:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @}
+ 226:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+ 227:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 228:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /** @addtogroup PSRAM_Private_Functions
+ 229:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @{
+ 230:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+ 231:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 232:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** /**
+ 233:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @brief Executes a configuration command for the PSRAM device.
+ 234:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   *
+ 235:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param PsramObject Pointer to the PSRAM driver object.
+ 236:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @param Index Index of the command to execute.
+ 237:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   * @retval @ref EXTMEM_DRIVER_PSRAM_StatusTypeDef
+ 238:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   */
+ 239:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** EXTMEM_DRIVER_PSRAM_StatusTypeDef PSRAM_ExecuteCommand(EXTMEM_DRIVER_PSRAM_ObjectTypeDef *PsramObje
+ 240:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** {
+ 186              		.loc 1 240 1 is_stmt 1 view -0
+ 187              		.cfi_startproc
+ 188              		@ args = 0, pretend = 0, frame = 8
+ 189              		@ frame_needed = 0, uses_anonymous_args = 0
+ 190              		.loc 1 240 1 is_stmt 0 view .LVU31
+ 191 0000 30B5     		push	{r4, r5, lr}
+ 192              	.LCFI6:
+ 193              		.cfi_def_cfa_offset 12
+ 194              		.cfi_offset 4, -12
+ 195              		.cfi_offset 5, -8
+ 196              		.cfi_offset 14, -4
+ 197 0002 85B0     		sub	sp, sp, #20
+ 198              	.LCFI7:
+ 199              		.cfi_def_cfa_offset 32
+ 200 0004 0C46     		mov	r4, r1
+ 241:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   EXTMEM_DRIVER_PSRAM_StatusTypeDef retr = EXTMEM_DRIVER_PSRAM_OK;
+ 201              		.loc 1 241 3 is_stmt 1 view .LVU32
+ 202              	.LVL17:
+ 242:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   uint8_t regval[2];
+ 203              		.loc 1 242 3 view .LVU33
+ 243:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 244:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   if (PsramObject->psram_public.ReadREGSize > 2u)
+ 204              		.loc 1 244 3 view .LVU34
+ 205              		.loc 1 244 32 is_stmt 0 view .LVU35
+ 206 0006 90F86810 		ldrb	r1, [r0, #104]	@ zero_extendqisi2
+ 207              	.LVL18:
+ 208              		.loc 1 244 6 view .LVU36
+ 209 000a 0229     		cmp	r1, #2
+ 210 000c 29D8     		bhi	.L17
+ 211 000e 0546     		mov	r5, r0
+ 245:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 246:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     retr = EXTMEM_DRIVER_PSRAM_ERROR_REGSIZE;
+ 247:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 9
+
+
+ 248:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 249:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 250:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   if (HAL_OK != SAL_XSPI_Read(&PsramObject->psram_private.SALObject,
+ 212              		.loc 1 250 3 is_stmt 1 view .LVU37
+ 251:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               PsramObject->psram_public.ReadREG,
+ 252:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               PsramObject->psram_public.config[Index].REGAddress,
+ 213              		.loc 1 252 70 is_stmt 0 view .LVU38
+ 214 0010 04EB4403 		add	r3, r4, r4, lsl #1
+ 215 0014 0344     		add	r3, r3, r0
+ 216 0016 93F85F20 		ldrb	r2, [r3, #95]	@ zero_extendqisi2
+ 250:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               PsramObject->psram_public.ReadREG,
+ 217              		.loc 1 250 17 view .LVU39
+ 218 001a 0091     		str	r1, [sp]
+ 219 001c 03AB     		add	r3, sp, #12
+ 220 001e 90F86610 		ldrb	r1, [r0, #102]	@ zero_extendqisi2
+ 221 0022 FFF7FEFF 		bl	SAL_XSPI_Read
+ 222              	.LVL19:
+ 250:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               PsramObject->psram_public.ReadREG,
+ 223              		.loc 1 250 6 discriminator 1 view .LVU40
+ 224 0026 F8B9     		cbnz	r0, .L18
+ 253:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               regval, PsramObject->psram_public.ReadREGSize))
+ 254:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 255:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     retr = EXTMEM_DRIVER_PSRAM_ERROR_READREG;
+ 256:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ 257:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 258:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 259:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   MODIFY_REG(regval[0],
+ 225              		.loc 1 259 3 is_stmt 1 view .LVU41
+ 226 0028 9DF80C10 		ldrb	r1, [sp, #12]	@ zero_extendqisi2
+ 227 002c 04EB4404 		add	r4, r4, r4, lsl #1
+ 228              	.LVL20:
+ 229              		.loc 1 259 3 is_stmt 0 view .LVU42
+ 230 0030 2C44     		add	r4, r4, r5
+ 231 0032 94F85D30 		ldrb	r3, [r4, #93]	@ zero_extendqisi2
+ 232 0036 DB43     		mvns	r3, r3
+ 233 0038 5BB2     		sxtb	r3, r3
+ 234 003a 94F85E20 		ldrb	r2, [r4, #94]	@ zero_extendqisi2
+ 235 003e 0B40     		ands	r3, r3, r1
+ 236 0040 1343     		orrs	r3, r3, r2
+ 237 0042 8DF80C30 		strb	r3, [sp, #12]
+ 260:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****              PsramObject->psram_public.config[Index].WriteMask,
+ 261:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****              PsramObject->psram_public.config[Index].WriteValue);
+ 262:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 263:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   if (HAL_OK != SAL_XSPI_Write(&PsramObject->psram_private.SALObject,
+ 238              		.loc 1 263 3 is_stmt 1 view .LVU43
+ 264:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                PsramObject->psram_public.WriteREG,
+ 265:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                PsramObject->psram_public.config[Index].REGAddress,
+ 239              		.loc 1 265 71 is_stmt 0 view .LVU44
+ 240 0046 94F85F20 		ldrb	r2, [r4, #95]	@ zero_extendqisi2
+ 266:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                regval, PsramObject->psram_public.ReadREGSize))
+ 241              		.loc 1 266 65 view .LVU45
+ 242 004a 95F86830 		ldrb	r3, [r5, #104]	@ zero_extendqisi2
+ 263:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                PsramObject->psram_public.WriteREG,
+ 243              		.loc 1 263 17 view .LVU46
+ 244 004e 0093     		str	r3, [sp]
+ 245 0050 03AB     		add	r3, sp, #12
+ 246 0052 95F86710 		ldrb	r1, [r5, #103]	@ zero_extendqisi2
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 10
+
+
+ 247 0056 2846     		mov	r0, r5
+ 248 0058 FFF7FEFF 		bl	SAL_XSPI_Write
+ 249              	.LVL21:
+ 263:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                PsramObject->psram_public.WriteREG,
+ 250              		.loc 1 263 6 discriminator 1 view .LVU47
+ 251 005c 38B9     		cbnz	r0, .L19
+ 252              	.LVL22:
+ 253              	.L16:
+ 267:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 268:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     retr = EXTMEM_DRIVER_PSRAM_ERROR_WRITEREG;
+ 269:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ 270:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 271:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 272:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** error:
+ 273:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   return retr;
+ 254              		.loc 1 273 3 is_stmt 1 view .LVU48
+ 274:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** }
+ 255              		.loc 1 274 1 is_stmt 0 view .LVU49
+ 256 005e 05B0     		add	sp, sp, #20
+ 257              	.LCFI8:
+ 258              		.cfi_remember_state
+ 259              		.cfi_def_cfa_offset 12
+ 260              		@ sp needed
+ 261 0060 30BD     		pop	{r4, r5, pc}
+ 262              	.LVL23:
+ 263              	.L17:
+ 264              	.LCFI9:
+ 265              		.cfi_restore_state
+ 246:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ 266              		.loc 1 246 10 view .LVU50
+ 267 0062 6FF00600 		mvn	r0, #6
+ 268              	.LVL24:
+ 246:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ 269              		.loc 1 246 10 view .LVU51
+ 270 0066 FAE7     		b	.L16
+ 271              	.LVL25:
+ 272              	.L18:
+ 255:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ 273              		.loc 1 255 10 view .LVU52
+ 274 0068 4FF0FF30 		mov	r0, #-1
+ 275 006c F7E7     		b	.L16
+ 276              	.L19:
+ 268:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ 277              		.loc 1 268 10 view .LVU53
+ 278 006e 6FF00100 		mvn	r0, #1
+ 279 0072 F4E7     		b	.L16
+ 280              		.cfi_endproc
+ 281              	.LFE866:
+ 283              		.section	.text.EXTMEM_DRIVER_PSRAM_Init,"ax",%progbits
+ 284              		.align	1
+ 285              		.global	EXTMEM_DRIVER_PSRAM_Init
+ 286              		.syntax unified
+ 287              		.thumb
+ 288              		.thumb_func
+ 290              	EXTMEM_DRIVER_PSRAM_Init:
+ 291              	.LVL26:
+ 292              	.LFB862:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 11
+
+
+  95:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   EXTMEM_DRIVER_PSRAM_StatusTypeDef retr = EXTMEM_DRIVER_PSRAM_OK;
+ 293              		.loc 1 95 1 is_stmt 1 view -0
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 8
+ 296              		@ frame_needed = 0, uses_anonymous_args = 0
+  95:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   EXTMEM_DRIVER_PSRAM_StatusTypeDef retr = EXTMEM_DRIVER_PSRAM_OK;
+ 297              		.loc 1 95 1 is_stmt 0 view .LVU55
+ 298 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 299              	.LCFI10:
+ 300              		.cfi_def_cfa_offset 20
+ 301              		.cfi_offset 4, -20
+ 302              		.cfi_offset 5, -16
+ 303              		.cfi_offset 6, -12
+ 304              		.cfi_offset 7, -8
+ 305              		.cfi_offset 14, -4
+ 306 0002 83B0     		sub	sp, sp, #12
+ 307              	.LCFI11:
+ 308              		.cfi_def_cfa_offset 32
+ 309 0004 0F46     		mov	r7, r1
+ 310 0006 1446     		mov	r4, r2
+ 311 0008 1D46     		mov	r5, r3
+  96:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   uint32_t ClockOut;
+ 312              		.loc 1 96 3 is_stmt 1 view .LVU56
+ 313              	.LVL27:
+  97:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   SAL_XSPI_PhysicalLinkTypeDef linkvalue;
+ 314              		.loc 1 97 3 view .LVU57
+  98:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 315              		.loc 1 98 3 view .LVU58
+ 104:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 316              		.loc 1 104 3 view .LVU59
+ 104:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 317              		.loc 1 104 9 is_stmt 0 view .LVU60
+ 318 000a 0146     		mov	r1, r0
+ 319              	.LVL28:
+ 104:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 320              		.loc 1 104 9 view .LVU61
+ 321 000c 1846     		mov	r0, r3
+ 322              	.LVL29:
+ 104:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 323              		.loc 1 104 9 view .LVU62
+ 324 000e FFF7FEFF 		bl	SAL_XSPI_Init
+ 325              	.LVL30:
+ 107:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 326              		.loc 1 107 3 is_stmt 1 view .LVU63
+ 107:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 327              		.loc 1 107 9 is_stmt 0 view .LVU64
+ 328 0012 2846     		mov	r0, r5
+ 329 0014 FFF7FEFF 		bl	SAL_XSPI_DisableMapMode
+ 330              	.LVL31:
+ 111:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                   &ClockOut))
+ 331              		.loc 1 111 3 is_stmt 1 view .LVU65
+ 111:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                   &ClockOut))
+ 332              		.loc 1 111 17 is_stmt 0 view .LVU66
+ 333 0018 01AB     		add	r3, sp, #4
+ 334 001a AA6D     		ldr	r2, [r5, #88]
+ 335 001c 2146     		mov	r1, r4
+ 336 001e 2846     		mov	r0, r5
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 12
+
+
+ 337 0020 FFF7FEFF 		bl	SAL_XSPI_SetClock
+ 338              	.LVL32:
+ 111:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                                   &ClockOut))
+ 339              		.loc 1 111 6 discriminator 1 view .LVU67
+ 340 0024 E8BB     		cbnz	r0, .L26
+ 341 0026 0446     		mov	r4, r0
+ 342              	.LVL33:
+ 120:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               &PsramObject->psram_public.MemorySize);
+ 343              		.loc 1 120 3 is_stmt 1 view .LVU68
+ 120:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               &PsramObject->psram_public.MemorySize);
+ 344              		.loc 1 120 9 is_stmt 0 view .LVU69
+ 345 0028 05F15402 		add	r2, r5, #84
+ 346 002c 0421     		movs	r1, #4
+ 347 002e 2846     		mov	r0, r5
+ 348 0030 FFF7FEFF 		bl	SAL_XSPI_MemoryConfig
+ 349              	.LVL34:
+ 125:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue);
+ 350              		.loc 1 125 3 is_stmt 1 view .LVU70
+ 125:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue);
+ 351              		.loc 1 125 13 is_stmt 0 view .LVU71
+ 352 0034 0A23     		movs	r3, #10
+ 353 0036 8DF80330 		strb	r3, [sp, #3]
+ 126:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 354              		.loc 1 126 3 is_stmt 1 view .LVU72
+ 126:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 355              		.loc 1 126 9 is_stmt 0 view .LVU73
+ 356 003a 0DF10302 		add	r2, sp, #3
+ 357 003e 0021     		movs	r1, #0
+ 358 0040 2846     		mov	r0, r5
+ 359 0042 FFF7FEFF 		bl	SAL_XSPI_MemoryConfig
+ 360              	.LVL35:
+ 129:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               &PsramObject->psram_public.REG_DummyCycle);
+ 361              		.loc 1 129 3 is_stmt 1 view .LVU74
+ 129:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****                               &PsramObject->psram_public.REG_DummyCycle);
+ 362              		.loc 1 129 9 is_stmt 0 view .LVU75
+ 363 0046 05F16902 		add	r2, r5, #105
+ 364 004a 0121     		movs	r1, #1
+ 365 004c 2846     		mov	r0, r5
+ 366 004e FFF7FEFF 		bl	SAL_XSPI_MemoryConfig
+ 367              	.LVL36:
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 368              		.loc 1 133 3 is_stmt 1 view .LVU76
+ 369              	.LBB2:
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 370              		.loc 1 133 8 view .LVU77
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 371              		.loc 1 133 8 is_stmt 0 view .LVU78
+ 372              	.LBE2:
+  96:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   uint32_t ClockOut;
+ 373              		.loc 1 96 37 view .LVU79
+ 374 0052 0026     		movs	r6, #0
+ 375              	.LVL37:
+ 376              	.L23:
+ 377              	.LBB3:
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 378              		.loc 1 133 50 is_stmt 1 discriminator 1 view .LVU80
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 13
+
+
+ 379              		.loc 1 133 77 is_stmt 0 discriminator 1 view .LVU81
+ 380 0054 95F85C30 		ldrb	r3, [r5, #92]	@ zero_extendqisi2
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 381              		.loc 1 133 50 discriminator 1 view .LVU82
+ 382 0058 A342     		cmp	r3, r4
+ 383 005a 08D9     		bls	.L29
+ 135:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     if (retr != EXTMEM_DRIVER_PSRAM_OK)
+ 384              		.loc 1 135 5 is_stmt 1 view .LVU83
+ 135:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     if (retr != EXTMEM_DRIVER_PSRAM_OK)
+ 385              		.loc 1 135 12 is_stmt 0 view .LVU84
+ 386 005c 2146     		mov	r1, r4
+ 387 005e 2846     		mov	r0, r5
+ 388 0060 FFF7FEFF 		bl	PSRAM_ExecuteCommand
+ 389              	.LVL38:
+ 136:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     {
+ 390              		.loc 1 136 5 is_stmt 1 view .LVU85
+ 136:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     {
+ 391              		.loc 1 136 8 is_stmt 0 view .LVU86
+ 392 0064 0646     		mov	r6, r0
+ 393 0066 78B9     		cbnz	r0, .L22
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 394              		.loc 1 133 107 is_stmt 1 discriminator 2 view .LVU87
+ 395 0068 0134     		adds	r4, r4, #1
+ 396              	.LVL39:
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 397              		.loc 1 133 107 is_stmt 0 discriminator 2 view .LVU88
+ 398 006a E4B2     		uxtb	r4, r4
+ 399              	.LVL40:
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 400              		.loc 1 133 107 discriminator 2 view .LVU89
+ 401 006c F2E7     		b	.L23
+ 402              	.LVL41:
+ 403              	.L29:
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 404              		.loc 1 133 107 discriminator 2 view .LVU90
+ 405              	.LBE3:
+ 142:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 406              		.loc 1 142 3 is_stmt 1 view .LVU91
+ 407 006e 032F     		cmp	r7, #3
+ 408 0070 0DD0     		beq	.L25
+ 409 0072 042F     		cmp	r7, #4
+ 410 0074 18D1     		bne	.L27
+ 145:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue
+ 411              		.loc 1 145 7 view .LVU92
+ 145:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue
+ 412              		.loc 1 145 17 is_stmt 0 view .LVU93
+ 413 0076 0B23     		movs	r3, #11
+ 414 0078 8DF80330 		strb	r3, [sp, #3]
+ 146:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       break;
+ 415              		.loc 1 146 7 is_stmt 1 view .LVU94
+ 146:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       break;
+ 416              		.loc 1 146 13 is_stmt 0 view .LVU95
+ 417 007c 0DF10302 		add	r2, sp, #3
+ 418 0080 0021     		movs	r1, #0
+ 419 0082 2846     		mov	r0, r5
+ 420 0084 FFF7FEFF 		bl	SAL_XSPI_MemoryConfig
+ 421              	.LVL42:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 14
+
+
+ 147:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 422              		.loc 1 147 7 is_stmt 1 view .LVU96
+ 423              	.L22:
+ 157:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   }
+ 424              		.loc 1 157 7 view .LVU97
+ 161:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** }
+ 425              		.loc 1 161 3 view .LVU98
+ 162:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 426              		.loc 1 162 1 is_stmt 0 view .LVU99
+ 427 0088 3046     		mov	r0, r6
+ 428 008a 03B0     		add	sp, sp, #12
+ 429              	.LCFI12:
+ 430              		.cfi_remember_state
+ 431              		.cfi_def_cfa_offset 20
+ 432              		@ sp needed
+ 433 008c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 434              	.LVL43:
+ 435              	.L25:
+ 436              	.LCFI13:
+ 437              		.cfi_restore_state
+ 150:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue
+ 438              		.loc 1 150 7 is_stmt 1 view .LVU100
+ 150:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       (void)SAL_XSPI_MemoryConfig(&PsramObject->psram_private.SALObject, PARAM_PHY_LINK, &linkvalue
+ 439              		.loc 1 150 17 is_stmt 0 view .LVU101
+ 440 008e 0A23     		movs	r3, #10
+ 441 0090 8DF80330 		strb	r3, [sp, #3]
+ 151:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       break;
+ 442              		.loc 1 151 7 is_stmt 1 view .LVU102
+ 151:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****       break;
+ 443              		.loc 1 151 13 is_stmt 0 view .LVU103
+ 444 0094 0DF10302 		add	r2, sp, #3
+ 445 0098 0021     		movs	r1, #0
+ 446 009a 2846     		mov	r0, r5
+ 447 009c FFF7FEFF 		bl	SAL_XSPI_MemoryConfig
+ 448              	.LVL44:
+ 152:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c **** 
+ 449              		.loc 1 152 7 is_stmt 1 view .LVU104
+ 450 00a0 F2E7     		b	.L22
+ 451              	.LVL45:
+ 452              	.L26:
+ 114:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****     goto error;
+ 453              		.loc 1 114 10 is_stmt 0 view .LVU105
+ 454 00a2 6FF07F06 		mvn	r6, #127
+ 455 00a6 EFE7     		b	.L22
+ 456              	.LVL46:
+ 457              	.L27:
+ 142:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 458              		.loc 1 142 3 view .LVU106
+ 459 00a8 6FF07F06 		mvn	r6, #127
+ 460              	.LVL47:
+ 142:../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c ****   {
+ 461              		.loc 1 142 3 view .LVU107
+ 462 00ac ECE7     		b	.L22
+ 463              		.cfi_endproc
+ 464              	.LFE862:
+ 466              		.text
+ 467              	.Letext0:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 15
+
+
+ 468              		.file 2 "C:\\ST\\STM32CubeIDE_2.0.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 469              		.file 3 "C:\\ST\\STM32CubeIDE_2.0.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 470              		.file 4 "../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.h"
+ 471              		.file 5 "../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n657xx.h"
+ 472              		.file 6 "../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h"
+ 473              		.file 7 "../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dma.h"
+ 474              		.file 8 "../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dma_ex.h"
+ 475              		.file 9 "../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h"
+ 476              		.file 10 "../../Middlewares/ST/STM32_ExtMem_Manager/sal/stm32_sal_xspi_type.h"
+ 477              		.file 11 "../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver_type.h"
+ 478              		.file 12 "../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver_api.h"
+ 479              		.file 13 "../../Middlewares/ST/STM32_ExtMem_Manager/psram/../sal/stm32_sal_xspi_api.h"
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32_psram_driver.c
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:26     .text.EXTMEM_DRIVER_PSRAM_DeInit:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:32     .text.EXTMEM_DRIVER_PSRAM_DeInit:00000000 EXTMEM_DRIVER_PSRAM_DeInit
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:57     .text.EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:63     .text.EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode:00000000 EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:136    .text.EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:142    .text.EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode:00000000 EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:177    .text.PSRAM_ExecuteCommand:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:183    .text.PSRAM_ExecuteCommand:00000000 PSRAM_ExecuteCommand
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:284    .text.EXTMEM_DRIVER_PSRAM_Init:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccNpVDr2.s:290    .text.EXTMEM_DRIVER_PSRAM_Init:00000000 EXTMEM_DRIVER_PSRAM_Init
+
+UNDEFINED SYMBOLS
+SAL_XSPI_DisableMapMode
+SAL_XSPI_ConfigureWrappMode
+SAL_XSPI_EnableMapMode
+SAL_XSPI_Read
+SAL_XSPI_Write
+SAL_XSPI_Init
+SAL_XSPI_SetClock
+SAL_XSPI_MemoryConfig

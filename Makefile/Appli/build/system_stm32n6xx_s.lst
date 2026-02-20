@@ -1,0 +1,2196 @@
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 1
+
+
+   1              		.arch armv8.1-m.main
+   2              		.fpu fpv5-d16
+   3              		.arch_extension dsp
+   4              		.arch_extension fp
+   5              		.arch_extension fp.dp
+   6              		.arch_extension mve
+   7              		.arch_extension mve.fp
+   8              		.eabi_attribute 5, "cortex-m55"
+   9              		.eabi_attribute 28, 1
+  10              		.eabi_attribute 20, 1
+  11              		.eabi_attribute 21, 1
+  12              		.eabi_attribute 23, 3
+  13              		.eabi_attribute 24, 1
+  14              		.eabi_attribute 25, 1
+  15              		.eabi_attribute 26, 1
+  16              		.eabi_attribute 30, 1
+  17              		.eabi_attribute 34, 1
+  18              		.eabi_attribute 38, 1
+  19              		.eabi_attribute 18, 4
+  20              		.file	"system_stm32n6xx_s.c"
+  21              		.text
+  22              	.Ltext0:
+  23              		.cfi_sections	.debug_frame
+  24              		.file 1 "../../Appli/Core/Src/system_stm32n6xx_s.c"
+  25              		.section	.text.TZ_SAU_Setup,"ax",%progbits
+  26              		.align	1
+  27              		.syntax unified
+  28              		.thumb
+  29              		.thumb_func
+  31              	TZ_SAU_Setup:
+  32              	.LFB862:
+  33              		.file 2 "../../Appli/Core/Inc/partition_stm32n657xx.h"
+   1:../../Appli/Core/Inc/partition_stm32n657xx.h **** /* USER CODE BEGIN Header */
+   2:../../Appli/Core/Inc/partition_stm32n657xx.h **** /**
+   3:../../Appli/Core/Inc/partition_stm32n657xx.h ****   ******************************************************************************
+   4:../../Appli/Core/Inc/partition_stm32n657xx.h ****   * @file    partition_stm32n657xx.h
+   5:../../Appli/Core/Inc/partition_stm32n657xx.h ****   * @author  MCD Application Team
+   6:../../Appli/Core/Inc/partition_stm32n657xx.h ****   * @brief   CMSIS STM32N657xx Device Initial Setup for Secure / Non-Secure Zones
+   7:../../Appli/Core/Inc/partition_stm32n657xx.h ****   *          for ARMCM55 based on CMSIS CORE V5.3.1 partition_ARMCM33.h Template.
+   8:../../Appli/Core/Inc/partition_stm32n657xx.h ****   *
+   9:../../Appli/Core/Inc/partition_stm32n657xx.h ****   *          This file contains:
+  10:../../Appli/Core/Inc/partition_stm32n657xx.h ****   *           - Initialize Security Attribution Unit (SAU) CTRL register
+  11:../../Appli/Core/Inc/partition_stm32n657xx.h ****   *           - Setup behavior of Sleep and Exception Handling
+  12:../../Appli/Core/Inc/partition_stm32n657xx.h ****   *           - Setup behavior of Floating Point Unit
+  13:../../Appli/Core/Inc/partition_stm32n657xx.h ****   *           - Setup Interrupt Target
+  14:../../Appli/Core/Inc/partition_stm32n657xx.h ****   *
+  15:../../Appli/Core/Inc/partition_stm32n657xx.h ****   ******************************************************************************/
+  16:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  17:../../Appli/Core/Inc/partition_stm32n657xx.h **** * Copyright (c) 2009-2016 ARM Limited. All rights reserved.
+  18:../../Appli/Core/Inc/partition_stm32n657xx.h **** * Portions Copyright (c) 2023 STMicroelectronics, all rights reserved
+  19:../../Appli/Core/Inc/partition_stm32n657xx.h **** *
+  20:../../Appli/Core/Inc/partition_stm32n657xx.h **** * SPDX-License-Identifier: Apache-2.0
+  21:../../Appli/Core/Inc/partition_stm32n657xx.h **** *
+  22:../../Appli/Core/Inc/partition_stm32n657xx.h **** * Licensed under the Apache License, Version 2.0 (the License); you may
+  23:../../Appli/Core/Inc/partition_stm32n657xx.h **** * not use this file except in compliance with the License.
+  24:../../Appli/Core/Inc/partition_stm32n657xx.h **** * You may obtain a copy of the License at
+  25:../../Appli/Core/Inc/partition_stm32n657xx.h **** *
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 2
+
+
+  26:../../Appli/Core/Inc/partition_stm32n657xx.h **** * http://www.apache.org/licenses/LICENSE-2.0
+  27:../../Appli/Core/Inc/partition_stm32n657xx.h **** *
+  28:../../Appli/Core/Inc/partition_stm32n657xx.h **** * Unless required by applicable law or agreed to in writing, software
+  29:../../Appli/Core/Inc/partition_stm32n657xx.h **** * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  30:../../Appli/Core/Inc/partition_stm32n657xx.h **** * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  31:../../Appli/Core/Inc/partition_stm32n657xx.h **** * See the License for the specific language governing permissions and
+  32:../../Appli/Core/Inc/partition_stm32n657xx.h **** * limitations under the License.
+  33:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  34:../../Appli/Core/Inc/partition_stm32n657xx.h **** /* USER CODE END Header */
+  35:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  36:../../Appli/Core/Inc/partition_stm32n657xx.h **** #ifndef PARTITION_STM32N657XX_H
+  37:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define PARTITION_STM32N657XX_H
+  38:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  39:../../Appli/Core/Inc/partition_stm32n657xx.h **** //-------- <<< Use Configuration Wizard in Context Menu >>> -----------------
+  40:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  41:../../Appli/Core/Inc/partition_stm32n657xx.h **** /* USER CODE BEGIN 0 */
+  42:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  43:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <e>Initialize Security Attribution Unit (SAU) CTRL register
+  44:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  45:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_CTRL          0
+  46:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  47:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  48:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <q> Enable SAU
+  49:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for SAU->CTRL register bit ENABLE
+  50:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  51:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_CTRL_ENABLE   0
+  52:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  53:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  54:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o> When SAU is disabled
+  55:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=> All Memory is Secure
+  56:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <1=> All Memory is Non-Secure
+  57:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for SAU->CTRL register bit ALLNS
+  58:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> When all Memory is Non-Secure (ALLNS is 1), IDAU can override memory map configuration.
+  59:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  60:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_CTRL_ALLNS  0
+  61:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  62:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  63:../../Appli/Core/Inc/partition_stm32n657xx.h **** // </e>
+  64:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  65:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  66:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  67:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <h>Initialize Security Attribution Unit (SAU) Address Regions
+  68:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <i>SAU configuration specifies regions to be one of:
+  69:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <i> - Secure and Non-Secure Callable
+  70:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <i> - Non-Secure
+  71:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <i>Note: All memory regions not configured by SAU are Secure
+  72:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  73:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_REGIONS_MAX   8                 /* Max. number of SAU regions */
+  74:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  75:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  76:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize SAU Region 0
+  77:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Setup SAU Region 0 memory attributes
+  78:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  79:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION0    0
+  80:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  81:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  82:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Start Address <0-0xFFFFFFE0>
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 3
+
+
+  83:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  84:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_START0     0x00000000      /* start address of SAU region 0 */
+  85:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  86:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  87:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>End Address <0x1F-0xFFFFFFFF>
+  88:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  89:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_END0       0x00000000      /* end address of SAU region 0 */
+  90:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+  91:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  92:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Region is
+  93:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <0=>Non-Secure
+  94:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <1=>Secure, Non-Secure Callable
+  95:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+  96:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_NSC0       0
+  97:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+  98:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+  99:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 100:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 101:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 102:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize SAU Region 1
+ 103:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Setup SAU Region 1 memory attributes
+ 104:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 105:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION1    0
+ 106:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 107:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 108:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Start Address <0-0xFFFFFFE0>
+ 109:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 110:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_START1       0x00000000      /* start address of SAU region 1 */
+ 111:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 112:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>End Address <0x1F-0xFFFFFFFF>
+ 113:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 114:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_END1       0x00000000      /* end address of SAU region 1 */
+ 115:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 116:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Region is
+ 117:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <0=>Non-Secure
+ 118:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <1=>Secure, Non-Secure Callable
+ 119:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 120:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_NSC1       0
+ 121:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 122:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 123:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 124:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 125:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 126:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize SAU Region 2
+ 127:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Setup SAU Region 2 memory attributes
+ 128:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 129:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION2    0
+ 130:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 131:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 132:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Start Address <0-0xFFFFFFE0>
+ 133:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 134:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_START2     0x00000000      /* start address of SAU region 2 */
+ 135:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 136:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 137:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>End Address <0x1F-0xFFFFFFFF>
+ 138:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 139:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_END2       0x00000000      /* end address of SAU region 2 */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 4
+
+
+ 140:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 141:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 142:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Region is
+ 143:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <0=>Non-Secure
+ 144:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <1=>Secure, Non-Secure Callable
+ 145:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 146:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_NSC2       0
+ 147:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 148:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 149:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 150:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 151:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 152:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize SAU Region 3
+ 153:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Setup SAU Region 3 memory attributes
+ 154:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 155:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION3    0
+ 156:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 157:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 158:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Start Address <0-0xFFFFFFE0>
+ 159:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 160:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_START3     0x00000000      /* start address of SAU region 3 */
+ 161:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 162:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 163:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>End Address <0x1F-0xFFFFFFFF>
+ 164:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 165:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_END3       0x00000000      /* end address of SAU region 3 */
+ 166:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 167:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 168:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Region is
+ 169:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <0=>Non-Secure
+ 170:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <1=>Secure, Non-Secure Callable
+ 171:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 172:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_NSC3       0
+ 173:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 174:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 175:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 176:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 177:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 178:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize SAU Region 4
+ 179:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Setup SAU Region 4 memory attributes
+ 180:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 181:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION4    0
+ 182:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 183:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 184:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Start Address <0-0xFFFFFFE0>
+ 185:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 186:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_START4     0x00000000      /* start address of SAU region 4 */
+ 187:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 188:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 189:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>End Address <0x1F-0xFFFFFFFF>
+ 190:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 191:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_END4       0x00000000      /* end address of SAU region 4 */
+ 192:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 193:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 194:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Region is
+ 195:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <0=>Non-Secure
+ 196:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <1=>Secure, Non-Secure Callable
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 5
+
+
+ 197:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 198:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_NSC4       0
+ 199:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 200:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 201:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 202:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 203:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 204:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize SAU Region 5
+ 205:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Setup SAU Region 5 memory attributes
+ 206:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 207:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION5    0
+ 208:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 209:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 210:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Start Address <0-0xFFFFFFE0>
+ 211:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 212:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_START5     0x00000000      /* start address of SAU region 5 */
+ 213:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 214:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 215:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>End Address <0x1F-0xFFFFFFFF>
+ 216:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 217:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_END5       0x00000000      /* end address of SAU region 5 */
+ 218:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 219:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 220:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Region is
+ 221:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <0=>Non-Secure
+ 222:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <1=>Secure, Non-Secure Callable
+ 223:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 224:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_NSC5       0
+ 225:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 226:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 227:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 228:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 229:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 230:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize SAU Region 6
+ 231:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Setup SAU Region 6 memory attributes
+ 232:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 233:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION6    0
+ 234:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 235:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 236:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Start Address <0-0xFFFFFFE0>
+ 237:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 238:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_START6     0x00000000      /* start address of SAU region 6 */
+ 239:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 240:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 241:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>End Address <0x1F-0xFFFFFFFF>
+ 242:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 243:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_END6       0x00000000      /* end address of SAU region 6 */
+ 244:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 245:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 246:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Region is
+ 247:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <0=>Non-Secure
+ 248:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <1=>Secure, Non-Secure Callable
+ 249:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 250:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_NSC6       0
+ 251:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 252:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 253:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 6
+
+
+ 254:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 255:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 256:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize SAU Region 7
+ 257:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Setup SAU Region 7 memory attributes
+ 258:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 259:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION7    0
+ 260:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 261:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 262:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Start Address <0-0xFFFFFFE0>
+ 263:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 264:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_START7     0x00000000      /* start address of SAU region 7 */
+ 265:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 266:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 267:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>End Address <0x1F-0xFFFFFFFF>
+ 268:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 269:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_END7       0x00000000      /* end address of SAU region 7 */
+ 270:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 271:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 272:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <o>Region is
+ 273:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <0=>Non-Secure
+ 274:../../Appli/Core/Inc/partition_stm32n657xx.h **** //         <1=>Secure, Non-Secure Callable
+ 275:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 276:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_NSC7       0
+ 277:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 278:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 279:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 280:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 281:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 282:../../Appli/Core/Inc/partition_stm32n657xx.h **** // </h>
+ 283:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 284:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 285:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <e>Setup behaviour of Sleep and Exception Handling
+ 286:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 287:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SCB_CSR_AIRCR_INIT  0
+ 288:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 289:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 290:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o> Deep Sleep can be enabled by
+ 291:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=>Secure and Non-Secure state
+ 292:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <1=>Secure state only
+ 293:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for SCB->CSR register bit DEEPSLEEPS
+ 294:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 295:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SCB_CSR_DEEPSLEEPS_VAL  0
+ 296:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 297:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 298:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o>System reset request accessible from
+ 299:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=> Secure and Non-Secure state
+ 300:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <1=> Secure state only
+ 301:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for SCB->AIRCR register bit SYSRESETREQS
+ 302:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 303:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SCB_AIRCR_SYSRESETREQS_VAL  0
+ 304:../../Appli/Core/Inc/partition_stm32n657xx.h **** /* USER CODE END 0 */
+ 305:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 306:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o>Priority of Non-Secure exceptions is
+ 307:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=> Not altered
+ 308:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <1=> Lowered to 0x04-0x07
+ 309:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for SCB->AIRCR register bit PRIS
+ 310:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 7
+
+
+ 311:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SCB_AIRCR_PRIS_VAL      0
+ 312:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 313:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 314:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o>BusFault, HardFault, and NMI target
+ 315:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=> Secure state
+ 316:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <1=> Non-Secure state
+ 317:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for SCB->AIRCR register bit BFHFNMINS
+ 318:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 319:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SCB_AIRCR_BFHFNMINS_VAL 0
+ 320:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 321:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 322:../../Appli/Core/Inc/partition_stm32n657xx.h **** // </e>
+ 323:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 324:../../Appli/Core/Inc/partition_stm32n657xx.h **** /* USER CODE BEGIN 1 */
+ 325:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 326:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <e>Setup behaviour of Floating Point Unit
+ 327:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 328:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define TZ_FPU_NS_USAGE 1
+ 329:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 330:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 331:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <o>Floating Point Unit usage
+ 332:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=> Secure state only
+ 333:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <3=> Secure and Non-Secure state
+ 334:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for SCB->NSACR register bits CP10, CP11
+ 335:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 336:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SCB_NSACR_CP10_11_VAL       3
+ 337:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 338:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 339:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <o>Treat floating-point registers as Secure
+ 340:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=> Disabled
+ 341:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <1=> Enabled
+ 342:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for FPU->FPCCR register bit TS
+ 343:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 344:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define FPU_FPCCR_TS_VAL            0
+ 345:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 346:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 347:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <o>Clear on return (CLRONRET) accessibility
+ 348:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=> Secure and Non-Secure state
+ 349:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <1=> Secure state only
+ 350:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for FPU->FPCCR register bit CLRONRETS
+ 351:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 352:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define FPU_FPCCR_CLRONRETS_VAL     0
+ 353:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 354:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 355:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <o>Clear floating-point caller saved registers on exception return
+ 356:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <0=> Disabled
+ 357:../../Appli/Core/Inc/partition_stm32n657xx.h **** //     <1=> Enabled
+ 358:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <i> Value for FPU->FPCCR register bit CLRONRET
+ 359:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 360:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define FPU_FPCCR_CLRONRET_VAL      1
+ 361:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 362:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 363:../../Appli/Core/Inc/partition_stm32n657xx.h **** // </e>
+ 364:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 365:../../Appli/Core/Inc/partition_stm32n657xx.h **** /* USER CODE END 1 */
+ 366:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 367:../../Appli/Core/Inc/partition_stm32n657xx.h **** // <h>Setup Interrupt Target
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 8
+
+
+ 368:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 369:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 370:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 371:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize ITNS 0 (Interrupts 0..31)
+ 372:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 373:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS0    1
+ 374:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 375:../../Appli/Core/Inc/partition_stm32n657xx.h **** // Interrupts 0..31
+ 376:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.0>  PVD_PVM_IRQn        <0=> Secure state
+ 377:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.1> Reserved             <0=> Secure state
+ 378:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.2>  DTS_IRQn            <0=> Secure state
+ 379:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.3>  RCC_IRQn            <0=> Secure state
+ 380:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.4>  LOCKUP_IRQn         <0=> Secure state
+ 381:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.5>  CACHE_ECC_IRQn      <0=> Secure state
+ 382:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.6>  TCM_ECC_IRQn        <0=> Secure state
+ 383:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.7>  BKP_ECC_IRQn        <0=> Secure state
+ 384:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.8>  FPU_IRQn            <0=> Secure state
+ 385:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.9>  Reserved            <0=> Secure state
+ 386:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.10> RTC_S_IRQn          <0=> Secure state
+ 387:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.11> TAMP_IRQn           <0=> Secure state
+ 388:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.12> RIFSC_TAMPER_IRQn   <0=> Secure state
+ 389:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.13> IAC_IRQn            <0=> Secure state
+ 390:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.14> RCC_S_IRQn          <0=> Secure state
+ 391:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.15> Reserved            <0=> Secure state
+ 392:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.16> RTC_IRQn            <0=> Secure state
+ 393:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.17> Reserved            <0=> Secure state
+ 394:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.18> IWDG_IRQn           <0=> Secure state
+ 395:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.19> WWDG_IRQn           <0=> Secure state
+ 396:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.20> EXTI0_IRQn          <0=> Secure state
+ 397:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.21> EXTI1_IRQn          <0=> Secure state
+ 398:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.22> EXTI2_IRQn          <0=> Secure state
+ 399:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.23> EXTI3_IRQn          <0=> Secure state
+ 400:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.24> EXTI4_IRQn          <0=> Secure state
+ 401:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.25> EXTI5_IRQn          <0=> Secure state
+ 402:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.26> EXTI6_IRQn          <0=> Secure state
+ 403:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.27> EXTI7_IRQn          <0=> Secure state
+ 404:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.28> EXTI8_IRQn          <0=> Secure state
+ 405:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.29> EXTI9_IRQn          <0=> Secure state
+ 406:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.30> EXTI10_IRQn         <0=> Secure state
+ 407:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.31> EXTI11_IRQn         <0=> Secure state
+ 408:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 409:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 410:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS0_VAL      0x00000000
+ 411:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 412:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 413:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 414:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 415:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 416:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize ITNS 1 (Interrupts 32..63)
+ 417:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 418:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS1    1
+ 419:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 420:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 421:../../Appli/Core/Inc/partition_stm32n657xx.h **** / Interrupts 32..63
+ 422:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.0>  EXTI12_IRQn       <0=> Secure state
+ 423:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.1>  EXTI13_IRQn       <0=> Secure state
+ 424:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.2>  EXTI14_IRQn       <0=> Secure state
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 9
+
+
+ 425:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.3>  EXTI15_IRQn       <0=> Secure state
+ 426:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.4>  SAES_IRQn          <0=> Secure state
+ 427:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.5>  CRYP_IRQn   	      <0=> Secure state
+ 428:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.6>  PKA_IRQn          <0=> Secure state
+ 429:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.7>  HASH_IRQn         <0=> Secure state
+ 430:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.8>  RNG_IRQn          <0=> Secure state
+ 431:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.9>  Reserved          <0=> Secure state
+ 432:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.10> MCE1_IRQn          <0=> Secure state
+ 433:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.11> MCE2_IRQn          <0=> Secure state
+ 434:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.12> MCE3_IRQn          <0=> Secure state
+ 435:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.13> MCE4_IRQn          <0=> Secure state
+ 436:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.14> ADC1_2_IRQn       <0=> Secure state
+ 437:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.15> CSI_IRQn          <0=> Secure state
+ 438:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.16> DCMIPP_IRQn       <0=> Secure state
+ 439:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.17> Reserved          <0=> Secure state
+ 440:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.18> Reserved          <0=> Secure state
+ 441:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.19> Reserved          <0=> Secure state
+ 442:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.20> PAHB_ERR_IRQn     <0=> Secure state
+ 443:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.21> NPU0_IRQn         <0=> Secure state
+ 444:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.22> NPU1_IRQn         <0=> Secure state
+ 445:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.23> NPU2_IRQn         <0=> Secure state
+ 446:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.24> NPU3_IRQn         <0=> Secure state
+ 447:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.25> CACHEAXI_IRQn     <0=> Secure state
+ 448:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.26> LTDC_LO_IRQn      <0=> Secure state
+ 449:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.27> LTDC_LO_ERR_IRQn  <0=> Secure state
+ 450:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.28> DMA2D_IRQn        <0=> Secure state
+ 451:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.29> JPEG_IRQn         <0=> Secure state
+ 452:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.30> VENC_IRQn         <0=> Secure state
+ 453:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.31> GFXMMU_IRQn       <0=> Secure state
+ 454:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 455:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 456:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS1_VAL      0x00000000
+ 457:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 458:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 459:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 460:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 461:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 462:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 463:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize ITNS 2 (Interrupts 64..95)
+ 464:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 465:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS2    1
+ 466:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 467:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 468:../../Appli/Core/Inc/partition_stm32n657xx.h **** // Interrupts 64..95
+ 469:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.0>  GFXTIM_IRQn               <0=> Secure state
+ 470:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.1>  GPU2D_IRQn                <0=> Secure state
+ 471:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.2>  GPU2D_ER_IRQn             <0=> Secure state
+ 472:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.3>  ICACHE_IRQn               <0=> Secure state
+ 473:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.4>  HPDMA1_Channel0_IRQn      <0=> Secure state
+ 474:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.5>  HPDMA1_Channel1_IRQn      <0=> Secure state
+ 475:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.6>  HPDMA1_Channel2_IRQn      <0=> Secure state
+ 476:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.7>  HPDMA1_Channel3_IRQn      <0=> Secure state
+ 477:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.8>  HPDMA1_Channel4_IRQn      <0=> Secure state
+ 478:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.9>  HPDMA1_Channel5_IRQn      <0=> Secure state
+ 479:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.10> HPDMA1_Channel6_IRQn      <0=> Secure state
+ 480:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.11> HPDMA1_Channel7_IRQn      <0=> Secure state
+ 481:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.12> HPDMA1_Channel8_IRQn      <0=> Secure state
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 10
+
+
+ 482:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.13> HPDMA1_Channel9_IRQn      <0=> Secure state
+ 483:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.14> HPDMA1_Channel10_IRQn     <0=> Secure state
+ 484:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.15> HPDMA1_Channel11_IRQn     <0=> Secure state
+ 485:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.16> HPDMA1_Channel12_IRQn     <0=> Secure state
+ 486:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.17> HPDMA1_Channel13_IRQn     <0=> Secure state
+ 487:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.18> HPDMA1_Channel14_IRQn     <0=> Secure state
+ 488:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.19> HPDMA1_Channel15_IRQn     <0=> Secure state
+ 489:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.20> GPDMA1_Channel0_IRQn      <0=> Secure state
+ 490:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.21> GPDMA1_Channel1_IRQn      <0=> Secure state
+ 491:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.22> GPDMA1_Channel2_IRQn      <0=> Secure state
+ 492:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.23> GPDMA1_Channel3_IRQn      <0=> Secure state
+ 493:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.24> GPDMA1_Channel4_IRQn      <0=> Secure state
+ 494:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.25> GPDMA1_Channel5_IRQn      <0=> Secure state
+ 495:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.26> GPDMA1_Channel6_IRQn      <0=> Secure state
+ 496:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.27> GPDMA1_Channel7_IRQn      <0=> Secure state
+ 497:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.28> GPDMA1_Channel8_IRQn      <0=> Secure state
+ 498:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.29> GPDMA1_Channel9_IRQn      <0=> Secure state
+ 499:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.30> GPDMA1_Channel10_IRQn     <0=> Secure state
+ 500:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.31> GPDMA1_Channel11_IRQn     <0=> Secure state
+ 501:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 502:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 503:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS2_VAL      0x00000000
+ 504:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 505:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 506:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 507:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 508:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 509:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 510:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize ITNS 3 (Interrupts 96..127)
+ 511:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 512:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS3    1
+ 513:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 514:../../Appli/Core/Inc/partition_stm32n657xx.h **** // Interrupts 96..127
+ 515:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.0>  GPDMA1_Channel12_IRQn   <0=> Secure state
+ 516:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.1>  GPDMA1_Channel13_IRQn   <0=> Secure state
+ 517:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.2>  GPDMA1_Channel14_IRQn   <0=> Secure state
+ 518:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.3>  GPDMA1_Channel15_IRQn   <0=> Secure state
+ 519:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.4>  I2C1_EV_IRQn            <0=> Secure state
+ 520:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.5>  I2C1_ER_IRQn            <0=> Secure state
+ 521:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.6>  I2C2_EV_IRQn            <0=> Secure state
+ 522:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.7>  I2C2_ER_IRQn            <0=> Secure state
+ 523:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.8>  I2C3_EV_IRQn            <0=> Secure state
+ 524:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.9>  I2C3_ER_IRQn            <0=> Secure state
+ 525:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.10> I2C4_EV_IRQn            <0=> Secure state
+ 526:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.11> I2C4_ER_IRQn            <0=> Secure state
+ 527:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.12> I3C1_EV_IRQn            <0=> Secure state
+ 528:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.13> I3C1_ER_IRQn            <0=> Secure state
+ 529:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.14> I3C2_EV_IRQn            <0=> Secure state
+ 530:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.15> I3C2_ER_IRQn            <0=> Secure state
+ 531:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.16> TIM1_BRK_IRQn           <0=> Secure state
+ 532:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.17> TIM1_UP_IRQn            <0=> Secure state
+ 533:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.18> TIM1_TRG_COM_IRQn       <0=> Secure state
+ 534:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.19> TIM1_CC_IRQn            <0=> Secure state
+ 535:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.20> TIM2_IRQn               <0=> Secure state
+ 536:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.21> TIM3_IRQn               <0=> Secure state
+ 537:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.22> TIM4_IRQn               <0=> Secure state
+ 538:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.23> TIM5_IRQn               <0=> Secure state
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 11
+
+
+ 539:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.24> TIM6_IRQn               <0=> Secure state
+ 540:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.25> TIM7_IRQn               <0=> Secure state
+ 541:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.26> TIM8_BRK_IRQn           <0=> Secure state
+ 542:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.27> TIM8_UP_IRQn            <0=> Secure state
+ 543:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.28> TIM8_TRG_COM_IRQn       <0=> Secure state
+ 544:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.29> TIM8_CC_IRQn            <0=> Secure state
+ 545:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.30> TIM9_IRQn               <0=> Secure state
+ 546:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.31> TIM10_IRQn              <0=> Secure state
+ 547:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 548:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 549:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS3_VAL      0x00000000
+ 550:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 551:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 552:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 553:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 554:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 555:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 556:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize ITNS 4 (Interrupts 128..159)
+ 557:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 558:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS4    1
+ 559:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 560:../../Appli/Core/Inc/partition_stm32n657xx.h **** // Interrupts 128..159
+ 561:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.0>  TIM11_IRQn        <0=> Secure state
+ 562:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.1>  TIM12_IRQn        <0=> Secure state
+ 563:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.2>  TIM13_IRQn        <0=> Secure state
+ 564:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.3>  TIM14_IRQn        <0=> Secure state
+ 565:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.4>  TIM15_IRQn        <0=> Secure state
+ 566:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.5>  TIM16_IRQn        <0=> Secure state
+ 567:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.6>  TIM17_IRQn        <0=> Secure state
+ 568:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.7>  TIM18_IRQn        <0=> Secure state
+ 569:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.8>  LPTIM1_IRQn       <0=> Secure state
+ 570:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.9>  LPTIM2_IRQn       <0=> Secure state
+ 571:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.10> LPTIM3_IRQn       <0=> Secure state
+ 572:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.11> LPTIM4_IRQn       <0=> Secure state
+ 573:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.12> LPTIM5_IRQn       <0=> Secure state
+ 574:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.13> ADF1_FLT0_IRQn    <0=> Secure state
+ 575:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.14> MDF1_FLT0_IRQn    <0=> Secure state
+ 576:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.15> MDF1_FLT1_IRQn    <0=> Secure state
+ 577:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.16> MDF1_FLT2_IRQn    <0=> Secure state
+ 578:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.17> MDF1_FLT3_IRQn    <0=> Secure state
+ 579:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.18> MDF1_FLT4_IRQn    <0=> Secure state
+ 580:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.19> MDF1_FLT5_IRQn    <0=> Secure state
+ 581:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.20> SAI1_A_IRQn       <0=> Secure state
+ 582:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.21> SAI1_B_IRQn       <0=> Secure state
+ 583:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.22> SAI2_A_IRQn       <0=> Secure state
+ 584:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.23> SAI2_B_IRQn       <0=> Secure state
+ 585:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.24> SPDIFRX1_IRQn     <0=> Secure state
+ 586:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.25> SPI1_IRQn         <0=> Secure state
+ 587:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.26> SPI2_IRQn         <0=> Secure state
+ 588:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.27> SPI3_IRQn         <0=> Secure state
+ 589:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.28> SPI4_IRQn         <0=> Secure state
+ 590:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.29> SPI5_IRQn         <0=> Secure state
+ 591:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.30> SPI6_IRQn         <0=> Secure state
+ 592:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.31> USART1_IRQn       <0=> Secure state
+ 593:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 594:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 595:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS4_VAL      0x00000000
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 12
+
+
+ 596:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 597:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 598:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 599:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 600:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 601:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 602:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize ITNS 5 (Interrupts 160..191)
+ 603:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 604:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS5    1
+ 605:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 606:../../Appli/Core/Inc/partition_stm32n657xx.h **** // Interrupts 160..191
+ 607:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.0>  USART2_IRQn         <0=> Secure state
+ 608:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.1>  USART3_IRQn         <0=> Secure state
+ 609:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.2>  UART4_IRQn          <0=> Secure state
+ 610:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.3>  UART5_IRQn          <0=> Secure state
+ 611:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.4>  USART6_IRQn         <0=> Secure state
+ 612:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.5>  UART7_IRQn          <0=> Secure state
+ 613:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.6>  UART8_IRQn          <0=> Secure state
+ 614:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.7>  UART9_IRQn          <0=> Secure state
+ 615:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.8>  USART10_IRQn        <0=> Secure state
+ 616:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.9>  LPUART1_IRQn        <0=> Secure state
+ 617:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.10> XSPI1_IRQn          <0=> Secure state
+ 618:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.11> XSPI2_IRQn          <0=> Secure state
+ 619:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.12> XSPI3_IRQn          <0=> Secure state
+ 620:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.13> FMC_IRQn            <0=> Secure state
+ 621:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.14> SDMMC1_IRQn         <0=> Secure state
+ 622:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.15> SDMMC2_IRQn         <0=> Secure state
+ 623:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.16> UCPD1_IRQn          <0=> Secure state
+ 624:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.17> USB1_OTG_HS_IRQn    <0=> Secure state
+ 625:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.18> USB2_OTG_HS_IRQn    <0=> Secure state
+ 626:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.19> ETH1_IRQn           <0=> Secure state
+ 627:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.20> FDCAN1_IT0_IRQn     <0=> Secure state
+ 628:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.21> FDCAN1_IT1_IRQn     <0=> Secure state
+ 629:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.22> FDCAN2_IT0_IRQn     <0=> Secure state
+ 630:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.23> FDCAN2_IT1_IRQn     <0=> Secure state
+ 631:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.24> FDCAN3_IT0_IRQn     <0=> Secure state
+ 632:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.25> FDCAN3_IT1_IRQn     <0=> Secure state
+ 633:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.26> FDCAN_CU_IRQn       <0=> Secure state
+ 634:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.27> MDIOS_IRQn          <0=> Secure state
+ 635:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.28> DCMI_PSSI_IRQn      <0=> Secure state
+ 636:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.29> WAKEUP_PIN_IRQn     <0=> Secure state
+ 637:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.30> CTI_INT0_IRQn       <0=> Secure state
+ 638:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.31> CTI_INT1_IRQn       <0=> Secure state
+ 639:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 640:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 641:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS5_VAL      0x00000000
+ 642:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 643:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 644:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 645:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 646:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 647:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 648:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <e>Initialize ITNS 6 (Interrupts 192..223)
+ 649:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 650:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS6    1
+ 651:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 652:../../Appli/Core/Inc/partition_stm32n657xx.h **** // Interrupts 192..223
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 13
+
+
+ 653:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.0>  USART2_IRQn         <0=> Secure state
+ 654:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.1>  USART3_IRQn         <0=> Secure state
+ 655:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   <o.2>  UART4_IRQn          <0=> Secure state
+ 656:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 657:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 658:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define NVIC_INIT_ITNS6_VAL      0x00000000
+ 659:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 660:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 661:../../Appli/Core/Inc/partition_stm32n657xx.h **** //   </e>
+ 662:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 663:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 664:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 665:../../Appli/Core/Inc/partition_stm32n657xx.h **** // </h>
+ 666:../../Appli/Core/Inc/partition_stm32n657xx.h **** */
+ 667:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 668:../../Appli/Core/Inc/partition_stm32n657xx.h **** /* USER CODE BEGIN 2 */
+ 669:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 670:../../Appli/Core/Inc/partition_stm32n657xx.h **** /*
+ 671:../../Appli/Core/Inc/partition_stm32n657xx.h ****     max 8 SAU regions.
+ 672:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU regions are defined in partition.h
+ 673:../../Appli/Core/Inc/partition_stm32n657xx.h ****  */
+ 674:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 675:../../Appli/Core/Inc/partition_stm32n657xx.h **** #define SAU_INIT_REGION(n) \
+ 676:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU->RNR  =  (n                                     & SAU_RNR_REGION_Msk); \
+ 677:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU->RBAR =  (SAU_INIT_START##n                     & SAU_RBAR_BADDR_Msk); \
+ 678:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU->RLAR =  (SAU_INIT_END##n                       & SAU_RLAR_LADDR_Msk) | \
+ 679:../../Appli/Core/Inc/partition_stm32n657xx.h ****                 ((SAU_INIT_NSC##n << SAU_RLAR_NSC_Pos)  & SAU_RLAR_NSC_Msk)   | 1U
+ 680:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 681:../../Appli/Core/Inc/partition_stm32n657xx.h **** /**
+ 682:../../Appli/Core/Inc/partition_stm32n657xx.h ****   \brief   Setup a SAU Region
+ 683:../../Appli/Core/Inc/partition_stm32n657xx.h ****   \details Writes the region information contained in SAU_Region to the
+ 684:../../Appli/Core/Inc/partition_stm32n657xx.h ****            registers SAU_RNR, SAU_RBAR, and SAU_RLAR
+ 685:../../Appli/Core/Inc/partition_stm32n657xx.h ****  */
+ 686:../../Appli/Core/Inc/partition_stm32n657xx.h **** __STATIC_INLINE void TZ_SAU_Setup (void)
+ 687:../../Appli/Core/Inc/partition_stm32n657xx.h **** {
+  34              		.loc 2 687 1 view -0
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 0
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+  38              		@ link register save eliminated.
+ 688:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 689:../../Appli/Core/Inc/partition_stm32n657xx.h **** #if defined (__SAUREGION_PRESENT) && (__SAUREGION_PRESENT == 1U)
+ 690:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 691:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_REGION0) && (SAU_INIT_REGION0 == 1U)
+ 692:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU_INIT_REGION(0);
+ 693:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 694:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 695:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_REGION1) && (SAU_INIT_REGION1 == 1U)
+ 696:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU_INIT_REGION(1);
+ 697:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 698:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 699:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_REGION2) && (SAU_INIT_REGION2 == 1U)
+ 700:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU_INIT_REGION(2);
+ 701:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 702:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 703:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_REGION3) && (SAU_INIT_REGION3 == 1U)
+ 704:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU_INIT_REGION(3);
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 14
+
+
+ 705:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 706:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 707:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_REGION4) && (SAU_INIT_REGION4 == 1U)
+ 708:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU_INIT_REGION(4);
+ 709:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 710:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 711:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_REGION5) && (SAU_INIT_REGION5 == 1U)
+ 712:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU_INIT_REGION(5);
+ 713:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 714:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 715:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_REGION6) && (SAU_INIT_REGION6 == 1U)
+ 716:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU_INIT_REGION(6);
+ 717:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 718:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 719:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_REGION7) && (SAU_INIT_REGION7 == 1U)
+ 720:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU_INIT_REGION(7);
+ 721:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 722:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 723:../../Appli/Core/Inc/partition_stm32n657xx.h ****   /* repeat this for all possible SAU regions */
+ 724:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 725:../../Appli/Core/Inc/partition_stm32n657xx.h **** #endif /* defined (__SAUREGION_PRESENT) && (__SAUREGION_PRESENT == 1U) */
+ 726:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 727:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SAU_INIT_CTRL) && (SAU_INIT_CTRL == 1U)
+ 728:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SAU->CTRL = ((SAU_INIT_CTRL_ENABLE << SAU_CTRL_ENABLE_Pos) & SAU_CTRL_ENABLE_Msk) |
+ 729:../../Appli/Core/Inc/partition_stm32n657xx.h ****                 ((SAU_INIT_CTRL_ALLNS  << SAU_CTRL_ALLNS_Pos)  & SAU_CTRL_ALLNS_Msk)   ;
+ 730:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 731:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 732:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (SCB_CSR_AIRCR_INIT) && (SCB_CSR_AIRCR_INIT == 1U)
+ 733:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SCB->SCR   = (SCB->SCR   & ~(SCB_SCR_SLEEPDEEPS_Msk    )) |
+ 734:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((SCB_CSR_DEEPSLEEPS_VAL     << SCB_SCR_SLEEPDEEPS_Pos)     & SCB_SCR_SLEEPDEEPS
+ 735:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 736:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SCB->AIRCR = (SCB->AIRCR & ~(SCB_AIRCR_VECTKEY_Msk   | SCB_AIRCR_SYSRESETREQS_Msk |
+ 737:../../Appli/Core/Inc/partition_stm32n657xx.h ****                                  SCB_AIRCR_BFHFNMINS_Msk | SCB_AIRCR_PRIS_Msk)        )            
+ 738:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((0x05FAU                    << SCB_AIRCR_VECTKEY_Pos)      & SCB_AIRCR_VECTKEY_
+ 739:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((SCB_AIRCR_SYSRESETREQS_VAL << SCB_AIRCR_SYSRESETREQS_Pos) & SCB_AIRCR_SYSRESET
+ 740:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((SCB_AIRCR_PRIS_VAL         << SCB_AIRCR_PRIS_Pos)         & SCB_AIRCR_PRIS_Msk
+ 741:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((SCB_AIRCR_BFHFNMINS_VAL    << SCB_AIRCR_BFHFNMINS_Pos)    & SCB_AIRCR_BFHFNMIN
+ 742:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif /* defined (SCB_CSR_AIRCR_INIT) && (SCB_CSR_AIRCR_INIT == 1U) */
+ 743:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 744:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (__FPU_USED) && (__FPU_USED == 1U) && \
+ 745:../../Appli/Core/Inc/partition_stm32n657xx.h ****       defined (TZ_FPU_NS_USAGE) && (TZ_FPU_NS_USAGE == 1U)
+ 746:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 747:../../Appli/Core/Inc/partition_stm32n657xx.h ****     SCB->NSACR = (SCB->NSACR & ~(SCB_NSACR_CP10_Msk | SCB_NSACR_CP11_Msk)) |
+  39              		.loc 2 747 5 view .LVU1
+  40              		.loc 2 747 22 is_stmt 0 view .LVU2
+  41 0000 0F4A     		ldr	r2, .L2
+  42 0002 D2F88C30 		ldr	r3, [r2, #140]
+  43              		.loc 2 747 76 view .LVU3
+  44 0006 43F44063 		orr	r3, r3, #3072
+  45              		.loc 2 747 16 view .LVU4
+  46 000a C2F88C30 		str	r3, [r2, #140]
+ 748:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((SCB_NSACR_CP10_11_VAL << SCB_NSACR_CP10_Pos) & (SCB_NSACR_CP10_Msk | SCB_NSACR
+ 749:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 750:../../Appli/Core/Inc/partition_stm32n657xx.h ****     FPU->FPCCR = (FPU->FPCCR & ~(FPU_FPCCR_TS_Msk | FPU_FPCCR_CLRONRETS_Msk | FPU_FPCCR_CLRONRET_Ms
+  47              		.loc 2 750 5 is_stmt 1 view .LVU5
+  48              		.loc 2 750 22 is_stmt 0 view .LVU6
+  49 000e 02F50072 		add	r2, r2, #512
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 15
+
+
+  50 0012 536B     		ldr	r3, [r2, #52]
+ 751:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((FPU_FPCCR_TS_VAL        << FPU_FPCCR_TS_Pos       ) & FPU_FPCCR_TS_Msk       )
+  51              		.loc 2 751 101 view .LVU7
+  52 0014 23F0E053 		bic	r3, r3, #469762048
+ 752:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((FPU_FPCCR_CLRONRETS_VAL << FPU_FPCCR_CLRONRETS_Pos) & FPU_FPCCR_CLRONRETS_Msk)
+  53              		.loc 2 752 101 view .LVU8
+  54 0018 43F08053 		orr	r3, r3, #268435456
+ 750:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((FPU_FPCCR_TS_VAL        << FPU_FPCCR_TS_Pos       ) & FPU_FPCCR_TS_Msk       )
+  55              		.loc 2 750 16 view .LVU9
+  56 001c 5363     		str	r3, [r2, #52]
+ 753:../../Appli/Core/Inc/partition_stm32n657xx.h ****                    ((FPU_FPCCR_CLRONRET_VAL  << FPU_FPCCR_CLRONRET_Pos ) & FPU_FPCCR_CLRONRET_Msk )
+ 754:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 755:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 756:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (NVIC_INIT_ITNS0) && (NVIC_INIT_ITNS0 == 1U)
+ 757:../../Appli/Core/Inc/partition_stm32n657xx.h ****     NVIC->ITNS[0] = NVIC_INIT_ITNS0_VAL;
+  57              		.loc 2 757 5 is_stmt 1 view .LVU10
+  58              		.loc 2 757 19 is_stmt 0 view .LVU11
+  59 001e 094B     		ldr	r3, .L2+4
+  60 0020 0022     		movs	r2, #0
+  61 0022 C3F88022 		str	r2, [r3, #640]
+ 758:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 759:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 760:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (NVIC_INIT_ITNS1) && (NVIC_INIT_ITNS1 == 1U)
+ 761:../../Appli/Core/Inc/partition_stm32n657xx.h ****     NVIC->ITNS[1] = NVIC_INIT_ITNS1_VAL;
+  62              		.loc 2 761 5 is_stmt 1 view .LVU12
+  63              		.loc 2 761 19 is_stmt 0 view .LVU13
+  64 0026 C3F88422 		str	r2, [r3, #644]
+ 762:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 763:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 764:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (NVIC_INIT_ITNS2) && (NVIC_INIT_ITNS2 == 1U)
+ 765:../../Appli/Core/Inc/partition_stm32n657xx.h ****     NVIC->ITNS[2] = NVIC_INIT_ITNS2_VAL;
+  65              		.loc 2 765 5 is_stmt 1 view .LVU14
+  66              		.loc 2 765 19 is_stmt 0 view .LVU15
+  67 002a C3F88822 		str	r2, [r3, #648]
+ 766:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 767:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 768:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (NVIC_INIT_ITNS3) && (NVIC_INIT_ITNS3 == 1U)
+ 769:../../Appli/Core/Inc/partition_stm32n657xx.h ****     NVIC->ITNS[3] = NVIC_INIT_ITNS3_VAL;
+  68              		.loc 2 769 5 is_stmt 1 view .LVU16
+  69              		.loc 2 769 19 is_stmt 0 view .LVU17
+  70 002e C3F88C22 		str	r2, [r3, #652]
+ 770:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 771:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 772:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (NVIC_INIT_ITNS4) && (NVIC_INIT_ITNS4 == 1U)
+ 773:../../Appli/Core/Inc/partition_stm32n657xx.h ****     NVIC->ITNS[4] = NVIC_INIT_ITNS4_VAL;
+  71              		.loc 2 773 5 is_stmt 1 view .LVU18
+  72              		.loc 2 773 19 is_stmt 0 view .LVU19
+  73 0032 C3F89022 		str	r2, [r3, #656]
+ 774:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 775:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 776:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (NVIC_INIT_ITNS5) && (NVIC_INIT_ITNS5 == 1U)
+ 777:../../Appli/Core/Inc/partition_stm32n657xx.h ****     NVIC->ITNS[5] = NVIC_INIT_ITNS5_VAL;
+  74              		.loc 2 777 5 is_stmt 1 view .LVU20
+  75              		.loc 2 777 19 is_stmt 0 view .LVU21
+  76 0036 C3F89422 		str	r2, [r3, #660]
+ 778:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 779:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 16
+
+
+ 780:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #if defined (NVIC_INIT_ITNS6) && (NVIC_INIT_ITNS6 == 1U)
+ 781:../../Appli/Core/Inc/partition_stm32n657xx.h ****     NVIC->ITNS[6] = NVIC_INIT_ITNS6_VAL;
+  77              		.loc 2 781 5 is_stmt 1 view .LVU22
+  78              		.loc 2 781 19 is_stmt 0 view .LVU23
+  79 003a C3F89822 		str	r2, [r3, #664]
+ 782:../../Appli/Core/Inc/partition_stm32n657xx.h ****   #endif
+ 783:../../Appli/Core/Inc/partition_stm32n657xx.h **** 
+ 784:../../Appli/Core/Inc/partition_stm32n657xx.h **** }
+  80              		.loc 2 784 1 view .LVU24
+  81 003e 7047     		bx	lr
+  82              	.L3:
+  83              		.align	2
+  84              	.L2:
+  85 0040 00ED00E0 		.word	-536810240
+  86 0044 00E100E0 		.word	-536813312
+  87              		.cfi_endproc
+  88              	.LFE862:
+  90              		.section	.text.SystemInit,"ax",%progbits
+  91              		.align	1
+  92              		.global	SystemInit
+  93              		.syntax unified
+  94              		.thumb
+  95              		.thumb_func
+  97              	SystemInit:
+  98              	.LFB863:
+   1:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+   2:../../Appli/Core/Src/system_stm32n6xx_s.c ****   ******************************************************************************
+   3:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @file    system_stm32n6xx_s.c
+   4:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @author  MCD Application Team
+   5:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @brief   CMSIS Cortex-M55 Device Peripheral Access Layer System Source File
+   6:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *          to be used in secure application.
+   7:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+   8:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *   This file provides two functions and one global variable to be called from
+   9:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *   user application:
+  10:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *      - SystemInit(): This function is called at secure startup just after reset
+  11:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                      and before branch to secure main program.
+  12:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                      This call is made inside the "startup_stm32n6xx.s" file.
+  13:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+  14:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *      - SystemCoreClock variable: Contains the CPU core clock, it can be used
+  15:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                  by the user application to setup the SysTick
+  16:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                  timer or configure other parameters.
+  17:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+  18:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *      - SystemCoreClockUpdate(): Updates the variable SystemCoreClock and must
+  19:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                 be called whenever the core clock is changed
+  20:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                 during program execution.
+  21:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+  22:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *      - SECURE_SystemCoreClockUpdate(): Non-secure callable function to update
+  23:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                        the variable SystemCoreClock and return
+  24:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                        its value to the non-secure calling
+  25:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                        application. It must be called whenever
+  26:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                        the core clock is changed during program
+  27:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *                                        execution.
+  28:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+  29:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *   After each device reset the HSI (64 MHz) is used as system clock source.
+  30:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *   Then SystemInit() function is called, in "startup_stm32n6xx.s" file, to
+  31:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *   configure the system before to branch to main program.
+  32:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 17
+
+
+  33:../../Appli/Core/Src/system_stm32n6xx_s.c ****   ******************************************************************************
+  34:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @attention
+  35:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+  36:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * Copyright (c) 2023 STMicroelectronics.
+  37:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * All rights reserved.
+  38:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+  39:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  40:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * in the root directory of this software component.
+  41:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  42:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+  43:../../Appli/Core/Src/system_stm32n6xx_s.c ****   ******************************************************************************
+  44:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+  45:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  46:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup CMSIS
+  47:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+  48:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+  49:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  50:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup STM32N6xx_System
+  51:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+  52:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+  53:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  54:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup STM32N6xx_System_Private_Includes
+  55:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+  56:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+  57:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  58:../../Appli/Core/Src/system_stm32n6xx_s.c **** #include "stm32n6xx.h"
+  59:../../Appli/Core/Src/system_stm32n6xx_s.c **** #include "partition_stm32n6xx.h"  /* Trustzone-M core secure attributes */
+  60:../../Appli/Core/Src/system_stm32n6xx_s.c **** #include <math.h>
+  61:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  62:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+  63:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @}
+  64:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+  65:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  66:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup STM32N6xx_System_Private_TypesDefinitions
+  67:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+  68:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+  69:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  70:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if defined ( __ICCARM__ )
+  71:../../Appli/Core/Src/system_stm32n6xx_s.c **** #  define CMSE_NS_ENTRY __cmse_nonsecure_entry
+  72:../../Appli/Core/Src/system_stm32n6xx_s.c **** #else
+  73:../../Appli/Core/Src/system_stm32n6xx_s.c **** #  define CMSE_NS_ENTRY __attribute((cmse_nonsecure_entry))
+  74:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif
+  75:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  76:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+  77:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @}
+  78:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+  79:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  80:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup STM32N6xx_System_Private_Defines
+  81:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+  82:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+  83:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if !defined  (HSE_VALUE)
+  84:../../Appli/Core/Src/system_stm32n6xx_s.c **** #define HSE_VALUE      48000000UL /*!< Value of the High-Speed External oscillator in Hz */
+  85:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif /* HSE_VALUE */
+  86:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  87:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if !defined  (HSI_VALUE)
+  88:../../Appli/Core/Src/system_stm32n6xx_s.c **** #define HSI_VALUE      64000000UL /*!< Value of the High-Speed Internal oscillator in Hz */
+  89:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif /* HSI_VALUE */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 18
+
+
+  90:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  91:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if !defined  (MSI_VALUE)
+  92:../../Appli/Core/Src/system_stm32n6xx_s.c ****   #define MSI_VALUE       4000000UL /*!< Minimum value of the Low-power Internal oscillator in Hz *
+  93:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif /* MSI_VALUE */
+  94:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  95:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if !defined  (EXTERNAL_I2S_CLOCK_VALUE)
+  96:../../Appli/Core/Src/system_stm32n6xx_s.c ****   #define EXTERNAL_I2S_CLOCK_VALUE  12288000UL /*!< Value of the External clock for I2S_CKIN in Hz 
+  97:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif /* EXTERNAL_I2S_CLOCK_VALUE */
+  98:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+  99:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 100:../../Appli/Core/Src/system_stm32n6xx_s.c **** /* Note: Following vector table addresses must be defined in line with linker
+ 101:../../Appli/Core/Src/system_stm32n6xx_s.c ****          configuration. */
+ 102:../../Appli/Core/Src/system_stm32n6xx_s.c **** /*!< Uncomment the following line if you need to relocate the vector table
+ 103:../../Appli/Core/Src/system_stm32n6xx_s.c ****      anywhere in memory, else the vector table is kept at the automatic
+ 104:../../Appli/Core/Src/system_stm32n6xx_s.c ****      selected boot address */
+ 105:../../Appli/Core/Src/system_stm32n6xx_s.c **** /* #define USER_VECT_TAB_ADDRESS */
+ 106:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 107:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if defined(USER_VECT_TAB_ADDRESS)
+ 108:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if !defined(VECT_TAB_BASE_ADDRESS)
+ 109:../../Appli/Core/Src/system_stm32n6xx_s.c **** #define VECT_TAB_BASE_ADDRESS   SRAM1_AXI_BASE_S /*!< Vector Table base address field.
+ 110:../../Appli/Core/Src/system_stm32n6xx_s.c ****                                                      This value must be a multiple of 0x400. */
+ 111:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif
+ 112:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 113:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if !defined(VECT_TAB_OFFSET)
+ 114:../../Appli/Core/Src/system_stm32n6xx_s.c **** #define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
+ 115:../../Appli/Core/Src/system_stm32n6xx_s.c ****                                                      This value must be a multiple of 0x400. */
+ 116:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif
+ 117:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif /* USER_VECT_TAB_ADDRESS */
+ 118:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 119:../../Appli/Core/Src/system_stm32n6xx_s.c **** /******************************************************************************/
+ 120:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+ 121:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @}
+ 122:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 123:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 124:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup STM32N6xx_System_Private_Macros
+ 125:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+ 126:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 127:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 128:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+ 129:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @}
+ 130:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 131:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 132:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup STM32N6xx_System_Private_Variables
+ 133:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+ 134:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 135:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* The SystemCoreClock variable is updated in three ways:
+ 136:../../Appli/Core/Src/system_stm32n6xx_s.c ****       1) by calling CMSIS function SystemCoreClockUpdate()
+ 137:../../Appli/Core/Src/system_stm32n6xx_s.c ****       2) by calling HAL API function HAL_RCC_GetHCLKFreq()
+ 138:../../Appli/Core/Src/system_stm32n6xx_s.c ****       3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
+ 139:../../Appli/Core/Src/system_stm32n6xx_s.c ****          Note: If you use this function to configure the system clock; then there
+ 140:../../Appli/Core/Src/system_stm32n6xx_s.c ****                is no need to call the 2 first functions listed above, since SystemCoreClock
+ 141:../../Appli/Core/Src/system_stm32n6xx_s.c ****                variable is updated automatically.
+ 142:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 143:../../Appli/Core/Src/system_stm32n6xx_s.c **** uint32_t SystemCoreClock = HSI_VALUE;
+ 144:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+ 145:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @}
+ 146:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 19
+
+
+ 147:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 148:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup STM32N6xx_System_Private_FunctionPrototypes
+ 149:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+ 150:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 151:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 152:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+ 153:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @}
+ 154:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 155:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 156:../../Appli/Core/Src/system_stm32n6xx_s.c **** /** @addtogroup STM32N6xx_System_Private_Functions
+ 157:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @{
+ 158:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 159:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 160:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if defined(__ICCARM__)
+ 161:../../Appli/Core/Src/system_stm32n6xx_s.c **** extern uint32_t __vector_table;
+ 162:../../Appli/Core/Src/system_stm32n6xx_s.c **** #define INTVECT_START ((uint32_t)&__vector_table)
+ 163:../../Appli/Core/Src/system_stm32n6xx_s.c **** #elif defined(__ARMCC_VERSION)
+ 164:../../Appli/Core/Src/system_stm32n6xx_s.c **** extern void *__Vectors;
+ 165:../../Appli/Core/Src/system_stm32n6xx_s.c **** #define INTVECT_START ((uint32_t)&__Vectors)
+ 166:../../Appli/Core/Src/system_stm32n6xx_s.c **** #elif defined(__GNUC__)
+ 167:../../Appli/Core/Src/system_stm32n6xx_s.c **** extern void *g_pfnVectors;
+ 168:../../Appli/Core/Src/system_stm32n6xx_s.c **** #define INTVECT_START ((uint32_t)&g_pfnVectors)
+ 169:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif
+ 170:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 171:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+ 172:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @brief  Setup the microcontroller system.
+ 173:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @retval None
+ 174:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 175:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 176:../../Appli/Core/Src/system_stm32n6xx_s.c **** void SystemInit(void)
+ 177:../../Appli/Core/Src/system_stm32n6xx_s.c **** {
+  99              		.loc 1 177 1 is_stmt 1 view -0
+ 100              		.cfi_startproc
+ 101              		@ args = 0, pretend = 0, frame = 0
+ 102              		@ frame_needed = 0, uses_anonymous_args = 0
+ 103 0000 10B5     		push	{r4, lr}
+ 104              	.LCFI0:
+ 105              		.cfi_def_cfa_offset 8
+ 106              		.cfi_offset 4, -8
+ 107              		.cfi_offset 14, -4
+ 178:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* SAU/IDAU, FPU and Interrupts secure/non-secure allocation settings */
+ 179:../../Appli/Core/Src/system_stm32n6xx_s.c ****   TZ_SAU_Setup();
+ 108              		.loc 1 179 3 view .LVU26
+ 109 0002 FFF7FEFF 		bl	TZ_SAU_Setup
+ 110              	.LVL0:
+ 180:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 181:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* Configure the Vector Table location -------------------------------------*/
+ 182:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if defined(USER_VECT_TAB_ADDRESS)
+ 183:../../Appli/Core/Src/system_stm32n6xx_s.c ****   SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET;
+ 184:../../Appli/Core/Src/system_stm32n6xx_s.c **** #else
+ 185:../../Appli/Core/Src/system_stm32n6xx_s.c ****   SCB->VTOR = INTVECT_START;
+ 111              		.loc 1 185 3 view .LVU27
+ 112              		.loc 1 185 13 is_stmt 0 view .LVU28
+ 113 0006 104A     		ldr	r2, .L6
+ 114 0008 104B     		ldr	r3, .L6+4
+ 115 000a 9360     		str	r3, [r2, #8]
+ 186:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif  /* USER_VECT_TAB_ADDRESS */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 20
+
+
+ 187:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 188:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* System configuration setup */
+ 189:../../Appli/Core/Src/system_stm32n6xx_s.c ****   RCC->APB4ENSR2 = RCC_APB4ENSR2_SYSCFGENS;
+ 116              		.loc 1 189 3 is_stmt 1 view .LVU29
+ 117              		.loc 1 189 18 is_stmt 0 view .LVU30
+ 118 000c 104B     		ldr	r3, .L6+8
+ 119 000e 0121     		movs	r1, #1
+ 120 0010 C3F8781A 		str	r1, [r3, #2680]
+ 190:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* Delay after an RCC peripheral clock enabling */
+ 191:../../Appli/Core/Src/system_stm32n6xx_s.c ****   (void)RCC->APB4ENR2;
+ 121              		.loc 1 191 3 is_stmt 1 view .LVU31
+ 122 0014 D3F87802 		ldr	r0, [r3, #632]
+ 192:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 193:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* Set default Vector Table location after system reset or return from Standby */
+ 194:../../Appli/Core/Src/system_stm32n6xx_s.c ****   SYSCFG->INITSVTORCR = SCB->VTOR;
+ 123              		.loc 1 194 3 view .LVU32
+ 124              		.loc 1 194 28 is_stmt 0 view .LVU33
+ 125 0018 9468     		ldr	r4, [r2, #8]
+ 126              		.loc 1 194 23 view .LVU34
+ 127 001a 0E48     		ldr	r0, .L6+12
+ 128 001c 0461     		str	r4, [r0, #16]
+ 195:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* Read back the value to make sure it is written before deactivating SYSCFG */
+ 196:../../Appli/Core/Src/system_stm32n6xx_s.c ****   (void) SYSCFG->INITSVTORCR;
+ 129              		.loc 1 196 3 is_stmt 1 view .LVU35
+ 130 001e 0069     		ldr	r0, [r0, #16]
+ 197:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* Deactivate SYSCFG clock */
+ 198:../../Appli/Core/Src/system_stm32n6xx_s.c ****   RCC->APB4ENCR2 = RCC_APB4ENCR2_SYSCFGENC;
+ 131              		.loc 1 198 3 view .LVU36
+ 132              		.loc 1 198 18 is_stmt 0 view .LVU37
+ 133 0020 03F58053 		add	r3, r3, #4096
+ 134 0024 C3F87812 		str	r1, [r3, #632]
+ 199:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* FPU settings ------------------------------------------------------------*/
+ 200:../../Appli/Core/Src/system_stm32n6xx_s.c **** #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+ 201:../../Appli/Core/Src/system_stm32n6xx_s.c ****   SCB->CPACR |= ((3UL << 20U)|(3UL << 22U));  /* set CP10 and CP11 Full Access */
+ 135              		.loc 1 201 3 is_stmt 1 view .LVU38
+ 136              		.loc 1 201 6 is_stmt 0 view .LVU39
+ 137 0028 D2F88830 		ldr	r3, [r2, #136]
+ 138              		.loc 1 201 14 view .LVU40
+ 139 002c 43F47003 		orr	r3, r3, #15728640
+ 140 0030 C2F88830 		str	r3, [r2, #136]
+ 202:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 203:../../Appli/Core/Src/system_stm32n6xx_s.c ****   SCB_NS->CPACR |= ((3UL << 20U)|(3UL << 22U));  /* set CP10 and CP11 Full Access */
+ 141              		.loc 1 203 3 is_stmt 1 view .LVU41
+ 142              		.loc 1 203 9 is_stmt 0 view .LVU42
+ 143 0034 02F50032 		add	r2, r2, #131072
+ 144 0038 D2F88830 		ldr	r3, [r2, #136]
+ 145              		.loc 1 203 17 view .LVU43
+ 146 003c 43F47003 		orr	r3, r3, #15728640
+ 147 0040 C2F88830 		str	r3, [r2, #136]
+ 204:../../Appli/Core/Src/system_stm32n6xx_s.c **** #endif /* __FPU_PRESENT && __FPU_USED */
+ 205:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 206:../../Appli/Core/Src/system_stm32n6xx_s.c **** }
+ 148              		.loc 1 206 1 view .LVU44
+ 149 0044 10BD     		pop	{r4, pc}
+ 150              	.L7:
+ 151 0046 00BF     		.align	2
+ 152              	.L6:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 21
+
+
+ 153 0048 00ED00E0 		.word	-536810240
+ 154 004c 00000000 		.word	g_pfnVectors
+ 155 0050 00800256 		.word	1443004416
+ 156 0054 00800056 		.word	1442873344
+ 157              		.cfi_endproc
+ 158              	.LFE863:
+ 160              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
+ 161              		.align	1
+ 162              		.global	SystemCoreClockUpdate
+ 163              		.syntax unified
+ 164              		.thumb
+ 165              		.thumb_func
+ 167              	SystemCoreClockUpdate:
+ 168              	.LFB864:
+ 207:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 208:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+ 209:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @brief  Update SystemCoreClock variable according to Clock Register Values.
+ 210:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         The SystemCoreClock variable contains the core clock (HCLK), it can
+ 211:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         be used by the user application to setup the SysTick timer or configure
+ 212:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         other parameters.
+ 213:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 214:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @note   Depending on secure or non-secure compilation, the adequate RCC peripheral
+ 215:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         memory are is accessed thanks to RCC alias defined in stm32n6xxxx.h device file
+ 216:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         so either from RCC_S peripheral register mapped memory in secure or from
+ 217:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         RCC_NS peripheral register mapped memory in non-secure.
+ 218:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 219:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @note   Each time the CPU core clock changes, this function must be called
+ 220:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         to update SystemCoreClock variable value. Otherwise, any configuration
+ 221:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         based on this variable will be incorrect.
+ 222:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 223:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @note   - The system frequency computed by this function is not the real
+ 224:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *           frequency in the chip. It is calculated based on the predefined
+ 225:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *           constant and the selected clock source:
+ 226:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 227:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *           - If CPUCLK source is HSI, SystemCoreClock will contain the HSI_VALUE(*)
+ 228:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 229:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *           - If CPUCLK source is MSI, SystemCoreClock will contain the MSI_VALUE(**)
+ 230:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 231:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *           - If CPUCLK source is HSE, SystemCoreClock will contain the HSE_VALUE(***)
+ 232:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 233:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *           - If CPUCLK source is IC1, SystemCoreClock will contain the HSI_VALUE(*)
+ 234:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             or MSI_VALUE(**) or HSE_VALUE(***) or EXTERNAL_I2S_CLOCK_VALUE (****)
+ 235:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             multiplied/divided by the PLL factors.
+ 236:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 237:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         (*) HSI_VALUE default value is 64 MHz.
+ 238:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             With the HAL, HSI_VALUE is a constant defined in stm32n6xx_hal_conf.h file
+ 239:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             but the real value may vary depending on the variations in voltage and temperature.
+ 240:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 241:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *        (**) MSI_VALUE default value is 4 MHz.
+ 242:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             With the HAL, MSI_VALUE is a constant defined in stm32n6xx_hal_conf.h file
+ 243:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             but the real value may vary depending on the variations in voltage and temperature.
+ 244:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 245:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *       (***) HSE_VALUE default value is 30 MHz.
+ 246:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             With the HAL, HSE_VALUE is a constant defined in stm32n6xx_hal_conf.h file.
+ 247:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             User has to ensure that HSE_VALUE is same as the real frequency of the crystal used
+ 248:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             Otherwise, this function may have wrong result.
+ 249:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 22
+
+
+ 250:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *      (****) EXTERNAL_I2S_CLOCK_VALUE default value is 12.288 MHz.
+ 251:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             With the HAL, EXTERNAL_I2S_CLOCK_VALUE is a constant defined in stm32n6xx_hal_conf.
+ 252:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             User has to ensure that EXTERNAL_I2S_CLOCK_VALUE is same as the real I2S_CKIN
+ 253:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *             pin frequency. Otherwise, this function may have wrong result.
+ 254:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 255:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         - The result of this function could be not correct when using fractional
+ 256:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *           value for HSE crystal.
+ 257:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *
+ 258:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @retval None
+ 259:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 260:../../Appli/Core/Src/system_stm32n6xx_s.c **** void SystemCoreClockUpdate(void)
+ 261:../../Appli/Core/Src/system_stm32n6xx_s.c **** {
+ 169              		.loc 1 261 1 is_stmt 1 view -0
+ 170              		.cfi_startproc
+ 171              		@ args = 0, pretend = 0, frame = 0
+ 172              		@ frame_needed = 0, uses_anonymous_args = 0
+ 262:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t sysclk = 0;
+ 173              		.loc 1 262 3 view .LVU46
+ 174              	.LVL1:
+ 263:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllm = 0;
+ 175              		.loc 1 263 3 view .LVU47
+ 264:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t plln = 0;
+ 176              		.loc 1 264 3 view .LVU48
+ 265:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllfracn = 0;
+ 177              		.loc 1 265 3 view .LVU49
+ 266:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp1 = 0;
+ 178              		.loc 1 266 3 view .LVU50
+ 267:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp2 = 0;
+ 179              		.loc 1 267 3 view .LVU51
+ 268:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllcfgr, pllsource, pllbypass, ic_divider;
+ 180              		.loc 1 268 3 view .LVU52
+ 269:../../Appli/Core/Src/system_stm32n6xx_s.c ****   float_t pllvco;
+ 181              		.loc 1 269 3 view .LVU53
+ 270:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 271:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* Get CPUCLK source -------------------------------------------------------*/
+ 272:../../Appli/Core/Src/system_stm32n6xx_s.c ****   switch (RCC->CFGR1 & RCC_CFGR1_CPUSWS)
+ 182              		.loc 1 272 3 view .LVU54
+ 183              		.loc 1 272 14 is_stmt 0 view .LVU55
+ 184 0000 844B     		ldr	r3, .L38
+ 185 0002 1B6A     		ldr	r3, [r3, #32]
+ 186              		.loc 1 272 22 view .LVU56
+ 187 0004 03F44013 		and	r3, r3, #3145728
+ 188              		.loc 1 272 3 view .LVU57
+ 189 0008 B3F5001F 		cmp	r3, #2097152
+ 190 000c 00F0FE80 		beq	.L23
+ 191 0010 0ED8     		bhi	.L10
+ 192 0012 002B     		cmp	r3, #0
+ 193 0014 48D0     		beq	.L11
+ 194 0016 B3F5801F 		cmp	r3, #1048576
+ 195 001a 07D1     		bne	.L35
+ 273:../../Appli/Core/Src/system_stm32n6xx_s.c ****   {
+ 274:../../Appli/Core/Src/system_stm32n6xx_s.c ****   case 0:  /* HSI used as system clock source (default after reset) */
+ 275:../../Appli/Core/Src/system_stm32n6xx_s.c ****     sysclk = HSI_VALUE >> ((RCC->HSICFGR & RCC_HSICFGR_HSIDIV) >> RCC_HSICFGR_HSIDIV_Pos);
+ 276:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 277:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 278:../../Appli/Core/Src/system_stm32n6xx_s.c ****   case RCC_CFGR1_CPUSWS_0:  /* MSI used as system clock source */
+ 279:../../Appli/Core/Src/system_stm32n6xx_s.c ****     if (READ_BIT(RCC->MSICFGR, RCC_MSICFGR_MSIFREQSEL) == 0UL)
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 23
+
+
+ 196              		.loc 1 279 5 is_stmt 1 view .LVU58
+ 197              		.loc 1 279 9 is_stmt 0 view .LVU59
+ 198 001c 7D4B     		ldr	r3, .L38
+ 199 001e 5B6C     		ldr	r3, [r3, #68]
+ 200              		.loc 1 279 8 view .LVU60
+ 201 0020 13F4007F 		tst	r3, #512
+ 202 0024 40F0F480 		bne	.L24
+ 280:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 281:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = MSI_VALUE;
+ 203              		.loc 1 281 14 view .LVU61
+ 204 0028 7B4B     		ldr	r3, .L38+4
+ 205 002a 43E0     		b	.L33
+ 206              	.L35:
+ 272:../../Appli/Core/Src/system_stm32n6xx_s.c ****   {
+ 207              		.loc 1 272 3 view .LVU62
+ 208 002c 0023     		movs	r3, #0
+ 209 002e 41E0     		b	.L33
+ 210              	.L10:
+ 211 0030 B3F5401F 		cmp	r3, #3145728
+ 212 0034 36D1     		bne	.L36
+ 261:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t sysclk = 0;
+ 213              		.loc 1 261 1 view .LVU63
+ 214 0036 30B5     		push	{r4, r5, lr}
+ 215              	.LCFI1:
+ 216              		.cfi_def_cfa_offset 12
+ 217              		.cfi_offset 4, -12
+ 218              		.cfi_offset 5, -8
+ 219              		.cfi_offset 14, -4
+ 282:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 283:../../Appli/Core/Src/system_stm32n6xx_s.c ****     else
+ 284:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 285:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = 16000000UL;
+ 286:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 287:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 288:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 289:../../Appli/Core/Src/system_stm32n6xx_s.c ****   case RCC_CFGR1_CPUSWS_1:  /* HSE used as system clock source */
+ 290:../../Appli/Core/Src/system_stm32n6xx_s.c ****     sysclk = HSE_VALUE;
+ 291:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 292:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 293:../../Appli/Core/Src/system_stm32n6xx_s.c ****   case (RCC_CFGR1_CPUSWS_1 | RCC_CFGR1_CPUSWS_0):  /* IC1 used as system clock  source */
+ 294:../../Appli/Core/Src/system_stm32n6xx_s.c ****     /* Get IC1 clock source parameters */
+ 295:../../Appli/Core/Src/system_stm32n6xx_s.c ****     switch (READ_BIT(RCC->IC1CFGR, RCC_IC1CFGR_IC1SEL))
+ 220              		.loc 1 295 5 is_stmt 1 view .LVU64
+ 221              		.loc 1 295 13 is_stmt 0 view .LVU65
+ 222 0038 764B     		ldr	r3, .L38
+ 223 003a D3F8C440 		ldr	r4, [r3, #196]
+ 224 003e 04F04054 		and	r4, r4, #805306368
+ 225              		.loc 1 295 5 view .LVU66
+ 226 0042 B4F1805F 		cmp	r4, #268435456
+ 227 0046 38D0     		beq	.L14
+ 228 0048 B4F1005F 		cmp	r4, #536870912
+ 229 004c 4DD0     		beq	.L15
+ 230 004e 002C     		cmp	r4, #0
+ 231 0050 63D1     		bne	.L16
+ 296:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 297:../../Appli/Core/Src/system_stm32n6xx_s.c ****     case 0:  /* PLL1 selected at IC1 clock source */
+ 298:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllcfgr = READ_REG(RCC->PLL1CFGR1);
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 24
+
+
+ 232              		.loc 1 298 7 is_stmt 1 view .LVU67
+ 233              		.loc 1 298 15 is_stmt 0 view .LVU68
+ 234 0052 D3F88020 		ldr	r2, [r3, #128]
+ 235              	.LVL2:
+ 299:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL1CFGR1_PLL1SEL;
+ 236              		.loc 1 299 7 is_stmt 1 view .LVU69
+ 237              		.loc 1 299 17 is_stmt 0 view .LVU70
+ 238 0056 02F0E043 		and	r3, r2, #1879048192
+ 239              	.LVL3:
+ 300:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL1CFGR1_PLL1BYP;
+ 240              		.loc 1 300 7 is_stmt 1 view .LVU71
+ 301:../../Appli/Core/Src/system_stm32n6xx_s.c ****       if (pllbypass == 0U)
+ 241              		.loc 1 301 7 view .LVU72
+ 242              		.loc 1 301 10 is_stmt 0 view .LVU73
+ 243 005a 12F00065 		ands	r5, r2, #134217728
+ 244              	.LVL4:
+ 245              		.loc 1 301 10 view .LVU74
+ 246 005e 74D1     		bne	.L25
+ 302:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 303:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllm = (pllcfgr & RCC_PLL1CFGR1_PLL1DIVM) >>  RCC_PLL1CFGR1_PLL1DIVM_Pos;
+ 247              		.loc 1 303 9 is_stmt 1 view .LVU75
+ 248              		.loc 1 303 14 is_stmt 0 view .LVU76
+ 249 0060 C2F30554 		ubfx	r4, r2, #20, #6
+ 250              	.LVL5:
+ 304:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL1CFGR1_PLL1DIVN) >>  RCC_PLL1CFGR1_PLL1DIVN_Pos;
+ 251              		.loc 1 304 9 is_stmt 1 view .LVU77
+ 252              		.loc 1 304 14 is_stmt 0 view .LVU78
+ 253 0064 C2F30B22 		ubfx	r2, r2, #8, #12
+ 254              	.LVL6:
+ 305:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL1CFGR2, RCC_PLL1CFGR2_PLL1DIVNFRAC) >>  RCC_PLL1CFGR2_PLL1DIVNF
+ 255              		.loc 1 305 9 is_stmt 1 view .LVU79
+ 256              		.loc 1 305 20 is_stmt 0 view .LVU80
+ 257 0068 6A49     		ldr	r1, .L38
+ 258 006a D1F88400 		ldr	r0, [r1, #132]
+ 259              		.loc 1 305 18 view .LVU81
+ 260 006e 20F07F40 		bic	r0, r0, #-16777216
+ 261              	.LVL7:
+ 306:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL1CFGR3);
+ 262              		.loc 1 306 9 is_stmt 1 view .LVU82
+ 263              		.loc 1 306 17 is_stmt 0 view .LVU83
+ 264 0072 D1F88810 		ldr	r1, [r1, #136]
+ 265              	.LVL8:
+ 307:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL1CFGR3_PLL1PDIV1) >>  RCC_PLL1CFGR3_PLL1PDIV1_Pos;
+ 266              		.loc 1 307 9 is_stmt 1 view .LVU84
+ 267              		.loc 1 307 15 is_stmt 0 view .LVU85
+ 268 0076 C1F3C26C 		ubfx	ip, r1, #27, #3
+ 269              	.LVL9:
+ 308:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL1CFGR3_PLL1PDIV2) >>  RCC_PLL1CFGR3_PLL1PDIV2_Pos;
+ 270              		.loc 1 308 9 is_stmt 1 view .LVU86
+ 271              		.loc 1 308 15 is_stmt 0 view .LVU87
+ 272 007a C1F30261 		ubfx	r1, r1, #24, #3
+ 273              	.LVL10:
+ 274              	.L17:
+ 309:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 310:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 311:../../Appli/Core/Src/system_stm32n6xx_s.c ****     case RCC_IC1CFGR_IC1SEL_0:  /* PLL2 selected at IC1 clock source */
+ 312:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllcfgr = READ_REG(RCC->PLL2CFGR1);
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 25
+
+
+ 313:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL2CFGR1_PLL2SEL;
+ 314:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL2CFGR1_PLL2BYP;
+ 315:../../Appli/Core/Src/system_stm32n6xx_s.c ****       if (pllbypass == 0U)
+ 316:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 317:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllm = (pllcfgr & RCC_PLL2CFGR1_PLL2DIVM) >>  RCC_PLL2CFGR1_PLL2DIVM_Pos;
+ 318:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL2CFGR1_PLL2DIVN) >>  RCC_PLL2CFGR1_PLL2DIVN_Pos;
+ 319:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL2CFGR2, RCC_PLL2CFGR2_PLL2DIVNFRAC) >>  RCC_PLL2CFGR2_PLL2DIVNF
+ 320:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL2CFGR3);
+ 321:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL2CFGR3_PLL2PDIV1) >>  RCC_PLL2CFGR3_PLL2PDIV1_Pos;
+ 322:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL2CFGR3_PLL2PDIV2) >>  RCC_PLL2CFGR3_PLL2PDIV2_Pos;
+ 323:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 324:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 325:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 326:../../Appli/Core/Src/system_stm32n6xx_s.c ****     case RCC_IC1CFGR_IC1SEL_1:  /* PLL3 selected at IC1 clock source */
+ 327:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllcfgr = READ_REG(RCC->PLL3CFGR1);
+ 328:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL3CFGR1_PLL3SEL;
+ 329:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL3CFGR1_PLL3BYP;
+ 330:../../Appli/Core/Src/system_stm32n6xx_s.c ****       if (pllbypass == 0U)
+ 331:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 332:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllm = (pllcfgr & RCC_PLL3CFGR1_PLL3DIVM) >>  RCC_PLL3CFGR1_PLL3DIVM_Pos;
+ 333:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL3CFGR1_PLL3DIVN) >>  RCC_PLL3CFGR1_PLL3DIVN_Pos;
+ 334:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL3CFGR2, RCC_PLL3CFGR2_PLL3DIVNFRAC) >>  RCC_PLL3CFGR2_PLL3DIVNF
+ 335:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL3CFGR3);
+ 336:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL3CFGR3_PLL3PDIV1) >>  RCC_PLL3CFGR3_PLL3PDIV1_Pos;
+ 337:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL3CFGR3_PLL3PDIV2) >>  RCC_PLL3CFGR3_PLL3PDIV2_Pos;
+ 338:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 339:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 340:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 341:../../Appli/Core/Src/system_stm32n6xx_s.c ****     default: /* RCC_IC1CFGR_IC1SEL_1 | RCC_IC1CFGR_IC1SEL_0 */  /* PLL4 selected at IC1 clock sourc
+ 342:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllcfgr = READ_REG(RCC->PLL4CFGR1);
+ 343:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL4CFGR1_PLL4SEL;
+ 344:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL4CFGR1_PLL4BYP;
+ 345:../../Appli/Core/Src/system_stm32n6xx_s.c ****       if (pllbypass == 0U)
+ 346:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 347:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllm = (pllcfgr & RCC_PLL4CFGR1_PLL4DIVM) >>  RCC_PLL4CFGR1_PLL4DIVM_Pos;
+ 348:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL4CFGR1_PLL4DIVN) >>  RCC_PLL4CFGR1_PLL4DIVN_Pos;
+ 349:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL4CFGR2, RCC_PLL4CFGR2_PLL4DIVNFRAC) >>  RCC_PLL4CFGR2_PLL4DIVNF
+ 350:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL4CFGR3);
+ 351:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL4CFGR3_PLL4PDIV1) >>  RCC_PLL4CFGR3_PLL4PDIV1_Pos;
+ 352:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL4CFGR3_PLL4PDIV2) >>  RCC_PLL4CFGR3_PLL4PDIV2_Pos;
+ 353:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 354:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 355:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 356:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 357:../../Appli/Core/Src/system_stm32n6xx_s.c ****     /* Get oscillator frequency used as PLL clock source */
+ 358:../../Appli/Core/Src/system_stm32n6xx_s.c ****     switch (pllsource)
+ 275              		.loc 1 358 5 is_stmt 1 view .LVU88
+ 276 007e B3F1005F 		cmp	r3, #536870912
+ 277 0082 00F0BD80 		beq	.L29
+ 278              		.loc 1 358 5 is_stmt 0 view .LVU89
+ 279 0086 79D8     		bhi	.L19
+ 280 0088 002B     		cmp	r3, #0
+ 281 008a 00F0B180 		beq	.L20
+ 282 008e B3F1805F 		cmp	r3, #268435456
+ 283 0092 71D1     		bne	.L37
+ 359:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 360:../../Appli/Core/Src/system_stm32n6xx_s.c ****     case 0:  /* HSI selected as PLL clock source */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 26
+
+
+ 361:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = HSI_VALUE >> ((RCC->HSICFGR & RCC_HSICFGR_HSIDIV) >> RCC_HSICFGR_HSIDIV_Pos);
+ 362:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 363:../../Appli/Core/Src/system_stm32n6xx_s.c ****     case RCC_PLL1CFGR1_PLL1SEL_0: /* MSI selected as PLL clock source */
+ 364:../../Appli/Core/Src/system_stm32n6xx_s.c ****       if (READ_BIT(RCC->MSICFGR, RCC_MSICFGR_MSIFREQSEL) == 0UL)
+ 284              		.loc 1 364 7 is_stmt 1 view .LVU90
+ 285              		.loc 1 364 11 is_stmt 0 view .LVU91
+ 286 0094 5F4B     		ldr	r3, .L38
+ 287              	.LVL11:
+ 288              		.loc 1 364 11 view .LVU92
+ 289 0096 5B6C     		ldr	r3, [r3, #68]
+ 290              		.loc 1 364 10 view .LVU93
+ 291 0098 13F4007F 		tst	r3, #512
+ 292 009c 40F0B480 		bne	.L31
+ 365:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 366:../../Appli/Core/Src/system_stm32n6xx_s.c ****         sysclk = MSI_VALUE;
+ 293              		.loc 1 366 16 view .LVU94
+ 294 00a0 5D4B     		ldr	r3, .L38+4
+ 295 00a2 6FE0     		b	.L18
+ 296              	.LVL12:
+ 297              	.L36:
+ 298              	.LCFI2:
+ 299              		.cfi_def_cfa_offset 0
+ 300              		.cfi_restore 4
+ 301              		.cfi_restore 5
+ 302              		.cfi_restore 14
+ 272:../../Appli/Core/Src/system_stm32n6xx_s.c ****   {
+ 303              		.loc 1 272 3 view .LVU95
+ 304 00a4 0023     		movs	r3, #0
+ 305 00a6 05E0     		b	.L33
+ 306              	.L11:
+ 275:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 307              		.loc 1 275 5 is_stmt 1 view .LVU96
+ 275:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 308              		.loc 1 275 32 is_stmt 0 view .LVU97
+ 309 00a8 5A4B     		ldr	r3, .L38
+ 310 00aa 9A6C     		ldr	r2, [r3, #72]
+ 275:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 311              		.loc 1 275 64 view .LVU98
+ 312 00ac C2F3C112 		ubfx	r2, r2, #7, #2
+ 275:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 313              		.loc 1 275 12 view .LVU99
+ 314 00b0 5A4B     		ldr	r3, .L38+8
+ 315 00b2 D340     		lsrs	r3, r3, r2
+ 316              	.LVL13:
+ 276:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 317              		.loc 1 276 5 is_stmt 1 view .LVU100
+ 318              	.L33:
+ 367:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 368:../../Appli/Core/Src/system_stm32n6xx_s.c ****       else
+ 369:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 370:../../Appli/Core/Src/system_stm32n6xx_s.c ****         sysclk = 16000000UL;
+ 371:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 372:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 373:../../Appli/Core/Src/system_stm32n6xx_s.c ****     case RCC_PLL1CFGR1_PLL1SEL_1: /* HSE selected as PLL clock source */
+ 374:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = HSE_VALUE;
+ 375:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 376:../../Appli/Core/Src/system_stm32n6xx_s.c ****     case (RCC_PLL1CFGR1_PLL1SEL_1 | RCC_PLL1CFGR1_PLL1SEL_0):  /* I2S_CKIN selected as PLL clock so
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 27
+
+
+ 377:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = EXTERNAL_I2S_CLOCK_VALUE;
+ 378:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 379:../../Appli/Core/Src/system_stm32n6xx_s.c ****     default:
+ 380:../../Appli/Core/Src/system_stm32n6xx_s.c ****       /* Nothing to do, should not occur */
+ 381:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 382:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 383:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 384:../../Appli/Core/Src/system_stm32n6xx_s.c ****     /* Check whether PLL is in bypass mode or not */
+ 385:../../Appli/Core/Src/system_stm32n6xx_s.c ****     if (pllbypass == 0U)
+ 386:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 387:../../Appli/Core/Src/system_stm32n6xx_s.c ****       /* Compte PLL output frequency (Integer and fractional modes) */
+ 388:../../Appli/Core/Src/system_stm32n6xx_s.c ****       /* PLLVCO = (Freq * (DIVN + (FRACN / 0x1000000) / DIVM) / (DIVP1 * DIVP2)) */
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllvco = ((float_t)sysclk * ((float_t)plln + ((float_t)pllfracn/(float_t)0x1000000UL))) / (fl
+ 390:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 391:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 392:../../Appli/Core/Src/system_stm32n6xx_s.c ****     /* Apply IC1 divider */
+ 393:../../Appli/Core/Src/system_stm32n6xx_s.c ****     ic_divider = (READ_BIT(RCC->IC1CFGR, RCC_IC1CFGR_IC1INT) >> RCC_IC1CFGR_IC1INT_Pos) + 1UL;
+ 394:../../Appli/Core/Src/system_stm32n6xx_s.c ****     sysclk = sysclk / ic_divider;
+ 395:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 396:../../Appli/Core/Src/system_stm32n6xx_s.c ****   default:
+ 397:../../Appli/Core/Src/system_stm32n6xx_s.c ****     /* Nothing to do, should not occur */
+ 398:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 399:../../Appli/Core/Src/system_stm32n6xx_s.c ****   }
+ 400:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 401:../../Appli/Core/Src/system_stm32n6xx_s.c ****   /* Return system clock frequency (CPU frequency) */
+ 402:../../Appli/Core/Src/system_stm32n6xx_s.c ****   SystemCoreClock = sysclk;
+ 319              		.loc 1 402 3 view .LVU101
+ 320              		.loc 1 402 19 is_stmt 0 view .LVU102
+ 321 00b4 5A4A     		ldr	r2, .L38+12
+ 322 00b6 1360     		str	r3, [r2]
+ 323 00b8 7047     		bx	lr
+ 324              	.LVL14:
+ 325              	.L14:
+ 326              	.LCFI3:
+ 327              		.cfi_def_cfa_offset 12
+ 328              		.cfi_offset 4, -12
+ 329              		.cfi_offset 5, -8
+ 330              		.cfi_offset 14, -4
+ 312:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL2CFGR1_PLL2SEL;
+ 331              		.loc 1 312 7 is_stmt 1 view .LVU103
+ 312:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL2CFGR1_PLL2SEL;
+ 332              		.loc 1 312 15 is_stmt 0 view .LVU104
+ 333 00ba 564B     		ldr	r3, .L38
+ 334 00bc D3F89020 		ldr	r2, [r3, #144]
+ 335              	.LVL15:
+ 313:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL2CFGR1_PLL2BYP;
+ 336              		.loc 1 313 7 is_stmt 1 view .LVU105
+ 313:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL2CFGR1_PLL2BYP;
+ 337              		.loc 1 313 17 is_stmt 0 view .LVU106
+ 338 00c0 02F0E043 		and	r3, r2, #1879048192
+ 339              	.LVL16:
+ 314:../../Appli/Core/Src/system_stm32n6xx_s.c ****       if (pllbypass == 0U)
+ 340              		.loc 1 314 7 is_stmt 1 view .LVU107
+ 315:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 341              		.loc 1 315 7 view .LVU108
+ 315:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 342              		.loc 1 315 10 is_stmt 0 view .LVU109
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 28
+
+
+ 343 00c4 12F00065 		ands	r5, r2, #134217728
+ 344              	.LVL17:
+ 315:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 345              		.loc 1 315 10 view .LVU110
+ 346 00c8 44D1     		bne	.L26
+ 317:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL2CFGR1_PLL2DIVN) >>  RCC_PLL2CFGR1_PLL2DIVN_Pos;
+ 347              		.loc 1 317 9 is_stmt 1 view .LVU111
+ 317:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL2CFGR1_PLL2DIVN) >>  RCC_PLL2CFGR1_PLL2DIVN_Pos;
+ 348              		.loc 1 317 14 is_stmt 0 view .LVU112
+ 349 00ca C2F30554 		ubfx	r4, r2, #20, #6
+ 350              	.LVL18:
+ 318:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL2CFGR2, RCC_PLL2CFGR2_PLL2DIVNFRAC) >>  RCC_PLL2CFGR2_PLL2DIVNF
+ 351              		.loc 1 318 9 is_stmt 1 view .LVU113
+ 318:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL2CFGR2, RCC_PLL2CFGR2_PLL2DIVNFRAC) >>  RCC_PLL2CFGR2_PLL2DIVNF
+ 352              		.loc 1 318 14 is_stmt 0 view .LVU114
+ 353 00ce C2F30B22 		ubfx	r2, r2, #8, #12
+ 354              	.LVL19:
+ 319:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL2CFGR3);
+ 355              		.loc 1 319 9 is_stmt 1 view .LVU115
+ 319:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL2CFGR3);
+ 356              		.loc 1 319 20 is_stmt 0 view .LVU116
+ 357 00d2 5049     		ldr	r1, .L38
+ 358 00d4 D1F89400 		ldr	r0, [r1, #148]
+ 319:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL2CFGR3);
+ 359              		.loc 1 319 18 view .LVU117
+ 360 00d8 20F07F40 		bic	r0, r0, #-16777216
+ 361              	.LVL20:
+ 320:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL2CFGR3_PLL2PDIV1) >>  RCC_PLL2CFGR3_PLL2PDIV1_Pos;
+ 362              		.loc 1 320 9 is_stmt 1 view .LVU118
+ 320:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL2CFGR3_PLL2PDIV1) >>  RCC_PLL2CFGR3_PLL2PDIV1_Pos;
+ 363              		.loc 1 320 17 is_stmt 0 view .LVU119
+ 364 00dc D1F89810 		ldr	r1, [r1, #152]
+ 365              	.LVL21:
+ 321:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL2CFGR3_PLL2PDIV2) >>  RCC_PLL2CFGR3_PLL2PDIV2_Pos;
+ 366              		.loc 1 321 9 is_stmt 1 view .LVU120
+ 321:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL2CFGR3_PLL2PDIV2) >>  RCC_PLL2CFGR3_PLL2PDIV2_Pos;
+ 367              		.loc 1 321 15 is_stmt 0 view .LVU121
+ 368 00e0 C1F3C26C 		ubfx	ip, r1, #27, #3
+ 369              	.LVL22:
+ 322:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 370              		.loc 1 322 9 is_stmt 1 view .LVU122
+ 322:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 371              		.loc 1 322 15 is_stmt 0 view .LVU123
+ 372 00e4 C1F30261 		ubfx	r1, r1, #24, #3
+ 373              	.LVL23:
+ 322:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 374              		.loc 1 322 15 view .LVU124
+ 375 00e8 C9E7     		b	.L17
+ 376              	.LVL24:
+ 377              	.L15:
+ 327:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL3CFGR1_PLL3SEL;
+ 378              		.loc 1 327 7 is_stmt 1 view .LVU125
+ 327:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL3CFGR1_PLL3SEL;
+ 379              		.loc 1 327 15 is_stmt 0 view .LVU126
+ 380 00ea 4A4B     		ldr	r3, .L38
+ 381 00ec D3F8A020 		ldr	r2, [r3, #160]
+ 382              	.LVL25:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 29
+
+
+ 328:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL3CFGR1_PLL3BYP;
+ 383              		.loc 1 328 7 is_stmt 1 view .LVU127
+ 328:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL3CFGR1_PLL3BYP;
+ 384              		.loc 1 328 17 is_stmt 0 view .LVU128
+ 385 00f0 02F0E043 		and	r3, r2, #1879048192
+ 386              	.LVL26:
+ 329:../../Appli/Core/Src/system_stm32n6xx_s.c ****       if (pllbypass == 0U)
+ 387              		.loc 1 329 7 is_stmt 1 view .LVU129
+ 330:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 388              		.loc 1 330 7 view .LVU130
+ 330:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 389              		.loc 1 330 10 is_stmt 0 view .LVU131
+ 390 00f4 12F00065 		ands	r5, r2, #134217728
+ 391              	.LVL27:
+ 330:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 392              		.loc 1 330 10 view .LVU132
+ 393 00f8 32D1     		bne	.L27
+ 332:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL3CFGR1_PLL3DIVN) >>  RCC_PLL3CFGR1_PLL3DIVN_Pos;
+ 394              		.loc 1 332 9 is_stmt 1 view .LVU133
+ 332:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL3CFGR1_PLL3DIVN) >>  RCC_PLL3CFGR1_PLL3DIVN_Pos;
+ 395              		.loc 1 332 14 is_stmt 0 view .LVU134
+ 396 00fa C2F30554 		ubfx	r4, r2, #20, #6
+ 397              	.LVL28:
+ 333:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL3CFGR2, RCC_PLL3CFGR2_PLL3DIVNFRAC) >>  RCC_PLL3CFGR2_PLL3DIVNF
+ 398              		.loc 1 333 9 is_stmt 1 view .LVU135
+ 333:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL3CFGR2, RCC_PLL3CFGR2_PLL3DIVNFRAC) >>  RCC_PLL3CFGR2_PLL3DIVNF
+ 399              		.loc 1 333 14 is_stmt 0 view .LVU136
+ 400 00fe C2F30B22 		ubfx	r2, r2, #8, #12
+ 401              	.LVL29:
+ 334:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL3CFGR3);
+ 402              		.loc 1 334 9 is_stmt 1 view .LVU137
+ 334:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL3CFGR3);
+ 403              		.loc 1 334 20 is_stmt 0 view .LVU138
+ 404 0102 4449     		ldr	r1, .L38
+ 405 0104 D1F8A400 		ldr	r0, [r1, #164]
+ 334:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL3CFGR3);
+ 406              		.loc 1 334 18 view .LVU139
+ 407 0108 20F07F40 		bic	r0, r0, #-16777216
+ 408              	.LVL30:
+ 335:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL3CFGR3_PLL3PDIV1) >>  RCC_PLL3CFGR3_PLL3PDIV1_Pos;
+ 409              		.loc 1 335 9 is_stmt 1 view .LVU140
+ 335:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL3CFGR3_PLL3PDIV1) >>  RCC_PLL3CFGR3_PLL3PDIV1_Pos;
+ 410              		.loc 1 335 17 is_stmt 0 view .LVU141
+ 411 010c D1F8A810 		ldr	r1, [r1, #168]
+ 412              	.LVL31:
+ 336:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL3CFGR3_PLL3PDIV2) >>  RCC_PLL3CFGR3_PLL3PDIV2_Pos;
+ 413              		.loc 1 336 9 is_stmt 1 view .LVU142
+ 336:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL3CFGR3_PLL3PDIV2) >>  RCC_PLL3CFGR3_PLL3PDIV2_Pos;
+ 414              		.loc 1 336 15 is_stmt 0 view .LVU143
+ 415 0110 C1F3C26C 		ubfx	ip, r1, #27, #3
+ 416              	.LVL32:
+ 337:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 417              		.loc 1 337 9 is_stmt 1 view .LVU144
+ 337:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 418              		.loc 1 337 15 is_stmt 0 view .LVU145
+ 419 0114 C1F30261 		ubfx	r1, r1, #24, #3
+ 420              	.LVL33:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 30
+
+
+ 337:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 421              		.loc 1 337 15 view .LVU146
+ 422 0118 B1E7     		b	.L17
+ 423              	.LVL34:
+ 424              	.L16:
+ 342:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL4CFGR1_PLL4SEL;
+ 425              		.loc 1 342 7 is_stmt 1 view .LVU147
+ 342:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllsource = pllcfgr & RCC_PLL4CFGR1_PLL4SEL;
+ 426              		.loc 1 342 15 is_stmt 0 view .LVU148
+ 427 011a 3E4B     		ldr	r3, .L38
+ 428 011c D3F8B020 		ldr	r2, [r3, #176]
+ 429              	.LVL35:
+ 343:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL4CFGR1_PLL4BYP;
+ 430              		.loc 1 343 7 is_stmt 1 view .LVU149
+ 343:../../Appli/Core/Src/system_stm32n6xx_s.c ****       pllbypass = pllcfgr & RCC_PLL4CFGR1_PLL4BYP;
+ 431              		.loc 1 343 17 is_stmt 0 view .LVU150
+ 432 0120 02F0E043 		and	r3, r2, #1879048192
+ 433              	.LVL36:
+ 344:../../Appli/Core/Src/system_stm32n6xx_s.c ****       if (pllbypass == 0U)
+ 434              		.loc 1 344 7 is_stmt 1 view .LVU151
+ 345:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 435              		.loc 1 345 7 view .LVU152
+ 345:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 436              		.loc 1 345 10 is_stmt 0 view .LVU153
+ 437 0124 12F00065 		ands	r5, r2, #134217728
+ 438              	.LVL37:
+ 345:../../Appli/Core/Src/system_stm32n6xx_s.c ****       {
+ 439              		.loc 1 345 10 view .LVU154
+ 440 0128 20D1     		bne	.L28
+ 347:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL4CFGR1_PLL4DIVN) >>  RCC_PLL4CFGR1_PLL4DIVN_Pos;
+ 441              		.loc 1 347 9 is_stmt 1 view .LVU155
+ 347:../../Appli/Core/Src/system_stm32n6xx_s.c ****         plln = (pllcfgr & RCC_PLL4CFGR1_PLL4DIVN) >>  RCC_PLL4CFGR1_PLL4DIVN_Pos;
+ 442              		.loc 1 347 14 is_stmt 0 view .LVU156
+ 443 012a C2F30554 		ubfx	r4, r2, #20, #6
+ 444              	.LVL38:
+ 348:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL4CFGR2, RCC_PLL4CFGR2_PLL4DIVNFRAC) >>  RCC_PLL4CFGR2_PLL4DIVNF
+ 445              		.loc 1 348 9 is_stmt 1 view .LVU157
+ 348:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllfracn = READ_BIT(RCC->PLL4CFGR2, RCC_PLL4CFGR2_PLL4DIVNFRAC) >>  RCC_PLL4CFGR2_PLL4DIVNF
+ 446              		.loc 1 348 14 is_stmt 0 view .LVU158
+ 447 012e C2F30B22 		ubfx	r2, r2, #8, #12
+ 448              	.LVL39:
+ 349:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL4CFGR3);
+ 449              		.loc 1 349 9 is_stmt 1 view .LVU159
+ 349:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL4CFGR3);
+ 450              		.loc 1 349 20 is_stmt 0 view .LVU160
+ 451 0132 3849     		ldr	r1, .L38
+ 452 0134 D1F8B400 		ldr	r0, [r1, #180]
+ 349:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllcfgr = READ_REG(RCC->PLL4CFGR3);
+ 453              		.loc 1 349 18 view .LVU161
+ 454 0138 20F07F40 		bic	r0, r0, #-16777216
+ 455              	.LVL40:
+ 350:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL4CFGR3_PLL4PDIV1) >>  RCC_PLL4CFGR3_PLL4PDIV1_Pos;
+ 456              		.loc 1 350 9 is_stmt 1 view .LVU162
+ 350:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp1 = (pllcfgr & RCC_PLL4CFGR3_PLL4PDIV1) >>  RCC_PLL4CFGR3_PLL4PDIV1_Pos;
+ 457              		.loc 1 350 17 is_stmt 0 view .LVU163
+ 458 013c D1F8B810 		ldr	r1, [r1, #184]
+ 459              	.LVL41:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 31
+
+
+ 351:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL4CFGR3_PLL4PDIV2) >>  RCC_PLL4CFGR3_PLL4PDIV2_Pos;
+ 460              		.loc 1 351 9 is_stmt 1 view .LVU164
+ 351:../../Appli/Core/Src/system_stm32n6xx_s.c ****         pllp2 = (pllcfgr & RCC_PLL4CFGR3_PLL4PDIV2) >>  RCC_PLL4CFGR3_PLL4PDIV2_Pos;
+ 461              		.loc 1 351 15 is_stmt 0 view .LVU165
+ 462 0140 C1F3C26C 		ubfx	ip, r1, #27, #3
+ 463              	.LVL42:
+ 352:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 464              		.loc 1 352 9 is_stmt 1 view .LVU166
+ 352:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 465              		.loc 1 352 15 is_stmt 0 view .LVU167
+ 466 0144 C1F30261 		ubfx	r1, r1, #24, #3
+ 467              	.LVL43:
+ 352:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 468              		.loc 1 352 15 view .LVU168
+ 469 0148 99E7     		b	.L17
+ 470              	.LVL44:
+ 471              	.L25:
+ 267:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllcfgr, pllsource, pllbypass, ic_divider;
+ 472              		.loc 1 267 12 view .LVU169
+ 473 014a 2146     		mov	r1, r4
+ 266:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp2 = 0;
+ 474              		.loc 1 266 12 view .LVU170
+ 475 014c A446     		mov	ip, r4
+ 265:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp1 = 0;
+ 476              		.loc 1 265 12 view .LVU171
+ 477 014e 2046     		mov	r0, r4
+ 264:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllfracn = 0;
+ 478              		.loc 1 264 12 view .LVU172
+ 479 0150 2246     		mov	r2, r4
+ 480              	.LVL45:
+ 264:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllfracn = 0;
+ 481              		.loc 1 264 12 view .LVU173
+ 482 0152 94E7     		b	.L17
+ 483              	.LVL46:
+ 484              	.L26:
+ 267:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllcfgr, pllsource, pllbypass, ic_divider;
+ 485              		.loc 1 267 12 view .LVU174
+ 486 0154 0021     		movs	r1, #0
+ 266:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp2 = 0;
+ 487              		.loc 1 266 12 view .LVU175
+ 488 0156 8C46     		mov	ip, r1
+ 265:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp1 = 0;
+ 489              		.loc 1 265 12 view .LVU176
+ 490 0158 0846     		mov	r0, r1
+ 264:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllfracn = 0;
+ 491              		.loc 1 264 12 view .LVU177
+ 492 015a 0A46     		mov	r2, r1
+ 493              	.LVL47:
+ 263:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t plln = 0;
+ 494              		.loc 1 263 12 view .LVU178
+ 495 015c 0C46     		mov	r4, r1
+ 496 015e 8EE7     		b	.L17
+ 497              	.LVL48:
+ 498              	.L27:
+ 267:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllcfgr, pllsource, pllbypass, ic_divider;
+ 499              		.loc 1 267 12 view .LVU179
+ 500 0160 0021     		movs	r1, #0
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 32
+
+
+ 266:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp2 = 0;
+ 501              		.loc 1 266 12 view .LVU180
+ 502 0162 8C46     		mov	ip, r1
+ 265:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp1 = 0;
+ 503              		.loc 1 265 12 view .LVU181
+ 504 0164 0846     		mov	r0, r1
+ 264:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllfracn = 0;
+ 505              		.loc 1 264 12 view .LVU182
+ 506 0166 0A46     		mov	r2, r1
+ 507              	.LVL49:
+ 263:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t plln = 0;
+ 508              		.loc 1 263 12 view .LVU183
+ 509 0168 0C46     		mov	r4, r1
+ 510 016a 88E7     		b	.L17
+ 511              	.LVL50:
+ 512              	.L28:
+ 267:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllcfgr, pllsource, pllbypass, ic_divider;
+ 513              		.loc 1 267 12 view .LVU184
+ 514 016c 0021     		movs	r1, #0
+ 266:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp2 = 0;
+ 515              		.loc 1 266 12 view .LVU185
+ 516 016e 8C46     		mov	ip, r1
+ 265:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllp1 = 0;
+ 517              		.loc 1 265 12 view .LVU186
+ 518 0170 0846     		mov	r0, r1
+ 264:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t pllfracn = 0;
+ 519              		.loc 1 264 12 view .LVU187
+ 520 0172 0A46     		mov	r2, r1
+ 521              	.LVL51:
+ 263:../../Appli/Core/Src/system_stm32n6xx_s.c ****   uint32_t plln = 0;
+ 522              		.loc 1 263 12 view .LVU188
+ 523 0174 0C46     		mov	r4, r1
+ 524 0176 82E7     		b	.L17
+ 525              	.LVL52:
+ 526              	.L37:
+ 358:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 527              		.loc 1 358 5 view .LVU189
+ 528 0178 0023     		movs	r3, #0
+ 529              	.LVL53:
+ 358:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 530              		.loc 1 358 5 view .LVU190
+ 531 017a 03E0     		b	.L18
+ 532              	.LVL54:
+ 533              	.L19:
+ 358:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 534              		.loc 1 358 5 view .LVU191
+ 535 017c B3F1405F 		cmp	r3, #805306368
+ 536 0180 40D1     		bne	.L30
+ 377:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 537              		.loc 1 377 14 view .LVU192
+ 538 0182 284B     		ldr	r3, .L38+16
+ 539              	.LVL55:
+ 540              	.L18:
+ 385:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 541              		.loc 1 385 5 is_stmt 1 view .LVU193
+ 385:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 542              		.loc 1 385 8 is_stmt 0 view .LVU194
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 33
+
+
+ 543 0184 4DBB     		cbnz	r5, .L22
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 544              		.loc 1 389 7 is_stmt 1 view .LVU195
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 545              		.loc 1 389 17 is_stmt 0 view .LVU196
+ 546 0186 07EE903A 		vmov	s15, r3	@ int
+ 547 018a F8EE677A 		vcvt.f32.u32	s15, s15
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 548              		.loc 1 389 36 view .LVU197
+ 549 018e 07EE102A 		vmov	s14, r2	@ int
+ 550 0192 B8EE477A 		vcvt.f32.u32	s14, s14
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 551              		.loc 1 389 53 view .LVU198
+ 552 0196 06EE900A 		vmov	s13, r0	@ int
+ 553 019a F8EE666A 		vcvt.f32.u32	s13, s13
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 554              		.loc 1 389 70 view .LVU199
+ 555 019e 9FED226A 		vldr.32	s12, .L38+20
+ 556 01a2 66EE866A 		vmul.f32	s13, s13, s12
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 557              		.loc 1 389 50 view .LVU200
+ 558 01a6 37EE267A 		vadd.f32	s14, s14, s13
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 559              		.loc 1 389 33 view .LVU201
+ 560 01aa 67EE877A 		vmul.f32	s15, s15, s14
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 561              		.loc 1 389 97 view .LVU202
+ 562 01ae 07EE104A 		vmov	s14, r4	@ int
+ 563 01b2 B8EE477A 		vcvt.f32.u32	s14, s14
+ 389:../../Appli/Core/Src/system_stm32n6xx_s.c ****       sysclk = (uint32_t)((float_t)(pllvco/(((float_t)pllp1) * ((float_t)pllp2))));
+ 564              		.loc 1 389 14 view .LVU203
+ 565 01b6 C7EE876A 		vdiv.f32	s13, s15, s14
+ 566              	.LVL56:
+ 390:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 567              		.loc 1 390 7 is_stmt 1 view .LVU204
+ 390:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 568              		.loc 1 390 46 is_stmt 0 view .LVU205
+ 569 01ba 07EE90CA 		vmov	s15, ip	@ int
+ 570 01be B8EE677A 		vcvt.f32.u32	s14, s15
+ 390:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 571              		.loc 1 390 65 view .LVU206
+ 572 01c2 07EE901A 		vmov	s15, r1	@ int
+ 573 01c6 F8EE677A 		vcvt.f32.u32	s15, s15
+ 390:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 574              		.loc 1 390 62 view .LVU207
+ 575 01ca 27EE277A 		vmul.f32	s14, s14, s15
+ 390:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 576              		.loc 1 390 27 view .LVU208
+ 577 01ce C6EE877A 		vdiv.f32	s15, s13, s14
+ 390:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 578              		.loc 1 390 14 view .LVU209
+ 579 01d2 FCEEE77A 		vcvt.u32.f32	s15, s15
+ 580 01d6 17EE903A 		vmov	r3, s15	@ int
+ 581              	.LVL57:
+ 582              	.L22:
+ 393:../../Appli/Core/Src/system_stm32n6xx_s.c ****     sysclk = sysclk / ic_divider;
+ 583              		.loc 1 393 5 is_stmt 1 view .LVU210
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 34
+
+
+ 393:../../Appli/Core/Src/system_stm32n6xx_s.c ****     sysclk = sysclk / ic_divider;
+ 584              		.loc 1 393 19 is_stmt 0 view .LVU211
+ 585 01da 0E4A     		ldr	r2, .L38
+ 586              	.LVL58:
+ 393:../../Appli/Core/Src/system_stm32n6xx_s.c ****     sysclk = sysclk / ic_divider;
+ 587              		.loc 1 393 19 view .LVU212
+ 588 01dc D2F8C420 		ldr	r2, [r2, #196]
+ 393:../../Appli/Core/Src/system_stm32n6xx_s.c ****     sysclk = sysclk / ic_divider;
+ 589              		.loc 1 393 62 view .LVU213
+ 590 01e0 C2F30742 		ubfx	r2, r2, #16, #8
+ 393:../../Appli/Core/Src/system_stm32n6xx_s.c ****     sysclk = sysclk / ic_divider;
+ 591              		.loc 1 393 16 view .LVU214
+ 592 01e4 0132     		adds	r2, r2, #1
+ 593              	.LVL59:
+ 394:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 594              		.loc 1 394 5 is_stmt 1 view .LVU215
+ 394:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 595              		.loc 1 394 12 is_stmt 0 view .LVU216
+ 596 01e6 B3FBF2F3 		udiv	r3, r3, r2
+ 597              	.LVL60:
+ 395:../../Appli/Core/Src/system_stm32n6xx_s.c ****   default:
+ 598              		.loc 1 395 5 is_stmt 1 view .LVU217
+ 599              		.loc 1 402 3 view .LVU218
+ 600              		.loc 1 402 19 is_stmt 0 view .LVU219
+ 601 01ea 0D4A     		ldr	r2, .L38+12
+ 602              	.LVL61:
+ 603              		.loc 1 402 19 view .LVU220
+ 604 01ec 1360     		str	r3, [r2]
+ 403:../../Appli/Core/Src/system_stm32n6xx_s.c **** }
+ 605              		.loc 1 403 1 view .LVU221
+ 606 01ee 30BD     		pop	{r4, r5, pc}
+ 607              	.LVL62:
+ 608              	.L20:
+ 361:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 609              		.loc 1 361 7 is_stmt 1 view .LVU222
+ 361:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 610              		.loc 1 361 34 is_stmt 0 view .LVU223
+ 611 01f0 084B     		ldr	r3, .L38
+ 612              	.LVL63:
+ 361:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 613              		.loc 1 361 34 view .LVU224
+ 614 01f2 9B6C     		ldr	r3, [r3, #72]
+ 361:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 615              		.loc 1 361 66 view .LVU225
+ 616 01f4 C3F3C11E 		ubfx	lr, r3, #7, #2
+ 361:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 617              		.loc 1 361 14 view .LVU226
+ 618 01f8 084B     		ldr	r3, .L38+8
+ 619 01fa 23FA0EF3 		lsr	r3, r3, lr
+ 620              	.LVL64:
+ 362:../../Appli/Core/Src/system_stm32n6xx_s.c ****     case RCC_PLL1CFGR1_PLL1SEL_0: /* MSI selected as PLL clock source */
+ 621              		.loc 1 362 7 is_stmt 1 view .LVU227
+ 622 01fe C1E7     		b	.L18
+ 623              	.LVL65:
+ 624              	.L29:
+ 374:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 625              		.loc 1 374 14 is_stmt 0 view .LVU228
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 35
+
+
+ 626 0200 0A4B     		ldr	r3, .L38+24
+ 627              	.LVL66:
+ 374:../../Appli/Core/Src/system_stm32n6xx_s.c ****       break;
+ 628              		.loc 1 374 14 view .LVU229
+ 629 0202 BFE7     		b	.L18
+ 630              	.LVL67:
+ 631              	.L30:
+ 358:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 632              		.loc 1 358 5 view .LVU230
+ 633 0204 0023     		movs	r3, #0
+ 634              	.LVL68:
+ 358:../../Appli/Core/Src/system_stm32n6xx_s.c ****     {
+ 635              		.loc 1 358 5 view .LVU231
+ 636 0206 BDE7     		b	.L18
+ 637              	.L31:
+ 370:../../Appli/Core/Src/system_stm32n6xx_s.c ****       }
+ 638              		.loc 1 370 16 view .LVU232
+ 639 0208 094B     		ldr	r3, .L38+28
+ 640 020a BBE7     		b	.L18
+ 641              	.LVL69:
+ 642              	.L23:
+ 643              	.LCFI4:
+ 644              		.cfi_def_cfa_offset 0
+ 645              		.cfi_restore 4
+ 646              		.cfi_restore 5
+ 647              		.cfi_restore 14
+ 290:../../Appli/Core/Src/system_stm32n6xx_s.c ****     break;
+ 648              		.loc 1 290 12 view .LVU233
+ 649 020c 074B     		ldr	r3, .L38+24
+ 650 020e 51E7     		b	.L33
+ 651              	.L24:
+ 285:../../Appli/Core/Src/system_stm32n6xx_s.c ****     }
+ 652              		.loc 1 285 14 view .LVU234
+ 653 0210 074B     		ldr	r3, .L38+28
+ 654 0212 4FE7     		b	.L33
+ 655              	.L39:
+ 656              		.align	2
+ 657              	.L38:
+ 658 0214 00800256 		.word	1443004416
+ 659 0218 00093D00 		.word	4000000
+ 660 021c 0090D003 		.word	64000000
+ 661 0220 00000000 		.word	SystemCoreClock
+ 662 0224 0080BB00 		.word	12288000
+ 663 0228 00008033 		.word	864026624
+ 664 022c 006CDC02 		.word	48000000
+ 665 0230 0024F400 		.word	16000000
+ 666              		.cfi_endproc
+ 667              	.LFE864:
+ 669              		.section	.text.SECURE_SystemCoreClockUpdate,"ax",%progbits
+ 670              		.align	1
+ 671              		.global	SECURE_SystemCoreClockUpdate
+ 672              		.global	__acle_se_SECURE_SystemCoreClockUpdate
+ 673              		.syntax unified
+ 674              		.thumb
+ 675              		.thumb_func
+ 677              		.syntax unified
+ 678              		.thumb
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 36
+
+
+ 679              		.thumb_func
+ 681              	SECURE_SystemCoreClockUpdate:
+ 682              	__acle_se_SECURE_SystemCoreClockUpdate:
+ 683              	.LFB865:
+ 404:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 405:../../Appli/Core/Src/system_stm32n6xx_s.c **** /**
+ 406:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @brief  Secure Non-Secure-Callable function to return the current
+ 407:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         SystemCoreClock value after SystemCoreClock update.
+ 408:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         The SystemCoreClock variable contains the CPU core clock, it can
+ 409:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         be used by the user application to setup the SysTick timer or configure
+ 410:../../Appli/Core/Src/system_stm32n6xx_s.c ****   *         other parameters.
+ 411:../../Appli/Core/Src/system_stm32n6xx_s.c ****   * @retval SystemCoreClock value
+ 412:../../Appli/Core/Src/system_stm32n6xx_s.c ****   */
+ 413:../../Appli/Core/Src/system_stm32n6xx_s.c **** CMSE_NS_ENTRY uint32_t SECURE_SystemCoreClockUpdate(void)
+ 414:../../Appli/Core/Src/system_stm32n6xx_s.c **** {
+ 684              		.loc 1 414 1 is_stmt 1 view -0
+ 685              		.cfi_startproc
+ 686              		@ Non-secure entry function: called from non-secure code.
+ 687              		@ args = 0, pretend = 0, frame = 0
+ 688              		@ frame_needed = 0, uses_anonymous_args = 0
+ 689 0000 6DED81CF 		vstr	FPCXTNS, [sp, #-4]!
+ 690              	.LCFI5:
+ 691              		.cfi_def_cfa_offset 4
+ 692 0004 00B5     		push	{lr}
+ 693              	.LCFI6:
+ 694              		.cfi_def_cfa_offset 8
+ 695              		.cfi_offset 14, -8
+ 415:../../Appli/Core/Src/system_stm32n6xx_s.c ****   SystemCoreClockUpdate();
+ 696              		.loc 1 415 3 view .LVU236
+ 697 0006 FFF7FEFF 		bl	SystemCoreClockUpdate
+ 698              	.LVL70:
+ 416:../../Appli/Core/Src/system_stm32n6xx_s.c **** 
+ 417:../../Appli/Core/Src/system_stm32n6xx_s.c ****   return SystemCoreClock;
+ 699              		.loc 1 417 3 view .LVU237
+ 418:../../Appli/Core/Src/system_stm32n6xx_s.c **** }
+ 700              		.loc 1 418 1 is_stmt 0 view .LVU238
+ 701 000a 054B     		ldr	r3, .L42
+ 702 000c 1868     		ldr	r0, [r3]
+ 703 000e 5DF804EB 		ldr	lr, [sp], #4
+ 704              	.LCFI7:
+ 705              		.cfi_restore 14
+ 706              		.cfi_def_cfa_offset 4
+ 707 0012 9FEC100A 		vscclrm	{s0-s15, VPR}
+ 708 0016 9FE80E90 		clrm	{r1, r2, r3, ip, APSR}
+ 709 001a FDEC81CF 		vldr	FPCXTNS, [sp], #4
+ 710              	.LCFI8:
+ 711              		.cfi_def_cfa_offset 0
+ 712 001e 7447     		bxns	lr
+ 713              	.L43:
+ 714              		.align	2
+ 715              	.L42:
+ 716 0020 00000000 		.word	SystemCoreClock
+ 717              		.cfi_endproc
+ 718              	.LFE865:
+ 720              		.global	SystemCoreClock
+ 721              		.section	.data.SystemCoreClock,"aw"
+ 722              		.align	2
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 37
+
+
+ 725              	SystemCoreClock:
+ 726 0000 0090D003 		.word	64000000
+ 727              		.text
+ 728              	.Letext0:
+ 729              		.file 3 "C:\\ST\\STM32CubeIDE_2.0.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 730              		.file 4 "C:\\ST\\STM32CubeIDE_2.0.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 731              		.file 5 "../../Drivers/CMSIS/Include/core_cm55.h"
+ 732              		.file 6 "../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n657xx.h"
+ 733              		.file 7 "C:\\ST\\STM32CubeIDE_2.0.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 734              		.file 8 "../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/system_stm32n6xx.h"
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccjipicB.s 			page 38
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 system_stm32n6xx_s.c
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:26     .text.TZ_SAU_Setup:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:31     .text.TZ_SAU_Setup:00000000 TZ_SAU_Setup
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:85     .text.TZ_SAU_Setup:00000040 $d
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:91     .text.SystemInit:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:97     .text.SystemInit:00000000 SystemInit
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:153    .text.SystemInit:00000048 $d
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:161    .text.SystemCoreClockUpdate:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:167    .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:658    .text.SystemCoreClockUpdate:00000214 $d
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:725    .data.SystemCoreClock:00000000 SystemCoreClock
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:670    .text.SECURE_SystemCoreClockUpdate:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:681    .text.SECURE_SystemCoreClockUpdate:00000000 SECURE_SystemCoreClockUpdate
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:682    .text.SECURE_SystemCoreClockUpdate:00000000 __acle_se_SECURE_SystemCoreClockUpdate
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:716    .text.SECURE_SystemCoreClockUpdate:00000020 $d
+C:\Users\SMART\AppData\Local\Temp\ccjipicB.s:722    .data.SystemCoreClock:00000000 $d
+
+UNDEFINED SYMBOLS
+g_pfnVectors

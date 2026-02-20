@@ -1,0 +1,2783 @@
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 1
+
+
+   1              		.arch armv8.1-m.main
+   2              		.fpu fpv5-d16
+   3              		.arch_extension dsp
+   4              		.arch_extension fp
+   5              		.arch_extension fp.dp
+   6              		.arch_extension mve
+   7              		.arch_extension mve.fp
+   8              		.eabi_attribute 5, "cortex-m55"
+   9              		.eabi_attribute 28, 1
+  10              		.eabi_attribute 20, 1
+  11              		.eabi_attribute 21, 1
+  12              		.eabi_attribute 23, 3
+  13              		.eabi_attribute 24, 1
+  14              		.eabi_attribute 25, 1
+  15              		.eabi_attribute 26, 1
+  16              		.eabi_attribute 30, 1
+  17              		.eabi_attribute 34, 1
+  18              		.eabi_attribute 38, 1
+  19              		.eabi_attribute 18, 4
+  20              		.file	"stm32_extmem.c"
+  21              		.text
+  22              	.Ltext0:
+  23              		.cfi_sections	.debug_frame
+  24              		.file 1 "../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c"
+  25              		.section	.text.EXTMEM_Init,"ax",%progbits
+  26              		.align	1
+  27              		.global	EXTMEM_Init
+  28              		.syntax unified
+  29              		.thumb
+  30              		.thumb_func
+  32              	EXTMEM_Init:
+  33              	.LVL0:
+  34              	.LFB862:
+   1:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+   2:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   ******************************************************************************
+   3:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @file    stm32_extmem.c
+   4:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @author  MCD Application Team
+   5:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief   This file includes a driver for external memory support
+   6:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   ******************************************************************************
+   7:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @attention
+   8:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *
+   9:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * Copyright (c) 2022 STMicroelectronics.
+  10:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * All rights reserved.
+  11:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *
+  12:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  13:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * in the root directory of this software component.
+  14:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  15:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *
+  16:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   ******************************************************************************
+  17:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+  18:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  19:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Macro to get memory table definition
+  20:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+  21:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_C
+  22:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  23:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /* Includes ------------------------------------------------------------------*/
+  24:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #include "stm32_extmem.h"
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 2
+
+
+  25:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #include "stm32_extmem_conf.h"
+  26:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  27:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+  28:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #include "nor_sfdp/stm32_sfdp_driver_api.h"
+  29:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP */
+  30:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  31:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+  32:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #include "psram/stm32_psram_driver_api.h"
+  33:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM */
+  34:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  35:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+  36:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #include "sdcard/stm32_sdcard_driver_api.h"
+  37:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD */
+  38:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  39:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+  40:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #include "custom/stm32_custom_driver_api.h"
+  41:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM */
+  42:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  43:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+  44:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #include "user/stm32_user_driver_api.h"
+  45:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER */
+  46:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  47:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  48:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @defgroup EXTMEM_DRIVER
+  49:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @{
+  50:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+  51:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  52:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  53:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @}
+  54:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****  */
+  55:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  56:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  57:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @defgroup EXTMEM_SAL
+  58:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @{
+  59:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+  60:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  61:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  62:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @}
+  63:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****  */
+  64:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  65:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  66:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @defgroup EXTMEM
+  67:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @{
+  68:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+  69:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+  70:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /* Private Macros ------------------------------------------------------------*/
+  71:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  72:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *  @defgroup EXTMEM_Private_Macros External Memory Private Macros
+  73:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @{
+  74:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+  75:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  76:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief EXTMEM debug function
+  77:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+  78:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+  79:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Macro used to trace EXTMEM function calls
+  80:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+  81:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 3
+
+
+  82:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if defined(EXTMEM_DEBUG_LEVEL) && defined(EXTMEM_MACRO_DEBUG)
+  83:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DEBUG_LEVEL > 0
+  84:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_DEBUG(_MSG_)  EXTMEM_MACRO_DEBUG(_MSG_)
+  85:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DEBUG_LEVEL > 1
+  86:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_FUNC_CALL()  \
+  87:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   do                        \
+  88:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {                         \
+  89:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     EXTMEM_DEBUG(__func__); \
+  90:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     EXTMEM_DEBUG("\n");     \
+  91:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   } while (0);
+  92:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #else
+  93:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_FUNC_CALL()
+  94:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DEBUG_LEVEL > 1 */
+  95:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #else
+  96:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_DEBUG(_MSG_)
+  97:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_FUNC_CALL()
+  98:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DEBUG_LEVEL > 0 */
+  99:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #else
+ 100:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_DEBUG(_MSG_)
+ 101:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_FUNC_CALL()
+ 102:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* defined(EXTMEM_DEBUG_LEVEL) && defined(EXTMEM_MACRO_DEBUG) */
+ 103:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 104:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 105:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Macro used to trace EXTMEM debug information
+ 106:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 107:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #define EXTMEM_DEBUG_ENDL(_STRING_) \
+ 108:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   do                                \
+ 109:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {                                 \
+ 110:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     EXTMEM_DEBUG(_STRING_);         \
+ 111:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     EXTMEM_DEBUG("\n");             \
+ 112:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   } while (0);
+ 113:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 114:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 115:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @}
+ 116:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 117:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 118:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /* Private typedefs ---------------------------------------------------------*/
+ 119:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /* Private functions ---------------------------------------------------------*/
+ 120:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /* Exported variables ---------------------------------------------------------*/
+ 121:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 122:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 123:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /** @defgroup EXTMEM_Exported_Functions External Memory Exported Functions
+ 124:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @{
+ 125:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 126:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 127:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 128:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Initializes the external memory.
+ 129:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 130:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param ClockInput Clock input value for the memory.
+ 131:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ 132:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 133:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_Init(uint32_t MemId, uint32_t ClockInput)
+ 134:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+  35              		.loc 1 134 1 view -0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 0
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 4
+
+
+ 135:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+  39              		.loc 1 135 3 view .LVU1
+ 136:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+  40              		.loc 1 136 21 view .LVU2
+ 137:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 138:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 139:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+  41              		.loc 1 139 3 view .LVU3
+  42              		.loc 1 139 6 is_stmt 0 view .LVU4
+  43 0000 0128     		cmp	r0, #1
+  44 0002 30D8     		bhi	.L5
+ 134:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+  45              		.loc 1 134 1 view .LVU5
+  46 0004 08B5     		push	{r3, lr}
+  47              	.LCFI0:
+  48              		.cfi_def_cfa_offset 8
+  49              		.cfi_offset 3, -8
+  50              		.cfi_offset 14, -4
+  51 0006 0A46     		mov	r2, r1
+ 140:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ 141:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+  52              		.loc 1 141 5 is_stmt 1 view .LVU6
+  53              	.LVL1:
+ 142:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 143:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 144:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+  54              		.loc 1 144 5 view .LVU7
+  55              		.loc 1 144 38 is_stmt 0 view .LVU8
+  56 0008 AC23     		movs	r3, #172
+  57 000a 00FB03F3 		mul	r3, r0, r3
+  58 000e 1749     		ldr	r1, .L12
+  59              	.LVL2:
+  60              		.loc 1 144 38 view .LVU9
+  61 0010 CB5C     		ldrb	r3, [r1, r3]	@ zero_extendqisi2
+  62              		.loc 1 144 5 view .LVU10
+  63 0012 23B1     		cbz	r3, .L3
+  64 0014 022B     		cmp	r3, #2
+  65 0016 14D0     		beq	.L4
+  66 0018 6FF00100 		mvn	r0, #1
+  67              	.LVL3:
+  68              	.L2:
+ 145:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 146:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 147:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 148:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 149:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Initialize the memory using NOR SFDP driver */
+ 150:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_NOR_SFDP_OK != EXTMEM_DRIVER_NOR_SFDP_Init(extmem_list_config[MemId].Hand
+ 151:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      extmem_list_config[MemId].Conf
+ 152:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      ClockInput,
+ 153:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      &extmem_list_config[MemId].Nor
+ 154:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 155:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 156:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 157:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 158:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 159:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 160:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 5
+
+
+ 161:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD:
+ 162:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 163:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Initialize the memory using SDCARD driver */
+ 164:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_SDCARD_OK != EXTMEM_DRIVER_SDCARD_Init(extmem_list_config[MemId].Handle,
+ 165:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                  &extmem_list_config[MemId].SdCardO
+ 166:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 167:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 168:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 169:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 170:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 171:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+ 172:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 173:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM :
+ 174:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 175:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Initialize the memory using PSRAM driver */
+ 176:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_PSRAM_OK != EXTMEM_DRIVER_PSRAM_Init(extmem_list_config[MemId].Handle,
+ 177:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                extmem_list_config[MemId].ConfigType
+ 178:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                ClockInput,
+ 179:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                &extmem_list_config[MemId].PsramObje
+ 180:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 181:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 182:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 183:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 184:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 185:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+ 186:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+ 187:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+ 188:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 189:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Initialize the memory using CUSTOM driver */
+ 190:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRV_CUSTOM_OK != EXTMEM_DRIVER_CUSTOM_Init(extmem_list_config[MemId].Handle,
+ 191:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                               ClockInput,
+ 192:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                               &extmem_list_config[MemId].CustomObje
+ 193:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 194:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 195:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 196:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 197:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 198:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+ 199:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+ 200:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+ 201:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 202:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Initialize the memory using USER driver */
+ 203:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_USER_StatusTypeDef status;
+ 204:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         status = EXTMEM_DRIVER_USER_Init(MemId,
+ 205:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                          &extmem_list_config[MemId].UserObject);
+ 206:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         switch (status)
+ 207:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 208:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_NOTSUPPORTED:
+ 209:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 210:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 211:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 212:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 213:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_OK:
+ 214:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 215:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             /* Nothing to do */
+ 216:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_OK;
+ 217:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 6
+
+
+ 218:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 219:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           default:
+ 220:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 221:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_DRIVER;
+ 222:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 223:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 224:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 225:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 226:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 227:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+ 228:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+ 229:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+ 230:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 231:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+ 232:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+ 233:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 234:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 235:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+ 236:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+ 237:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+  69              		.loc 1 237 3 is_stmt 1 view .LVU11
+ 238:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+  70              		.loc 1 238 1 is_stmt 0 view .LVU12
+  71 001c 08BD     		pop	{r3, pc}
+  72              	.LVL4:
+  73              	.L3:
+ 150:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      extmem_list_config[MemId].Conf
+  74              		.loc 1 150 9 is_stmt 1 view .LVU13
+ 150:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      extmem_list_config[MemId].Conf
+  75              		.loc 1 150 42 is_stmt 0 view .LVU14
+  76 001e AC23     		movs	r3, #172
+  77 0020 03FB00F0 		mul	r0, r3, r0
+  78              	.LVL5:
+ 150:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      extmem_list_config[MemId].Conf
+  79              		.loc 1 150 42 view .LVU15
+  80 0024 00F10803 		add	r3, r0, #8
+  81 0028 1049     		ldr	r1, .L12
+  82 002a 0B44     		add	r3, r3, r1
+  83 002c 0844     		add	r0, r0, r1
+  84 002e 0433     		adds	r3, r3, #4
+  85 0030 017A     		ldrb	r1, [r0, #8]	@ zero_extendqisi2
+  86 0032 4068     		ldr	r0, [r0, #4]
+  87 0034 FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_Init
+  88              	.LVL6:
+ 150:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      extmem_list_config[MemId].Conf
+  89              		.loc 1 150 12 discriminator 1 view .LVU16
+  90 0038 0028     		cmp	r0, #0
+  91 003a EFD0     		beq	.L2
+ 155:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+  92              		.loc 1 155 16 view .LVU17
+  93 003c 6FF00200 		mvn	r0, #2
+  94 0040 ECE7     		b	.L2
+  95              	.LVL7:
+  96              	.L4:
+ 176:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                extmem_list_config[MemId].ConfigType
+  97              		.loc 1 176 9 is_stmt 1 view .LVU18
+ 176:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                extmem_list_config[MemId].ConfigType
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 7
+
+
+  98              		.loc 1 176 39 is_stmt 0 view .LVU19
+  99 0042 AC23     		movs	r3, #172
+ 100 0044 03FB00F0 		mul	r0, r3, r0
+ 101              	.LVL8:
+ 176:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                extmem_list_config[MemId].ConfigType
+ 102              		.loc 1 176 39 view .LVU20
+ 103 0048 00F10803 		add	r3, r0, #8
+ 104 004c 0749     		ldr	r1, .L12
+ 105 004e 0B44     		add	r3, r3, r1
+ 106 0050 0844     		add	r0, r0, r1
+ 107 0052 0433     		adds	r3, r3, #4
+ 108 0054 017A     		ldrb	r1, [r0, #8]	@ zero_extendqisi2
+ 109 0056 4068     		ldr	r0, [r0, #4]
+ 110 0058 FFF7FEFF 		bl	EXTMEM_DRIVER_PSRAM_Init
+ 111              	.LVL9:
+ 176:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                extmem_list_config[MemId].ConfigType
+ 112              		.loc 1 176 12 discriminator 1 view .LVU21
+ 113 005c 0028     		cmp	r0, #0
+ 114 005e DDD0     		beq	.L2
+ 181:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 115              		.loc 1 181 16 view .LVU22
+ 116 0060 6FF00200 		mvn	r0, #2
+ 117 0064 DAE7     		b	.L2
+ 118              	.LVL10:
+ 119              	.L5:
+ 120              	.LCFI1:
+ 121              		.cfi_def_cfa_offset 0
+ 122              		.cfi_restore 3
+ 123              		.cfi_restore 14
+ 135:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+ 124              		.loc 1 135 24 view .LVU23
+ 125 0066 6FF00400 		mvn	r0, #4
+ 126              	.LVL11:
+ 237:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 127              		.loc 1 237 3 is_stmt 1 view .LVU24
+ 128              		.loc 1 238 1 is_stmt 0 view .LVU25
+ 129 006a 7047     		bx	lr
+ 130              	.L13:
+ 131              		.align	2
+ 132              	.L12:
+ 133 006c 00000000 		.word	extmem_list_config
+ 134              		.cfi_endproc
+ 135              	.LFE862:
+ 137              		.section	.text.EXTMEM_DeInit,"ax",%progbits
+ 138              		.align	1
+ 139              		.global	EXTMEM_DeInit
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ 144              	EXTMEM_DeInit:
+ 145              	.LVL12:
+ 146              	.LFB863:
+ 239:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 240:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 241:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Deinitializes the external memory.
+ 242:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 243:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 8
+
+
+ 244:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 245:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_DeInit(uint32_t MemId)
+ 246:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 147              		.loc 1 246 1 is_stmt 1 view -0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 247:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 151              		.loc 1 247 3 view .LVU27
+ 248:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+ 152              		.loc 1 248 21 view .LVU28
+ 249:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 250:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 251:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 153              		.loc 1 251 3 view .LVU29
+ 154              		.loc 1 251 6 is_stmt 0 view .LVU30
+ 155 0000 0128     		cmp	r0, #1
+ 156 0002 21D8     		bhi	.L18
+ 246:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 157              		.loc 1 246 1 view .LVU31
+ 158 0004 08B5     		push	{r3, lr}
+ 159              	.LCFI2:
+ 160              		.cfi_def_cfa_offset 8
+ 161              		.cfi_offset 3, -8
+ 162              		.cfi_offset 14, -4
+ 252:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ 253:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 163              		.loc 1 253 5 is_stmt 1 view .LVU32
+ 164              	.LVL13:
+ 254:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 255:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 256:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 165              		.loc 1 256 5 view .LVU33
+ 166              		.loc 1 256 38 is_stmt 0 view .LVU34
+ 167 0006 AC23     		movs	r3, #172
+ 168 0008 00FB03F3 		mul	r3, r0, r3
+ 169 000c 104A     		ldr	r2, .L23
+ 170 000e D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 171              		.loc 1 256 5 view .LVU35
+ 172 0010 23B1     		cbz	r3, .L16
+ 173 0012 022B     		cmp	r3, #2
+ 174 0014 0DD0     		beq	.L17
+ 175 0016 6FF00100 		mvn	r0, #1
+ 176              	.LVL14:
+ 177              		.loc 1 256 5 view .LVU36
+ 178 001a 09E0     		b	.L15
+ 179              	.LVL15:
+ 180              	.L16:
+ 257:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 258:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 259:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 260:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 261:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Uninitialize the memory using NOR SFDP driver */
+ 262:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Return is always OK no need to test the returned value */
+ 263:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         (void)EXTMEM_DRIVER_NOR_SFDP_DeInit(&extmem_list_config[MemId].NorSfdpObject);
+ 181              		.loc 1 263 9 is_stmt 1 view .LVU37
+ 182              		.loc 1 263 15 is_stmt 0 view .LVU38
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 9
+
+
+ 183 001c AC23     		movs	r3, #172
+ 184 001e 03FB00F0 		mul	r0, r3, r0
+ 185              	.LVL16:
+ 186              		.loc 1 263 15 view .LVU39
+ 187 0022 0830     		adds	r0, r0, #8
+ 188 0024 0A4B     		ldr	r3, .L23
+ 189 0026 1844     		add	r0, r0, r3
+ 190 0028 0430     		adds	r0, r0, #4
+ 191 002a FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_DeInit
+ 192              	.LVL17:
+ 264:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 193              		.loc 1 264 9 is_stmt 1 view .LVU40
+ 253:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 194              		.loc 1 253 10 is_stmt 0 view .LVU41
+ 195 002e 0020     		movs	r0, #0
+ 196              	.L15:
+ 197              	.LVL18:
+ 265:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 266:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 267:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+ 268:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD:
+ 269:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 270:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Uninitialize the memory using SDCARD driver */
+ 271:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_SDCARD_OK != EXTMEM_DRIVER_SDCARD_DeInit(&extmem_list_config[MemId].SdCar
+ 272:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 273:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 274:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 275:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 276:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 277:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+ 278:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 279:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM :
+ 280:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 281:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Uninitialize the memory using PSRAM driver */
+ 282:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Return is always OK no need to test the returned value */
+ 283:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         (void)EXTMEM_DRIVER_PSRAM_DeInit(&extmem_list_config[MemId].PsramObject);
+ 284:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 285:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 286:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+ 287:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+ 288:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+ 289:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 290:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Uninitialize the memory using CUSTOM driver */
+ 291:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRV_CUSTOM_OK != EXTMEM_DRIVER_CUSTOM_DeInit(&extmem_list_config[MemId].CustomOb
+ 292:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 293:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 294:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 295:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 296:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 297:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+ 298:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+ 299:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+ 300:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 301:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Uninitialize the memory using USER driver */
+ 302:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_USER_StatusTypeDef status = EXTMEM_DRIVER_USER_DeInit(&extmem_list_config[Mem
+ 303:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         switch (status)
+ 304:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 10
+
+
+ 305:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_NOTSUPPORTED:
+ 306:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 307:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 308:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_OK:
+ 309:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             /* Nothing to do, the returned status is already set to EXTMEM_OK */
+ 310:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 311:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           default:
+ 312:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_DRIVER;
+ 313:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 314:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 315:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 316:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 317:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+ 318:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+ 319:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+ 320:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 321:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+ 322:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+ 323:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 324:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 325:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+ 326:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+ 327:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+ 198              		.loc 1 327 3 is_stmt 1 view .LVU42
+ 328:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 199              		.loc 1 328 1 is_stmt 0 view .LVU43
+ 200 0030 08BD     		pop	{r3, pc}
+ 201              	.LVL19:
+ 202              	.L17:
+ 283:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 203              		.loc 1 283 9 is_stmt 1 view .LVU44
+ 283:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 204              		.loc 1 283 15 is_stmt 0 view .LVU45
+ 205 0032 AC23     		movs	r3, #172
+ 206 0034 03FB00F0 		mul	r0, r3, r0
+ 207              	.LVL20:
+ 283:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 208              		.loc 1 283 15 view .LVU46
+ 209 0038 0830     		adds	r0, r0, #8
+ 210 003a 054B     		ldr	r3, .L23
+ 211 003c 1844     		add	r0, r0, r3
+ 212 003e 0430     		adds	r0, r0, #4
+ 213 0040 FFF7FEFF 		bl	EXTMEM_DRIVER_PSRAM_DeInit
+ 214              	.LVL21:
+ 284:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 215              		.loc 1 284 9 is_stmt 1 view .LVU47
+ 253:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 216              		.loc 1 253 10 is_stmt 0 view .LVU48
+ 217 0044 0020     		movs	r0, #0
+ 284:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 218              		.loc 1 284 9 view .LVU49
+ 219 0046 F3E7     		b	.L15
+ 220              	.LVL22:
+ 221              	.L18:
+ 222              	.LCFI3:
+ 223              		.cfi_def_cfa_offset 0
+ 224              		.cfi_restore 3
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 11
+
+
+ 225              		.cfi_restore 14
+ 247:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+ 226              		.loc 1 247 24 view .LVU50
+ 227 0048 6FF00400 		mvn	r0, #4
+ 228              	.LVL23:
+ 327:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 229              		.loc 1 327 3 is_stmt 1 view .LVU51
+ 230              		.loc 1 328 1 is_stmt 0 view .LVU52
+ 231 004c 7047     		bx	lr
+ 232              	.L24:
+ 233 004e 00BF     		.align	2
+ 234              	.L23:
+ 235 0050 00000000 		.word	extmem_list_config
+ 236              		.cfi_endproc
+ 237              	.LFE863:
+ 239              		.section	.text.EXTMEM_Read,"ax",%progbits
+ 240              		.align	1
+ 241              		.global	EXTMEM_Read
+ 242              		.syntax unified
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	EXTMEM_Read:
+ 247              	.LVL24:
+ 248              	.LFB864:
+ 329:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 330:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 331:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Reads data from the external memory.
+ 332:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 333:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Address Address in memory to read from.
+ 334:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Data Pointer to buffer where read data will be stored.
+ 335:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Size Number of bytes to read.
+ 336:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ 337:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 338:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_Read(uint32_t MemId, uint32_t Address, uint8_t *Data, uint32_t Size)
+ 339:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 249              		.loc 1 339 1 is_stmt 1 view -0
+ 250              		.cfi_startproc
+ 251              		@ args = 0, pretend = 0, frame = 0
+ 252              		@ frame_needed = 0, uses_anonymous_args = 0
+ 340:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 253              		.loc 1 340 3 view .LVU54
+ 341:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 342:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 343:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 344:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 254              		.loc 1 344 3 view .LVU55
+ 255              		.loc 1 344 6 is_stmt 0 view .LVU56
+ 256 0000 0128     		cmp	r0, #1
+ 257 0002 1BD8     		bhi	.L28
+ 339:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 258              		.loc 1 339 1 view .LVU57
+ 259 0004 10B5     		push	{r4, lr}
+ 260              	.LCFI4:
+ 261              		.cfi_def_cfa_offset 8
+ 262              		.cfi_offset 4, -8
+ 263              		.cfi_offset 14, -4
+ 345:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 12
+
+
+ 346:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 264              		.loc 1 346 5 is_stmt 1 view .LVU58
+ 265              	.LVL25:
+ 347:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 348:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 349:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 266              		.loc 1 349 5 view .LVU59
+ 267              		.loc 1 349 38 is_stmt 0 view .LVU60
+ 268 0006 4FF0AC0C 		mov	ip, #172
+ 269 000a 0CFB00FC 		mul	ip, ip, r0
+ 270 000e 0E4C     		ldr	r4, .L35
+ 271 0010 14F80C40 		ldrb	r4, [r4, ip]	@ zero_extendqisi2
+ 272              		.loc 1 349 5 view .LVU61
+ 273 0014 24B1     		cbz	r4, .L27
+ 274 0016 022C     		cmp	r4, #2
+ 275 0018 13D1     		bne	.L29
+ 276 001a 4FF0FF30 		mov	r0, #-1
+ 277              	.LVL26:
+ 278              	.L26:
+ 350:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 351:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 352:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 353:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 354:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Read operation using the NOR SFDP driver */
+ 355:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_NOR_SFDP_OK != EXTMEM_DRIVER_NOR_SFDP_Read(&extmem_list_config[MemId].Nor
+ 356:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      Address, Data, Size))
+ 357:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 358:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 359:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 360:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 361:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 362:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 363:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+ 364:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD:
+ 365:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 366:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Read operation using the SDCARD driver */
+ 367:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_SDCARD_OK != EXTMEM_DRIVER_SDCARD_Read(&extmem_list_config[MemId].SdCardO
+ 368:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                  Address, Data, Size))
+ 369:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 370:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 371:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 372:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 373:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 374:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+ 375:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 376:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM :
+ 377:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 378:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 379:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 380:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 381:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+ 382:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+ 383:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+ 384:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 385:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Read operation using the CUSTOM driver */
+ 386:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRV_CUSTOM_OK != EXTMEM_DRIVER_CUSTOM_Read(&extmem_list_config[MemId].CustomObje
+ 387:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                               Address, Data, Size))
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 13
+
+
+ 388:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 389:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 390:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 391:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 392:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 393:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+ 394:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+ 395:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+ 396:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 397:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Read operation using the USER driver */
+ 398:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_USER_StatusTypeDef status = EXTMEM_DRIVER_USER_Read(&extmem_list_config[MemId
+ 399:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                           Address, Data, Size);
+ 400:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         switch (status)
+ 401:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 402:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_NOTSUPPORTED:
+ 403:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 404:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 405:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_OK:
+ 406:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             /* Nothing to do, the returned status is already set to EXTMEM_OK */
+ 407:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 408:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           default:
+ 409:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_DRIVER;
+ 410:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 411:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 412:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 413:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 414:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+ 415:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+ 416:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+ 417:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 418:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+ 419:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+ 420:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 421:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 422:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+ 423:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+ 424:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+ 279              		.loc 1 424 3 is_stmt 1 view .LVU62
+ 425:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 280              		.loc 1 425 1 is_stmt 0 view .LVU63
+ 281 001e 10BD     		pop	{r4, pc}
+ 282              	.LVL27:
+ 283              	.L27:
+ 355:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      Address, Data, Size))
+ 284              		.loc 1 355 9 is_stmt 1 view .LVU64
+ 355:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      Address, Data, Size))
+ 285              		.loc 1 355 42 is_stmt 0 view .LVU65
+ 286 0020 AC24     		movs	r4, #172
+ 287 0022 04FB00F0 		mul	r0, r4, r0
+ 288              	.LVL28:
+ 355:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      Address, Data, Size))
+ 289              		.loc 1 355 42 view .LVU66
+ 290 0026 0830     		adds	r0, r0, #8
+ 291 0028 074C     		ldr	r4, .L35
+ 292 002a 2044     		add	r0, r0, r4
+ 293 002c 0430     		adds	r0, r0, #4
+ 294 002e FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_Read
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 14
+
+
+ 295              	.LVL29:
+ 355:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      Address, Data, Size))
+ 296              		.loc 1 355 12 discriminator 1 view .LVU67
+ 297 0032 0028     		cmp	r0, #0
+ 298 0034 F3D0     		beq	.L26
+ 358:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 299              		.loc 1 358 16 view .LVU68
+ 300 0036 6FF00200 		mvn	r0, #2
+ 301 003a F0E7     		b	.L26
+ 302              	.LVL30:
+ 303              	.L28:
+ 304              	.LCFI5:
+ 305              		.cfi_def_cfa_offset 0
+ 306              		.cfi_restore 4
+ 307              		.cfi_restore 14
+ 340:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 308              		.loc 1 340 24 view .LVU69
+ 309 003c 6FF00400 		mvn	r0, #4
+ 310              	.LVL31:
+ 424:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 311              		.loc 1 424 3 is_stmt 1 view .LVU70
+ 312              		.loc 1 425 1 is_stmt 0 view .LVU71
+ 313 0040 7047     		bx	lr
+ 314              	.LVL32:
+ 315              	.L29:
+ 316              	.LCFI6:
+ 317              		.cfi_def_cfa_offset 8
+ 318              		.cfi_offset 4, -8
+ 319              		.cfi_offset 14, -4
+ 419:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 320              		.loc 1 419 14 view .LVU72
+ 321 0042 6FF00100 		mvn	r0, #1
+ 322              	.LVL33:
+ 419:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 323              		.loc 1 419 14 view .LVU73
+ 324 0046 EAE7     		b	.L26
+ 325              	.L36:
+ 326              		.align	2
+ 327              	.L35:
+ 328 0048 00000000 		.word	extmem_list_config
+ 329              		.cfi_endproc
+ 330              	.LFE864:
+ 332              		.section	.text.EXTMEM_Write,"ax",%progbits
+ 333              		.align	1
+ 334              		.global	EXTMEM_Write
+ 335              		.syntax unified
+ 336              		.thumb
+ 337              		.thumb_func
+ 339              	EXTMEM_Write:
+ 340              	.LVL34:
+ 341              	.LFB865:
+ 426:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 427:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 428:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Writes data to the external memory.
+ 429:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 430:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Address Address in memory to write to.
+ 431:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Data Pointer to buffer containing data to be written.
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 15
+
+
+ 432:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Size Number of bytes to write.
+ 433:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ 434:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 435:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_Write(uint32_t MemId, uint32_t Address, const uint8_t *Data, uint32_t S
+ 436:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 342              		.loc 1 436 1 is_stmt 1 view -0
+ 343              		.cfi_startproc
+ 344              		@ args = 0, pretend = 0, frame = 0
+ 345              		@ frame_needed = 0, uses_anonymous_args = 0
+ 437:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 346              		.loc 1 437 3 view .LVU75
+ 438:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 439:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 440:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 441:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 347              		.loc 1 441 3 view .LVU76
+ 348              		.loc 1 441 6 is_stmt 0 view .LVU77
+ 349 0000 0128     		cmp	r0, #1
+ 350 0002 1BD8     		bhi	.L40
+ 436:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 351              		.loc 1 436 1 view .LVU78
+ 352 0004 10B5     		push	{r4, lr}
+ 353              	.LCFI7:
+ 354              		.cfi_def_cfa_offset 8
+ 355              		.cfi_offset 4, -8
+ 356              		.cfi_offset 14, -4
+ 442:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ 443:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 357              		.loc 1 443 5 is_stmt 1 view .LVU79
+ 358              	.LVL35:
+ 444:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 445:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 446:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 359              		.loc 1 446 5 view .LVU80
+ 360              		.loc 1 446 38 is_stmt 0 view .LVU81
+ 361 0006 4FF0AC0C 		mov	ip, #172
+ 362 000a 0CFB00FC 		mul	ip, ip, r0
+ 363 000e 0E4C     		ldr	r4, .L47
+ 364 0010 14F80C40 		ldrb	r4, [r4, ip]	@ zero_extendqisi2
+ 365              		.loc 1 446 5 view .LVU82
+ 366 0014 24B1     		cbz	r4, .L39
+ 367 0016 022C     		cmp	r4, #2
+ 368 0018 13D1     		bne	.L41
+ 369 001a 4FF0FF30 		mov	r0, #-1
+ 370              	.LVL36:
+ 371              	.L38:
+ 447:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 448:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 449:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 450:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 451:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Write operation using the NOR SFDP driver */
+ 452:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_NOR_SFDP_OK != EXTMEM_DRIVER_NOR_SFDP_Write(&extmem_list_config[MemId].No
+ 453:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                       Address, Data, Size))
+ 454:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 455:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 456:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 457:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 16
+
+
+ 458:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 459:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 460:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+ 461:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD:
+ 462:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 463:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Write operation using the SDCARD driver */
+ 464:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_SDCARD_OK != EXTMEM_DRIVER_SDCARD_Write(&extmem_list_config[MemId].SdCard
+ 465:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                   Address, Data, Size))
+ 466:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 467:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 468:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 469:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 470:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 471:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+ 472:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 473:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM :
+ 474:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 475:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 476:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 477:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 478:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+ 479:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+ 480:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+ 481:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 482:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Write operation using the CUSTOM driver */
+ 483:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRV_CUSTOM_OK != EXTMEM_DRIVER_CUSTOM_Write(&extmem_list_config[MemId].CustomObj
+ 484:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                Address, Data, Size))
+ 485:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 486:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 487:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 488:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 489:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 490:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+ 491:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+ 492:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+ 493:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 494:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Write operation using the USER driver */
+ 495:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_USER_StatusTypeDef status = EXTMEM_DRIVER_USER_Write(&extmem_list_config[MemI
+ 496:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                            Address, Data, Size);
+ 497:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         switch (status)
+ 498:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 499:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_NOTSUPPORTED:
+ 500:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 501:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 502:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_OK:
+ 503:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 504:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           default:
+ 505:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_DRIVER;
+ 506:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 507:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 508:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 509:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 510:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+ 511:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+ 512:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+ 513:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 514:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 17
+
+
+ 515:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+ 516:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 517:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 518:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+ 519:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+ 520:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+ 372              		.loc 1 520 3 is_stmt 1 view .LVU83
+ 521:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 373              		.loc 1 521 1 is_stmt 0 view .LVU84
+ 374 001e 10BD     		pop	{r4, pc}
+ 375              	.LVL37:
+ 376              	.L39:
+ 452:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                       Address, Data, Size))
+ 377              		.loc 1 452 9 is_stmt 1 view .LVU85
+ 452:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                       Address, Data, Size))
+ 378              		.loc 1 452 42 is_stmt 0 view .LVU86
+ 379 0020 AC24     		movs	r4, #172
+ 380 0022 04FB00F0 		mul	r0, r4, r0
+ 381              	.LVL38:
+ 452:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                       Address, Data, Size))
+ 382              		.loc 1 452 42 view .LVU87
+ 383 0026 0830     		adds	r0, r0, #8
+ 384 0028 074C     		ldr	r4, .L47
+ 385 002a 2044     		add	r0, r0, r4
+ 386 002c 0430     		adds	r0, r0, #4
+ 387 002e FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_Write
+ 388              	.LVL39:
+ 452:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                       Address, Data, Size))
+ 389              		.loc 1 452 12 discriminator 1 view .LVU88
+ 390 0032 0028     		cmp	r0, #0
+ 391 0034 F3D0     		beq	.L38
+ 455:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 392              		.loc 1 455 16 view .LVU89
+ 393 0036 6FF00200 		mvn	r0, #2
+ 394 003a F0E7     		b	.L38
+ 395              	.LVL40:
+ 396              	.L40:
+ 397              	.LCFI8:
+ 398              		.cfi_def_cfa_offset 0
+ 399              		.cfi_restore 4
+ 400              		.cfi_restore 14
+ 437:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 401              		.loc 1 437 24 view .LVU90
+ 402 003c 6FF00400 		mvn	r0, #4
+ 403              	.LVL41:
+ 520:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 404              		.loc 1 520 3 is_stmt 1 view .LVU91
+ 405              		.loc 1 521 1 is_stmt 0 view .LVU92
+ 406 0040 7047     		bx	lr
+ 407              	.LVL42:
+ 408              	.L41:
+ 409              	.LCFI9:
+ 410              		.cfi_def_cfa_offset 8
+ 411              		.cfi_offset 4, -8
+ 412              		.cfi_offset 14, -4
+ 515:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 413              		.loc 1 515 14 view .LVU93
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 18
+
+
+ 414 0042 6FF00100 		mvn	r0, #1
+ 415              	.LVL43:
+ 515:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 416              		.loc 1 515 14 view .LVU94
+ 417 0046 EAE7     		b	.L38
+ 418              	.L48:
+ 419              		.align	2
+ 420              	.L47:
+ 421 0048 00000000 		.word	extmem_list_config
+ 422              		.cfi_endproc
+ 423              	.LFE865:
+ 425              		.section	.text.EXTMEM_WriteInMappedMode,"ax",%progbits
+ 426              		.align	1
+ 427              		.global	EXTMEM_WriteInMappedMode
+ 428              		.syntax unified
+ 429              		.thumb
+ 430              		.thumb_func
+ 432              	EXTMEM_WriteInMappedMode:
+ 433              	.LVL44:
+ 434              	.LFB866:
+ 522:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 523:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 524:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Writes data to the external memory in mapped mode.
+ 525:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 526:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Address Address in memory to write to.
+ 527:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Data Pointer to buffer (must be 32-bit aligned) containing data to be written.
+ 528:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Size Number of bytes to write.
+ 529:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ 530:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *
+ 531:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @note This function performs write operations in mapped mode and requires specific processing d
+ 532:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *       to write enable management when the memory is mapped. The operation splits the write into
+ 533:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *       of page size, and for each packet, performs a write before entering mapped mode.
+ 534:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *
+ 535:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @note To avoid issues during this process, it is mandatory that the targeted memory area has th
+ 536:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   *       characteristics: the write region must be non-bufferable, non-shareable, and non-cacheabl
+ 537:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 538:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_WriteInMappedMode(uint32_t MemId, uint32_t Address, const uint8_t *cons
+ 539:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                               uint32_t Size)
+ 540:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 435              		.loc 1 540 1 is_stmt 1 view -0
+ 436              		.cfi_startproc
+ 437              		@ args = 0, pretend = 0, frame = 0
+ 438              		@ frame_needed = 0, uses_anonymous_args = 0
+ 541:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 439              		.loc 1 541 3 view .LVU96
+ 542:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 543:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 544:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 545:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 440              		.loc 1 545 3 view .LVU97
+ 441              		.loc 1 545 6 is_stmt 0 view .LVU98
+ 442 0000 0128     		cmp	r0, #1
+ 443 0002 1BD8     		bhi	.L52
+ 540:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 444              		.loc 1 540 1 view .LVU99
+ 445 0004 10B5     		push	{r4, lr}
+ 446              	.LCFI10:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 19
+
+
+ 447              		.cfi_def_cfa_offset 8
+ 448              		.cfi_offset 4, -8
+ 449              		.cfi_offset 14, -4
+ 546:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ 547:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 450              		.loc 1 547 5 is_stmt 1 view .LVU100
+ 451              	.LVL45:
+ 548:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 549:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 550:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 452              		.loc 1 550 5 view .LVU101
+ 453              		.loc 1 550 38 is_stmt 0 view .LVU102
+ 454 0006 4FF0AC0C 		mov	ip, #172
+ 455 000a 0CFB00FC 		mul	ip, ip, r0
+ 456 000e 0E4C     		ldr	r4, .L59
+ 457 0010 14F80C40 		ldrb	r4, [r4, ip]	@ zero_extendqisi2
+ 458              		.loc 1 550 5 view .LVU103
+ 459 0014 24B1     		cbz	r4, .L51
+ 460 0016 022C     		cmp	r4, #2
+ 461 0018 13D1     		bne	.L53
+ 462 001a 4FF0FF30 		mov	r0, #-1
+ 463              	.LVL46:
+ 464              	.L50:
+ 551:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 552:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 553:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Perform the Write in mapped mode operation using the NOR SFDP driver */
+ 554:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 555:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 556:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_NOR_SFDP_OK !=
+ 557:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode(&extmem_list_config[MemId].NorSfdpObject,
+ 558:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                      Address, Data, Size))
+ 559:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 560:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 561:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 562:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 563:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 564:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 565:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+ 566:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD :
+ 567:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Functionality not supported in this driver */
+ 568:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 569:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 570:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+ 571:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 572:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM :
+ 573:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Functionality not supported in this driver */
+ 574:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 575:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 576:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+ 577:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+ 578:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+ 579:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Functionality not supported in this driver */
+ 580:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 581:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 582:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+ 583:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+ 584:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 20
+
+
+ 585:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Functionality not supported in this driver */
+ 586:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 587:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 588:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+ 589:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+ 590:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+ 591:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 592:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+ 593:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+ 594:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 595:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 596:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+ 597:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+ 598:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+ 465              		.loc 1 598 3 is_stmt 1 view .LVU104
+ 599:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 466              		.loc 1 599 1 is_stmt 0 view .LVU105
+ 467 001e 10BD     		pop	{r4, pc}
+ 468              	.LVL47:
+ 469              	.L51:
+ 556:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode(&extmem_list_config[MemId].NorSfdpObject,
+ 470              		.loc 1 556 9 is_stmt 1 view .LVU106
+ 557:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                      Address, Data, Size))
+ 471              		.loc 1 557 13 is_stmt 0 view .LVU107
+ 472 0020 AC24     		movs	r4, #172
+ 473 0022 04FB00F0 		mul	r0, r4, r0
+ 474              	.LVL48:
+ 557:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                      Address, Data, Size))
+ 475              		.loc 1 557 13 view .LVU108
+ 476 0026 0830     		adds	r0, r0, #8
+ 477 0028 074C     		ldr	r4, .L59
+ 478 002a 2044     		add	r0, r0, r4
+ 479 002c 0430     		adds	r0, r0, #4
+ 480 002e FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode
+ 481              	.LVL49:
+ 556:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode(&extmem_list_config[MemId].NorSfdpObject,
+ 482              		.loc 1 556 12 view .LVU109
+ 483 0032 0028     		cmp	r0, #0
+ 484 0034 F3D0     		beq	.L50
+ 560:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 485              		.loc 1 560 16 view .LVU110
+ 486 0036 6FF00200 		mvn	r0, #2
+ 487 003a F0E7     		b	.L50
+ 488              	.LVL50:
+ 489              	.L52:
+ 490              	.LCFI11:
+ 491              		.cfi_def_cfa_offset 0
+ 492              		.cfi_restore 4
+ 493              		.cfi_restore 14
+ 541:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 494              		.loc 1 541 24 view .LVU111
+ 495 003c 6FF00400 		mvn	r0, #4
+ 496              	.LVL51:
+ 598:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 497              		.loc 1 598 3 is_stmt 1 view .LVU112
+ 498              		.loc 1 599 1 is_stmt 0 view .LVU113
+ 499 0040 7047     		bx	lr
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 21
+
+
+ 500              	.LVL52:
+ 501              	.L53:
+ 502              	.LCFI12:
+ 503              		.cfi_def_cfa_offset 8
+ 504              		.cfi_offset 4, -8
+ 505              		.cfi_offset 14, -4
+ 593:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 506              		.loc 1 593 14 view .LVU114
+ 507 0042 6FF00100 		mvn	r0, #1
+ 508              	.LVL53:
+ 593:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 509              		.loc 1 593 14 view .LVU115
+ 510 0046 EAE7     		b	.L50
+ 511              	.L60:
+ 512              		.align	2
+ 513              	.L59:
+ 514 0048 00000000 		.word	extmem_list_config
+ 515              		.cfi_endproc
+ 516              	.LFE866:
+ 518              		.section	.text.EXTMEM_EraseSector,"ax",%progbits
+ 519              		.align	1
+ 520              		.global	EXTMEM_EraseSector
+ 521              		.syntax unified
+ 522              		.thumb
+ 523              		.thumb_func
+ 525              	EXTMEM_EraseSector:
+ 526              	.LVL54:
+ 527              	.LFB867:
+ 600:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 601:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 602:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Erases a number of sectors in the external memory.
+ 603:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 604:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Address Address in memory to start erase operation.
+ 605:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Size Number of bytes to erase.
+ 606:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ 607:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 608:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_EraseSector(uint32_t MemId, uint32_t Address, uint32_t Size)
+ 609:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 528              		.loc 1 609 1 is_stmt 1 view -0
+ 529              		.cfi_startproc
+ 530              		@ args = 0, pretend = 0, frame = 0
+ 531              		@ frame_needed = 0, uses_anonymous_args = 0
+ 532              		.loc 1 609 1 is_stmt 0 view .LVU117
+ 533 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 534              	.LCFI13:
+ 535              		.cfi_def_cfa_offset 32
+ 536              		.cfi_offset 3, -32
+ 537              		.cfi_offset 4, -28
+ 538              		.cfi_offset 5, -24
+ 539              		.cfi_offset 6, -20
+ 540              		.cfi_offset 7, -16
+ 541              		.cfi_offset 8, -12
+ 542              		.cfi_offset 9, -8
+ 543              		.cfi_offset 14, -4
+ 610:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 544              		.loc 1 610 3 is_stmt 1 view .LVU118
+ 545              	.LVL55:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 22
+
+
+ 611:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 612:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 613:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 614:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 546              		.loc 1 614 3 view .LVU119
+ 547              		.loc 1 614 6 is_stmt 0 view .LVU120
+ 548 0004 0128     		cmp	r0, #1
+ 549 0006 7DD8     		bhi	.L71
+ 550 0008 0646     		mov	r6, r0
+ 551 000a 0F46     		mov	r7, r1
+ 552 000c 1546     		mov	r5, r2
+ 615:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ 616:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 553              		.loc 1 616 5 is_stmt 1 view .LVU121
+ 554              	.LVL56:
+ 617:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 618:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 619:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 555              		.loc 1 619 5 view .LVU122
+ 556              		.loc 1 619 38 is_stmt 0 view .LVU123
+ 557 000e AC23     		movs	r3, #172
+ 558 0010 00FB03F3 		mul	r3, r0, r3
+ 559 0014 3E4A     		ldr	r2, .L80
+ 560              	.LVL57:
+ 561              		.loc 1 619 38 view .LVU124
+ 562 0016 12F80390 		ldrb	r9, [r2, r3]	@ zero_extendqisi2
+ 563              		.loc 1 619 5 view .LVU125
+ 564 001a B9F1000F 		cmp	r9, #0
+ 565 001e 07D0     		beq	.L63
+ 566 0020 B9F1020F 		cmp	r9, #2
+ 567 0024 71D1     		bne	.L72
+ 568 0026 4FF0FF38 		mov	r8, #-1
+ 569              	.LVL58:
+ 570              	.L62:
+ 620:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 621:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 622:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 623:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 624:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Sector Erase operation using the NOR SFDP driver */
+ 625:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         const EXTMEM_DRIVER_NOR_SFDP_ObjectTypeDef *const object = &extmem_list_config[MemId].NorSf
+ 626:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_NOR_SFDP_SectorTypeTypeDef sector_type = EXTMEM_DRIVER_NOR_SFDP_SECTOR_TYPE1;
+ 627:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         uint32_t local_address = Address;
+ 628:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         uint32_t local_size = Size;
+ 629:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         uint32_t sector_size = (uint32_t)1u << object->sfdp_private.DriverInfo.EraseType4Size;
+ 630:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 631:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         while (local_size != 0u)
+ 632:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 633:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* if address is a modulo a sector size if sector  */
+ 634:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if ((object->sfdp_private.DriverInfo.EraseType4Size != 0u)
+ 635:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               && (local_size >= sector_size)
+ 636:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               && ((local_address % sector_size) == 0u))
+ 637:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 638:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             sector_type = EXTMEM_DRIVER_NOR_SFDP_SECTOR_TYPE4;
+ 639:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 640:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           else
+ 641:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 642:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             sector_size = (uint32_t)1u << object->sfdp_private.DriverInfo.EraseType3Size;
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 23
+
+
+ 643:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if ((object->sfdp_private.DriverInfo.EraseType3Size != 0u)
+ 644:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 && (local_size >= sector_size)
+ 645:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 && ((local_address % sector_size) == 0u))
+ 646:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 647:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               sector_type = EXTMEM_DRIVER_NOR_SFDP_SECTOR_TYPE3;
+ 648:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 649:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             else
+ 650:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 651:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               sector_size = (uint32_t)1u << object->sfdp_private.DriverInfo.EraseType2Size;
+ 652:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               if ((object->sfdp_private.DriverInfo.EraseType2Size != 0u)
+ 653:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                   && (local_size >= sector_size)
+ 654:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                   && ((local_address % sector_size) == 0u))
+ 655:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               {
+ 656:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 sector_type = EXTMEM_DRIVER_NOR_SFDP_SECTOR_TYPE2;
+ 657:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               }
+ 658:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               else
+ 659:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               {
+ 660:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 sector_size = (uint32_t)1u << object->sfdp_private.DriverInfo.EraseType1Size;
+ 661:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 if ((object->sfdp_private.DriverInfo.EraseType1Size != 0u)
+ 662:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                     && ((local_address % sector_size) == 0u))
+ 663:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 {
+ 664:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                   sector_type = EXTMEM_DRIVER_NOR_SFDP_SECTOR_TYPE1;
+ 665:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 }
+ 666:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 else
+ 667:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 {
+ 668:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                   retr = EXTMEM_ERROR_SECTOR_SIZE;
+ 669:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 }
+ 670:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               }
+ 671:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 672:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 673:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 674:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if (retr == EXTMEM_OK)
+ 675:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 676:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if (EXTMEM_DRIVER_NOR_SFDP_OK !=
+ 677:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 EXTMEM_DRIVER_NOR_SFDP_SectorErase(&extmem_list_config[MemId].NorSfdpObject,
+ 678:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                    local_address, sector_type))
+ 679:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 680:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               retr = EXTMEM_ERROR_DRIVER;
+ 681:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 682:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 683:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 684:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if (retr != EXTMEM_OK)
+ 685:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 686:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             local_size = 0u;
+ 687:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 688:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           else
+ 689:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 690:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             local_address = local_address + sector_size;
+ 691:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if (sector_size > local_size)
+ 692:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 693:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               local_size = 0u;
+ 694:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 695:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             else
+ 696:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 697:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               local_size = local_size - sector_size;
+ 698:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 699:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 24
+
+
+ 700:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 701:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 702:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 703:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 704:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+ 705:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD:
+ 706:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 707:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Sector Erase operation using the SDCARD driver */
+ 708:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_SDCARD_OK != EXTMEM_DRIVER_SDCARD_EraseBlock(&extmem_list_config[MemId].S
+ 709:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                        Address, Size))
+ 710:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 711:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 712:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 713:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 714:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 715:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+ 716:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 717:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM :
+ 718:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 719:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Functionality not supported in this driver */
+ 720:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 721:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 722:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 723:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+ 724:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+ 725:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+ 726:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 727:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Sector Erase operation using the CUSTOM driver */
+ 728:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRV_CUSTOM_OK != EXTMEM_DRIVER_CUSTOM_EraseSector(&extmem_list_config[MemId].Cus
+ 729:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                      Address, Size))
+ 730:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 731:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 732:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 733:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 734:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 735:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+ 736:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+ 737:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+ 738:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 739:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Sector Erase operation using the USER driver */
+ 740:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_USER_StatusTypeDef status = EXTMEM_DRIVER_USER_EraseSector(&extmem_list_confi
+ 741:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                                  Address, Size);
+ 742:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         switch (status)
+ 743:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 744:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_NOTSUPPORTED:
+ 745:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 746:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 747:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_OK:
+ 748:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 749:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           default:
+ 750:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_DRIVER;
+ 751:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 752:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 753:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 754:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 755:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+ 756:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 25
+
+
+ 757:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+ 758:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 759:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+ 760:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+ 761:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 762:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 763:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+ 764:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+ 765:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+ 571              		.loc 1 765 3 is_stmt 1 view .LVU126
+ 766:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 572              		.loc 1 766 1 is_stmt 0 view .LVU127
+ 573 002a 4046     		mov	r0, r8
+ 574 002c BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 575              	.LVL59:
+ 576              	.L63:
+ 577              	.LBB2:
+ 625:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_NOR_SFDP_SectorTypeTypeDef sector_type = EXTMEM_DRIVER_NOR_SFDP_SECTOR_TYPE1;
+ 578              		.loc 1 625 9 is_stmt 1 view .LVU128
+ 626:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         uint32_t local_address = Address;
+ 579              		.loc 1 626 9 view .LVU129
+ 627:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         uint32_t local_size = Size;
+ 580              		.loc 1 627 9 view .LVU130
+ 628:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         uint32_t sector_size = (uint32_t)1u << object->sfdp_private.DriverInfo.EraseType4Size;
+ 581              		.loc 1 628 9 view .LVU131
+ 629:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 582              		.loc 1 629 9 view .LVU132
+ 629:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 583              		.loc 1 629 79 is_stmt 0 view .LVU133
+ 584 0030 374B     		ldr	r3, .L80
+ 585 0032 AC22     		movs	r2, #172
+ 586 0034 02FB0033 		mla	r3, r2, r0, r3
+ 587 0038 93F88930 		ldrb	r3, [r3, #137]	@ zero_extendqisi2
+ 629:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 588              		.loc 1 629 18 view .LVU134
+ 589 003c 0124     		movs	r4, #1
+ 590 003e 9C40     		lsls	r4, r4, r3
+ 591              	.LVL60:
+ 631:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 592              		.loc 1 631 9 is_stmt 1 view .LVU135
+ 593              	.LBE2:
+ 616:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 594              		.loc 1 616 10 is_stmt 0 view .LVU136
+ 595 0040 4FF00008 		mov	r8, #0
+ 596              	.LBB3:
+ 631:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 597              		.loc 1 631 15 view .LVU137
+ 598 0044 0EE0     		b	.L64
+ 599              	.LVL61:
+ 600              	.L73:
+ 638:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 601              		.loc 1 638 25 view .LVU138
+ 602 0046 0322     		movs	r2, #3
+ 603 0048 47E0     		b	.L66
+ 604              	.L74:
+ 647:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 605              		.loc 1 647 27 view .LVU139
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 26
+
+
+ 606 004a 0222     		movs	r2, #2
+ 607 004c 45E0     		b	.L66
+ 608              	.L75:
+ 656:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               }
+ 609              		.loc 1 656 29 view .LVU140
+ 610 004e 0122     		movs	r2, #1
+ 611 0050 43E0     		b	.L66
+ 612              	.L76:
+ 668:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 }
+ 613              		.loc 1 668 24 view .LVU141
+ 614 0052 6FF00308 		mvn	r8, #3
+ 615              	.LVL62:
+ 616              	.L69:
+ 684:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 617              		.loc 1 684 11 is_stmt 1 view .LVU142
+ 684:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 618              		.loc 1 684 14 is_stmt 0 view .LVU143
+ 619 0056 B8F1000F 		cmp	r8, #0
+ 620 005a E6D1     		bne	.L62
+ 690:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if (sector_size > local_size)
+ 621              		.loc 1 690 13 is_stmt 1 view .LVU144
+ 690:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if (sector_size > local_size)
+ 622              		.loc 1 690 27 is_stmt 0 view .LVU145
+ 623 005c 2744     		add	r7, r7, r4
+ 624              	.LVL63:
+ 691:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 625              		.loc 1 691 13 is_stmt 1 view .LVU146
+ 691:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 626              		.loc 1 691 16 is_stmt 0 view .LVU147
+ 627 005e A542     		cmp	r5, r4
+ 628 0060 E3D3     		bcc	.L62
+ 697:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 629              		.loc 1 697 15 is_stmt 1 view .LVU148
+ 697:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 630              		.loc 1 697 26 is_stmt 0 view .LVU149
+ 631 0062 2D1B     		subs	r5, r5, r4
+ 632              	.LVL64:
+ 633              	.L64:
+ 631:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 634              		.loc 1 631 27 is_stmt 1 view .LVU150
+ 635 0064 002D     		cmp	r5, #0
+ 636 0066 E0D0     		beq	.L62
+ 634:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               && (local_size >= sector_size)
+ 637              		.loc 1 634 11 view .LVU151
+ 634:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               && (local_size >= sector_size)
+ 638              		.loc 1 634 47 is_stmt 0 view .LVU152
+ 639 0068 294B     		ldr	r3, .L80
+ 640 006a AC22     		movs	r2, #172
+ 641 006c 02FB0633 		mla	r3, r2, r6, r3
+ 642 0070 93F88930 		ldrb	r3, [r3, #137]	@ zero_extendqisi2
+ 634:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               && (local_size >= sector_size)
+ 643              		.loc 1 634 14 view .LVU153
+ 644 0074 3BB1     		cbz	r3, .L65
+ 635:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               && ((local_address % sector_size) == 0u))
+ 645              		.loc 1 635 15 view .LVU154
+ 646 0076 A542     		cmp	r5, r4
+ 647 0078 05D3     		bcc	.L65
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 27
+
+
+ 636:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 648              		.loc 1 636 34 view .LVU155
+ 649 007a B7FBF4F3 		udiv	r3, r7, r4
+ 650 007e 04FB1373 		mls	r3, r4, r3, r7
+ 636:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 651              		.loc 1 636 15 view .LVU156
+ 652 0082 002B     		cmp	r3, #0
+ 653 0084 DFD0     		beq	.L73
+ 654              	.L65:
+ 642:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if ((object->sfdp_private.DriverInfo.EraseType3Size != 0u)
+ 655              		.loc 1 642 13 is_stmt 1 view .LVU157
+ 642:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if ((object->sfdp_private.DriverInfo.EraseType3Size != 0u)
+ 656              		.loc 1 642 74 is_stmt 0 view .LVU158
+ 657 0086 224B     		ldr	r3, .L80
+ 658 0088 AC22     		movs	r2, #172
+ 659 008a 02FB0633 		mla	r3, r2, r6, r3
+ 660 008e 93F88730 		ldrb	r3, [r3, #135]	@ zero_extendqisi2
+ 642:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if ((object->sfdp_private.DriverInfo.EraseType3Size != 0u)
+ 661              		.loc 1 642 25 view .LVU159
+ 662 0092 0124     		movs	r4, #1
+ 663              	.LVL65:
+ 642:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             if ((object->sfdp_private.DriverInfo.EraseType3Size != 0u)
+ 664              		.loc 1 642 25 view .LVU160
+ 665 0094 9C40     		lsls	r4, r4, r3
+ 666              	.LVL66:
+ 643:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 && (local_size >= sector_size)
+ 667              		.loc 1 643 13 is_stmt 1 view .LVU161
+ 643:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 && (local_size >= sector_size)
+ 668              		.loc 1 643 16 is_stmt 0 view .LVU162
+ 669 0096 23B1     		cbz	r3, .L67
+ 644:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 && ((local_address % sector_size) == 0u))
+ 670              		.loc 1 644 17 view .LVU163
+ 671 0098 A542     		cmp	r5, r4
+ 672 009a 02D3     		bcc	.L67
+ 645:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 673              		.loc 1 645 36 view .LVU164
+ 674 009c 631E     		subs	r3, r4, #1
+ 645:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             {
+ 675              		.loc 1 645 17 view .LVU165
+ 676 009e 3B42     		tst	r3, r7
+ 677 00a0 D3D0     		beq	.L74
+ 678              	.L67:
+ 651:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               if ((object->sfdp_private.DriverInfo.EraseType2Size != 0u)
+ 679              		.loc 1 651 15 is_stmt 1 view .LVU166
+ 651:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               if ((object->sfdp_private.DriverInfo.EraseType2Size != 0u)
+ 680              		.loc 1 651 76 is_stmt 0 view .LVU167
+ 681 00a2 1B4B     		ldr	r3, .L80
+ 682 00a4 AC22     		movs	r2, #172
+ 683 00a6 02FB0633 		mla	r3, r2, r6, r3
+ 684 00aa 93F88530 		ldrb	r3, [r3, #133]	@ zero_extendqisi2
+ 651:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               if ((object->sfdp_private.DriverInfo.EraseType2Size != 0u)
+ 685              		.loc 1 651 27 view .LVU168
+ 686 00ae 0124     		movs	r4, #1
+ 687              	.LVL67:
+ 651:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               if ((object->sfdp_private.DriverInfo.EraseType2Size != 0u)
+ 688              		.loc 1 651 27 view .LVU169
+ 689 00b0 9C40     		lsls	r4, r4, r3
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 28
+
+
+ 690              	.LVL68:
+ 652:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                   && (local_size >= sector_size)
+ 691              		.loc 1 652 15 is_stmt 1 view .LVU170
+ 652:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                   && (local_size >= sector_size)
+ 692              		.loc 1 652 18 is_stmt 0 view .LVU171
+ 693 00b2 23B1     		cbz	r3, .L68
+ 653:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                   && ((local_address % sector_size) == 0u))
+ 694              		.loc 1 653 19 view .LVU172
+ 695 00b4 A542     		cmp	r5, r4
+ 696 00b6 02D3     		bcc	.L68
+ 654:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               {
+ 697              		.loc 1 654 38 view .LVU173
+ 698 00b8 631E     		subs	r3, r4, #1
+ 654:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               {
+ 699              		.loc 1 654 19 view .LVU174
+ 700 00ba 3B42     		tst	r3, r7
+ 701 00bc C7D0     		beq	.L75
+ 702              	.L68:
+ 660:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 if ((object->sfdp_private.DriverInfo.EraseType1Size != 0u)
+ 703              		.loc 1 660 17 is_stmt 1 view .LVU175
+ 660:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 if ((object->sfdp_private.DriverInfo.EraseType1Size != 0u)
+ 704              		.loc 1 660 78 is_stmt 0 view .LVU176
+ 705 00be 144B     		ldr	r3, .L80
+ 706 00c0 AC22     		movs	r2, #172
+ 707 00c2 02FB0633 		mla	r3, r2, r6, r3
+ 708 00c6 93F88330 		ldrb	r3, [r3, #131]	@ zero_extendqisi2
+ 660:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 if ((object->sfdp_private.DriverInfo.EraseType1Size != 0u)
+ 709              		.loc 1 660 29 view .LVU177
+ 710 00ca 0124     		movs	r4, #1
+ 711              	.LVL69:
+ 660:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 if ((object->sfdp_private.DriverInfo.EraseType1Size != 0u)
+ 712              		.loc 1 660 29 view .LVU178
+ 713 00cc 9C40     		lsls	r4, r4, r3
+ 714              	.LVL70:
+ 661:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                     && ((local_address % sector_size) == 0u))
+ 715              		.loc 1 661 17 is_stmt 1 view .LVU179
+ 661:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                     && ((local_address % sector_size) == 0u))
+ 716              		.loc 1 661 20 is_stmt 0 view .LVU180
+ 717 00ce 002B     		cmp	r3, #0
+ 718 00d0 BFD0     		beq	.L76
+ 662:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 {
+ 719              		.loc 1 662 40 view .LVU181
+ 720 00d2 631E     		subs	r3, r4, #1
+ 662:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 {
+ 721              		.loc 1 662 21 view .LVU182
+ 722 00d4 3B42     		tst	r3, r7
+ 723 00d6 12D1     		bne	.L77
+ 664:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 }
+ 724              		.loc 1 664 31 view .LVU183
+ 725 00d8 4A46     		mov	r2, r9
+ 726              	.L66:
+ 727              	.LVL71:
+ 674:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 728              		.loc 1 674 11 is_stmt 1 view .LVU184
+ 674:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 729              		.loc 1 674 14 is_stmt 0 view .LVU185
+ 730 00da B8F1000F 		cmp	r8, #0
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 29
+
+
+ 731 00de BAD1     		bne	.L69
+ 676:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 EXTMEM_DRIVER_NOR_SFDP_SectorErase(&extmem_list_config[MemId].NorSfdpObject,
+ 732              		.loc 1 676 13 is_stmt 1 view .LVU186
+ 677:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                    local_address, sector_type))
+ 733              		.loc 1 677 17 is_stmt 0 view .LVU187
+ 734 00e0 AC20     		movs	r0, #172
+ 735 00e2 06FB00F0 		mul	r0, r6, r0
+ 736 00e6 0830     		adds	r0, r0, #8
+ 737 00e8 094B     		ldr	r3, .L80
+ 738 00ea 1844     		add	r0, r0, r3
+ 739 00ec 3946     		mov	r1, r7
+ 740 00ee 0430     		adds	r0, r0, #4
+ 741 00f0 FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_SectorErase
+ 742              	.LVL72:
+ 676:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 EXTMEM_DRIVER_NOR_SFDP_SectorErase(&extmem_list_config[MemId].NorSfdpObject,
+ 743              		.loc 1 676 16 view .LVU188
+ 744 00f4 0028     		cmp	r0, #0
+ 745 00f6 AED0     		beq	.L69
+ 680:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 746              		.loc 1 680 20 view .LVU189
+ 747 00f8 6FF00208 		mvn	r8, #2
+ 748              	.LVL73:
+ 680:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             }
+ 749              		.loc 1 680 20 view .LVU190
+ 750 00fc ABE7     		b	.L69
+ 751              	.LVL74:
+ 752              	.L77:
+ 668:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 }
+ 753              		.loc 1 668 24 view .LVU191
+ 754 00fe 6FF00308 		mvn	r8, #3
+ 755              	.LVL75:
+ 668:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 }
+ 756              		.loc 1 668 24 view .LVU192
+ 757 0102 A8E7     		b	.L69
+ 758              	.LVL76:
+ 759              	.L71:
+ 668:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                 }
+ 760              		.loc 1 668 24 view .LVU193
+ 761              	.LBE3:
+ 610:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 762              		.loc 1 610 24 view .LVU194
+ 763 0104 6FF00408 		mvn	r8, #4
+ 764 0108 8FE7     		b	.L62
+ 765              	.LVL77:
+ 766              	.L72:
+ 760:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 767              		.loc 1 760 14 view .LVU195
+ 768 010a 6FF00108 		mvn	r8, #1
+ 769 010e 8CE7     		b	.L62
+ 770              	.L81:
+ 771              		.align	2
+ 772              	.L80:
+ 773 0110 00000000 		.word	extmem_list_config
+ 774              		.cfi_endproc
+ 775              	.LFE867:
+ 777              		.section	.text.EXTMEM_EraseAll,"ax",%progbits
+ 778              		.align	1
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 30
+
+
+ 779              		.global	EXTMEM_EraseAll
+ 780              		.syntax unified
+ 781              		.thumb
+ 782              		.thumb_func
+ 784              	EXTMEM_EraseAll:
+ 785              	.LVL78:
+ 786              	.LFB868:
+ 767:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 768:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 769:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Erases all sectors in the external memory.
+ 770:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 771:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ 772:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 773:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_EraseAll(uint32_t MemId)
+ 774:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 787              		.loc 1 774 1 is_stmt 1 view -0
+ 788              		.cfi_startproc
+ 789              		@ args = 0, pretend = 0, frame = 0
+ 790              		@ frame_needed = 0, uses_anonymous_args = 0
+ 775:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 791              		.loc 1 775 3 view .LVU197
+ 776:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 777:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 778:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 779:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 792              		.loc 1 779 3 view .LVU198
+ 793              		.loc 1 779 6 is_stmt 0 view .LVU199
+ 794 0000 0128     		cmp	r0, #1
+ 795 0002 19D8     		bhi	.L85
+ 774:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 796              		.loc 1 774 1 view .LVU200
+ 797 0004 08B5     		push	{r3, lr}
+ 798              	.LCFI14:
+ 799              		.cfi_def_cfa_offset 8
+ 800              		.cfi_offset 3, -8
+ 801              		.cfi_offset 14, -4
+ 780:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ 781:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 802              		.loc 1 781 5 is_stmt 1 view .LVU201
+ 803              	.LVL79:
+ 782:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 783:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 784:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 804              		.loc 1 784 5 view .LVU202
+ 805              		.loc 1 784 38 is_stmt 0 view .LVU203
+ 806 0006 AC23     		movs	r3, #172
+ 807 0008 00FB03F3 		mul	r3, r0, r3
+ 808 000c 0D4A     		ldr	r2, .L92
+ 809 000e D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 810              		.loc 1 784 5 view .LVU204
+ 811 0010 23B1     		cbz	r3, .L84
+ 812 0012 022B     		cmp	r3, #2
+ 813 0014 13D1     		bne	.L86
+ 814 0016 4FF0FF30 		mov	r0, #-1
+ 815              	.LVL80:
+ 816              	.L83:
+ 785:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 31
+
+
+ 786:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 787:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 788:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 789:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Mass Erase operation using the NOR SFDP driver */
+ 790:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_NOR_SFDP_OK != EXTMEM_DRIVER_NOR_SFDP_MassErase(&extmem_list_config[MemId
+ 791:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 792:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 793:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 794:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 795:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 796:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 797:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+ 798:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD:
+ 799:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 800:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Mass Erase operation using the SD CARD driver */
+ 801:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_SDCARD_OK != EXTMEM_DRIVER_SDCARD_Erase(&extmem_list_config[MemId].SdCard
+ 802:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 803:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 804:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 805:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 806:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 807:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+ 808:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 809:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM:
+ 810:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 811:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 812:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 813:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 814:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+ 815:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+ 816:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+ 817:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 818:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Mass Erase operation using the CUSTOM driver */
+ 819:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRV_CUSTOM_OK != EXTMEM_DRIVER_CUSTOM_MassErase(&extmem_list_config[MemId].Custo
+ 820:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 821:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 822:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 823:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 824:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 825:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+ 826:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+ 827:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+ 828:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 829:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Mass Erase operation using the USER driver */
+ 830:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_USER_StatusTypeDef status = EXTMEM_DRIVER_USER_MassErase(&extmem_list_config[
+ 831:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         switch (status)
+ 832:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 833:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_NOTSUPPORTED:
+ 834:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 835:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 836:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_OK:
+ 837:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 838:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           default:
+ 839:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_DRIVER;
+ 840:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+ 841:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 842:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 32
+
+
+ 843:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 844:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+ 845:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+ 846:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+ 847:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 848:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+ 849:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+ 850:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 851:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 852:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+ 853:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+ 854:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+ 817              		.loc 1 854 3 is_stmt 1 view .LVU205
+ 855:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 818              		.loc 1 855 1 is_stmt 0 view .LVU206
+ 819 001a 08BD     		pop	{r3, pc}
+ 820              	.LVL81:
+ 821              	.L84:
+ 790:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 822              		.loc 1 790 9 is_stmt 1 view .LVU207
+ 790:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 823              		.loc 1 790 42 is_stmt 0 view .LVU208
+ 824 001c AC23     		movs	r3, #172
+ 825 001e 03FB00F0 		mul	r0, r3, r0
+ 826              	.LVL82:
+ 790:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 827              		.loc 1 790 42 view .LVU209
+ 828 0022 0830     		adds	r0, r0, #8
+ 829 0024 074B     		ldr	r3, .L92
+ 830 0026 1844     		add	r0, r0, r3
+ 831 0028 0430     		adds	r0, r0, #4
+ 832 002a FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_MassErase
+ 833              	.LVL83:
+ 790:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 834              		.loc 1 790 12 discriminator 1 view .LVU210
+ 835 002e 0028     		cmp	r0, #0
+ 836 0030 F3D0     		beq	.L83
+ 792:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 837              		.loc 1 792 16 view .LVU211
+ 838 0032 6FF00200 		mvn	r0, #2
+ 839 0036 F0E7     		b	.L83
+ 840              	.LVL84:
+ 841              	.L85:
+ 842              	.LCFI15:
+ 843              		.cfi_def_cfa_offset 0
+ 844              		.cfi_restore 3
+ 845              		.cfi_restore 14
+ 775:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 846              		.loc 1 775 24 view .LVU212
+ 847 0038 6FF00400 		mvn	r0, #4
+ 848              	.LVL85:
+ 854:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 849              		.loc 1 854 3 is_stmt 1 view .LVU213
+ 850              		.loc 1 855 1 is_stmt 0 view .LVU214
+ 851 003c 7047     		bx	lr
+ 852              	.LVL86:
+ 853              	.L86:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 33
+
+
+ 854              	.LCFI16:
+ 855              		.cfi_def_cfa_offset 8
+ 856              		.cfi_offset 3, -8
+ 857              		.cfi_offset 14, -4
+ 849:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 858              		.loc 1 849 14 view .LVU215
+ 859 003e 6FF00100 		mvn	r0, #1
+ 860              	.LVL87:
+ 849:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 861              		.loc 1 849 14 view .LVU216
+ 862 0042 EAE7     		b	.L83
+ 863              	.L93:
+ 864              		.align	2
+ 865              	.L92:
+ 866 0044 00000000 		.word	extmem_list_config
+ 867              		.cfi_endproc
+ 868              	.LFE868:
+ 870              		.section	.text.EXTMEM_GetInfo,"ax",%progbits
+ 871              		.align	1
+ 872              		.global	EXTMEM_GetInfo
+ 873              		.syntax unified
+ 874              		.thumb
+ 875              		.thumb_func
+ 877              	EXTMEM_GetInfo:
+ 878              	.LVL88:
+ 879              	.LFB869:
+ 856:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 857:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 858:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Returns information about the external memory.
+ 859:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 860:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param Info Pointer to structure to receive memory information.
+ 861:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ 862:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 863:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_GetInfo(uint32_t MemId, void *Info)
+ 864:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 880              		.loc 1 864 1 is_stmt 1 view -0
+ 881              		.cfi_startproc
+ 882              		@ args = 0, pretend = 0, frame = 0
+ 883              		@ frame_needed = 0, uses_anonymous_args = 0
+ 865:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 884              		.loc 1 865 3 view .LVU218
+ 866:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 867:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 868:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 869:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 885              		.loc 1 869 3 view .LVU219
+ 886              		.loc 1 869 6 is_stmt 0 view .LVU220
+ 887 0000 0128     		cmp	r0, #1
+ 888 0002 16D8     		bhi	.L97
+ 864:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 889              		.loc 1 864 1 view .LVU221
+ 890 0004 08B5     		push	{r3, lr}
+ 891              	.LCFI17:
+ 892              		.cfi_def_cfa_offset 8
+ 893              		.cfi_offset 3, -8
+ 894              		.cfi_offset 14, -4
+ 870:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 34
+
+
+ 871:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 895              		.loc 1 871 5 is_stmt 1 view .LVU222
+ 896              	.LVL89:
+ 872:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 873:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 874:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 897              		.loc 1 874 5 view .LVU223
+ 898              		.loc 1 874 38 is_stmt 0 view .LVU224
+ 899 0006 AC23     		movs	r3, #172
+ 900 0008 00FB03F3 		mul	r3, r0, r3
+ 901 000c 0C4A     		ldr	r2, .L103
+ 902 000e D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 903              		.loc 1 874 5 view .LVU225
+ 904 0010 23B1     		cbz	r3, .L96
+ 905 0012 022B     		cmp	r3, #2
+ 906 0014 10D1     		bne	.L98
+ 907 0016 4FF0FF30 		mov	r0, #-1
+ 908              	.LVL90:
+ 909              		.loc 1 874 5 view .LVU226
+ 910 001a 09E0     		b	.L95
+ 911              	.LVL91:
+ 912              	.L96:
+ 875:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 876:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 877:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 878:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 879:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Get Information operation using the NOR SFDP driver */
+ 880:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_NOR_SFDP_GetFlashInfo(&extmem_list_config[MemId].NorSfdpObject,
+ 913              		.loc 1 880 9 is_stmt 1 view .LVU227
+ 914 001c AC23     		movs	r3, #172
+ 915 001e 03FB00F0 		mul	r0, r3, r0
+ 916              	.LVL92:
+ 917              		.loc 1 880 9 is_stmt 0 view .LVU228
+ 918 0022 0830     		adds	r0, r0, #8
+ 919 0024 064B     		ldr	r3, .L103
+ 920 0026 1844     		add	r0, r0, r3
+ 921 0028 0430     		adds	r0, r0, #4
+ 922 002a FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_GetFlashInfo
+ 923              	.LVL93:
+ 881:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                             (EXTMEM_NOR_SFDP_FlashInfoTypeDef *)Info);
+ 882:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 924              		.loc 1 882 9 is_stmt 1 view .LVU229
+ 871:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 925              		.loc 1 871 10 is_stmt 0 view .LVU230
+ 926 002e 0020     		movs	r0, #0
+ 927              	.L95:
+ 928              	.LVL94:
+ 883:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 884:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 885:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+ 886:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD :
+ 887:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 888:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Get Information operation using the SDCARD driver */
+ 889:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_SDCARD_OK != EXTMEM_DRIVER_SDCARD_GetInfo(&extmem_list_config[MemId].SdCa
+ 890:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                     (EXTMEM_DRIVER_SDCARD_InfoTypeD
+ 891:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 892:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 35
+
+
+ 893:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 894:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 895:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 896:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+ 897:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+ 898:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+ 899:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 900:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Get Information operation using the CUSTOM driver */
+ 901:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRV_CUSTOM_OK != EXTMEM_DRIVER_CUSTOM_GetInfo(&extmem_list_config[MemId].CustomO
+ 902:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                  (EXTMEM_DRIVER_CUSTOM_MemInfoTypeD
+ 903:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 904:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 905:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 906:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 907:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 908:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+ 909:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+ 910:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+ 911:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 912:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Get Information operation using the USER driver */
+ 913:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRIVER_USER_OK != EXTMEM_DRIVER_USER_GetInfo(&extmem_list_config[MemId].UserObje
+ 914:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                 (EXTMEM_USER_MemInfoTypeDef *)Info)
+ 915:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 916:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 917:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 918:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 919:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 920:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+ 921:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 922:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM :
+ 923:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Functionality not supported in this driver */
+ 924:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+ 925:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 926:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+ 927:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+ 928:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+ 929:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 930:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+ 931:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+ 932:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 933:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 934:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+ 935:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+ 936:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+ 929              		.loc 1 936 3 is_stmt 1 view .LVU231
+ 937:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 930              		.loc 1 937 1 is_stmt 0 view .LVU232
+ 931 0030 08BD     		pop	{r3, pc}
+ 932              	.LVL95:
+ 933              	.L97:
+ 934              	.LCFI18:
+ 935              		.cfi_def_cfa_offset 0
+ 936              		.cfi_restore 3
+ 937              		.cfi_restore 14
+ 865:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL()
+ 938              		.loc 1 865 24 view .LVU233
+ 939 0032 6FF00400 		mvn	r0, #4
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 36
+
+
+ 940              	.LVL96:
+ 936:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 941              		.loc 1 936 3 is_stmt 1 view .LVU234
+ 942              		.loc 1 937 1 is_stmt 0 view .LVU235
+ 943 0036 7047     		bx	lr
+ 944              	.LVL97:
+ 945              	.L98:
+ 946              	.LCFI19:
+ 947              		.cfi_def_cfa_offset 8
+ 948              		.cfi_offset 3, -8
+ 949              		.cfi_offset 14, -4
+ 931:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 950              		.loc 1 931 14 view .LVU236
+ 951 0038 6FF00100 		mvn	r0, #1
+ 952              	.LVL98:
+ 931:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 953              		.loc 1 931 14 view .LVU237
+ 954 003c F8E7     		b	.L95
+ 955              	.L104:
+ 956 003e 00BF     		.align	2
+ 957              	.L103:
+ 958 0040 00000000 		.word	extmem_list_config
+ 959              		.cfi_endproc
+ 960              	.LFE869:
+ 962              		.section	.text.EXTMEM_MemoryMappedMode,"ax",%progbits
+ 963              		.align	1
+ 964              		.global	EXTMEM_MemoryMappedMode
+ 965              		.syntax unified
+ 966              		.thumb
+ 967              		.thumb_func
+ 969              	EXTMEM_MemoryMappedMode:
+ 970              	.LVL99:
+ 971              	.LFB870:
+ 938:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 939:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+ 940:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Enables or disables the memory mapped mode.
+ 941:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+ 942:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param State Enable or disable state (@ref EXTMEM_StateTypeDef).
+ 943:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+ 944:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+ 945:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_MemoryMappedMode(uint32_t MemId, EXTMEM_StateTypeDef State)
+ 946:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 972              		.loc 1 946 1 is_stmt 1 view -0
+ 973              		.cfi_startproc
+ 974              		@ args = 0, pretend = 0, frame = 0
+ 975              		@ frame_needed = 0, uses_anonymous_args = 0
+ 947:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 976              		.loc 1 947 3 view .LVU239
+ 948:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+ 977              		.loc 1 948 21 view .LVU240
+ 949:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 950:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+ 951:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 978              		.loc 1 951 3 view .LVU241
+ 979              		.loc 1 951 6 is_stmt 0 view .LVU242
+ 980 0000 0128     		cmp	r0, #1
+ 981 0002 45D8     		bhi	.L111
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 37
+
+
+ 946:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 982              		.loc 1 946 1 view .LVU243
+ 983 0004 08B5     		push	{r3, lr}
+ 984              	.LCFI20:
+ 985              		.cfi_def_cfa_offset 8
+ 986              		.cfi_offset 3, -8
+ 987              		.cfi_offset 14, -4
+ 952:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+ 953:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 988              		.loc 1 953 5 is_stmt 1 view .LVU244
+ 989              	.LVL100:
+ 954:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 955:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+ 956:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 990              		.loc 1 956 5 view .LVU245
+ 991              		.loc 1 956 38 is_stmt 0 view .LVU246
+ 992 0006 AC23     		movs	r3, #172
+ 993 0008 00FB03F3 		mul	r3, r0, r3
+ 994 000c 224A     		ldr	r2, .L120
+ 995 000e D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 996              		.loc 1 956 5 view .LVU247
+ 997 0010 23B1     		cbz	r3, .L107
+ 998 0012 022B     		cmp	r3, #2
+ 999 0014 1FD0     		beq	.L108
+ 1000 0016 6FF00100 		mvn	r0, #1
+ 1001              	.LVL101:
+ 1002              	.L106:
+ 957:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 958:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1
+ 959:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+ 960:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 961:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the memory Map operation using the NOR SFDP driver */
+ 962:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_ENABLE == State)
+ 963:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 964:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* Start the memory mapped mode */
+ 965:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if (EXTMEM_DRIVER_NOR_SFDP_OK !=
+ 966:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode(&extmem_list_config[MemId].NorSfdpObje
+ 967:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 968:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             return EXTMEM_ERROR_DRIVER;
+ 969:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 970:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 971:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         else
+ 972:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 973:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* Stop the memory mapped mode */
+ 974:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if (EXTMEM_DRIVER_NOR_SFDP_OK !=
+ 975:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode(&extmem_list_config[MemId].NorSfdpObj
+ 976:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 977:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             return EXTMEM_ERROR_DRIVER;
+ 978:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 979:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 980:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+ 981:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+ 982:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 */
+ 983:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_PSRAM == 1
+ 984:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM :
+ 985:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+ 986:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the memory Map operation using the PSRAM driver */
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 38
+
+
+ 987:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_ENABLE == State)
+ 988:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 989:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* Start the memory mapped mode */
+ 990:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if (EXTMEM_DRIVER_PSRAM_OK !=
+ 991:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode(&extmem_list_config[MemId].PsramObject))
+ 992:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 993:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             return EXTMEM_ERROR_DRIVER;
+ 994:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 995:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 996:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         else
+ 997:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 998:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* Stop the memory mapped mode */
+ 999:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if (EXTMEM_DRIVER_PSRAM_OK !=
+1000:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode(&extmem_list_config[MemId].PsramObject))
+1001:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+1002:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             return EXTMEM_ERROR_DRIVER;
+1003:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+1004:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1005:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1006:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1007:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_PSRAM == 1 */
+1008:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+1009:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM :
+1010:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+1011:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the memory Map operation using the CUSTOM driver */
+1012:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_ENABLE == State)
+1013:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1014:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* Start the memory mapped mode */
+1015:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if (EXTMEM_DRV_CUSTOM_OK !=
+1016:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_CUSTOM_Enable_MemoryMappedMode(&extmem_list_config[MemId].CustomObject)
+1017:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+1018:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             return EXTMEM_ERROR_DRIVER;
+1019:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+1020:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1021:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         else
+1022:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1023:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* Stop the memory mapped mode */
+1024:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           if (EXTMEM_DRV_CUSTOM_OK !=
+1025:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_CUSTOM_Disable_MemoryMappedMode(&extmem_list_config[MemId].CustomObject
+1026:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+1027:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             return EXTMEM_ERROR_DRIVER;
+1028:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+1029:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1030:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1031:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1032:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+1033:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+1034:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER :
+1035:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+1036:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the memory Map operation using the USER driver */
+1037:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DRIVER_USER_StatusTypeDef status;
+1038:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_ENABLE == State)
+1039:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1040:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* Start the memory mapped mode */
+1041:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           status = EXTMEM_DRIVER_USER_Enable_MemoryMappedMode(&extmem_list_config[MemId].UserObject
+1042:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1043:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         else
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 39
+
+
+1044:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1045:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           /* Stop the memory mapped mode */
+1046:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           status = EXTMEM_DRIVER_USER_Disable_MemoryMappedMode(&extmem_list_config[MemId].UserObjec
+1047:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1048:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         switch (status)
+1049:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1050:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_NOTSUPPORTED:
+1051:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_NOTSUPPORTED;
+1052:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+1053:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_OK:
+1054:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+1055:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           default:
+1056:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_DRIVER;
+1057:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+1058:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1059:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1060:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1061:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+1062:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+1063:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD :
+1064:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Functionality not supported in this driver */
+1065:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+1066:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1067:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+1068:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+1069:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default:
+1070:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+1071:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+1072:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+1073:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1074:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1075:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+1076:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+1077:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+1078:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 1003              		.loc 1 1078 1 view .LVU248
+ 1004 001a 08BD     		pop	{r3, pc}
+ 1005              	.LVL102:
+ 1006              	.L107:
+ 962:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 1007              		.loc 1 962 9 is_stmt 1 view .LVU249
+ 962:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 1008              		.loc 1 962 12 is_stmt 0 view .LVU250
+ 1009 001c 69B9     		cbnz	r1, .L109
+ 965:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode(&extmem_list_config[MemId].NorSfdpObje
+ 1010              		.loc 1 965 11 is_stmt 1 view .LVU251
+ 966:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 1011              		.loc 1 966 15 is_stmt 0 view .LVU252
+ 1012 001e AC23     		movs	r3, #172
+ 1013 0020 03FB00F0 		mul	r0, r3, r0
+ 1014              	.LVL103:
+ 966:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 1015              		.loc 1 966 15 view .LVU253
+ 1016 0024 0830     		adds	r0, r0, #8
+ 1017 0026 1C4B     		ldr	r3, .L120
+ 1018 0028 1844     		add	r0, r0, r3
+ 1019 002a 0430     		adds	r0, r0, #4
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 40
+
+
+ 1020 002c FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode
+ 1021              	.LVL104:
+ 965:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode(&extmem_list_config[MemId].NorSfdpObje
+ 1022              		.loc 1 965 14 view .LVU254
+ 1023 0030 0028     		cmp	r0, #0
+ 1024 0032 F2D0     		beq	.L106
+ 968:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 1025              		.loc 1 968 20 view .LVU255
+ 1026 0034 6FF00200 		mvn	r0, #2
+ 1027 0038 EFE7     		b	.L106
+ 1028              	.LVL105:
+ 1029              	.L109:
+ 974:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode(&extmem_list_config[MemId].NorSfdpObj
+ 1030              		.loc 1 974 11 is_stmt 1 view .LVU256
+ 975:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 1031              		.loc 1 975 15 is_stmt 0 view .LVU257
+ 1032 003a AC23     		movs	r3, #172
+ 1033 003c 03FB00F0 		mul	r0, r3, r0
+ 1034              	.LVL106:
+ 975:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 1035              		.loc 1 975 15 view .LVU258
+ 1036 0040 0830     		adds	r0, r0, #8
+ 1037 0042 154B     		ldr	r3, .L120
+ 1038 0044 1844     		add	r0, r0, r3
+ 1039 0046 0430     		adds	r0, r0, #4
+ 1040 0048 FFF7FEFF 		bl	EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode
+ 1041              	.LVL107:
+ 974:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode(&extmem_list_config[MemId].NorSfdpObj
+ 1042              		.loc 1 974 14 view .LVU259
+ 1043 004c 0028     		cmp	r0, #0
+ 1044 004e E4D0     		beq	.L106
+ 977:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 1045              		.loc 1 977 20 view .LVU260
+ 1046 0050 6FF00200 		mvn	r0, #2
+ 1047 0054 E1E7     		b	.L106
+ 1048              	.LVL108:
+ 1049              	.L108:
+ 987:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 1050              		.loc 1 987 9 is_stmt 1 view .LVU261
+ 987:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+ 1051              		.loc 1 987 12 is_stmt 0 view .LVU262
+ 1052 0056 69B9     		cbnz	r1, .L110
+ 990:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode(&extmem_list_config[MemId].PsramObject))
+ 1053              		.loc 1 990 11 is_stmt 1 view .LVU263
+ 991:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 1054              		.loc 1 991 15 is_stmt 0 view .LVU264
+ 1055 0058 AC23     		movs	r3, #172
+ 1056 005a 03FB00F0 		mul	r0, r3, r0
+ 1057              	.LVL109:
+ 991:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 1058              		.loc 1 991 15 view .LVU265
+ 1059 005e 0830     		adds	r0, r0, #8
+ 1060 0060 0D4B     		ldr	r3, .L120
+ 1061 0062 1844     		add	r0, r0, r3
+ 1062 0064 0430     		adds	r0, r0, #4
+ 1063 0066 FFF7FEFF 		bl	EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode
+ 1064              	.LVL110:
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 41
+
+
+ 990:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode(&extmem_list_config[MemId].PsramObject))
+ 1065              		.loc 1 990 14 view .LVU266
+ 1066 006a 0028     		cmp	r0, #0
+ 1067 006c D5D0     		beq	.L106
+ 993:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 1068              		.loc 1 993 20 view .LVU267
+ 1069 006e 6FF00200 		mvn	r0, #2
+ 1070 0072 D2E7     		b	.L106
+ 1071              	.LVL111:
+ 1072              	.L110:
+ 999:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode(&extmem_list_config[MemId].PsramObject))
+ 1073              		.loc 1 999 11 is_stmt 1 view .LVU268
+1000:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 1074              		.loc 1 1000 15 is_stmt 0 view .LVU269
+ 1075 0074 AC23     		movs	r3, #172
+ 1076 0076 03FB00F0 		mul	r0, r3, r0
+ 1077              	.LVL112:
+1000:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           {
+ 1078              		.loc 1 1000 15 view .LVU270
+ 1079 007a 0830     		adds	r0, r0, #8
+ 1080 007c 064B     		ldr	r3, .L120
+ 1081 007e 1844     		add	r0, r0, r3
+ 1082 0080 0430     		adds	r0, r0, #4
+ 1083 0082 FFF7FEFF 		bl	EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode
+ 1084              	.LVL113:
+ 999:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****               EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode(&extmem_list_config[MemId].PsramObject))
+ 1085              		.loc 1 999 14 view .LVU271
+ 1086 0086 0028     		cmp	r0, #0
+ 1087 0088 C7D0     		beq	.L106
+1002:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           }
+ 1088              		.loc 1 1002 20 view .LVU272
+ 1089 008a 6FF00200 		mvn	r0, #2
+ 1090 008e C4E7     		b	.L106
+ 1091              	.LVL114:
+ 1092              	.L111:
+ 1093              	.LCFI21:
+ 1094              		.cfi_def_cfa_offset 0
+ 1095              		.cfi_restore 3
+ 1096              		.cfi_restore 14
+ 947:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+ 1097              		.loc 1 947 24 view .LVU273
+ 1098 0090 6FF00400 		mvn	r0, #4
+ 1099              	.LVL115:
+ 1100              		.loc 1 1078 1 view .LVU274
+ 1101 0094 7047     		bx	lr
+ 1102              	.L121:
+ 1103 0096 00BF     		.align	2
+ 1104              	.L120:
+ 1105 0098 00000000 		.word	extmem_list_config
+ 1106              		.cfi_endproc
+ 1107              	.LFE870:
+ 1109              		.section	.text.EXTMEM_GetMapAddress,"ax",%progbits
+ 1110              		.align	1
+ 1111              		.global	EXTMEM_GetMapAddress
+ 1112              		.syntax unified
+ 1113              		.thumb
+ 1114              		.thumb_func
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 42
+
+
+ 1116              	EXTMEM_GetMapAddress:
+ 1117              	.LVL116:
+ 1118              	.LFB871:
+1079:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+1080:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** /**
+1081:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @brief Gets the base address of the mapped external memory.
+1082:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param MemId Memory identifier.
+1083:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @param BaseAddress Pointer to variable to receive the base address.
+1084:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   * @retval EXTMEM_StatusTypeDef Status of the operation.
+1085:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   */
+1086:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** EXTMEM_StatusTypeDef EXTMEM_GetMapAddress(uint32_t MemId, uint32_t *BaseAddress)
+1087:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** {
+ 1119              		.loc 1 1087 1 is_stmt 1 view -0
+ 1120              		.cfi_startproc
+ 1121              		@ args = 0, pretend = 0, frame = 0
+ 1122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1123              		@ link register save eliminated.
+1088:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_StatusTypeDef retr = EXTMEM_ERROR_INVALID_ID;
+ 1124              		.loc 1 1088 3 view .LVU276
+1089:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+ 1125              		.loc 1 1089 21 view .LVU277
+1090:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+1091:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   /* Check the memory ID */
+1092:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   if (MemId < (sizeof(extmem_list_config) / sizeof(EXTMEM_DefinitionTypeDef)))
+ 1126              		.loc 1 1092 3 view .LVU278
+ 1127              		.loc 1 1092 6 is_stmt 0 view .LVU279
+ 1128 0000 0128     		cmp	r0, #1
+ 1129 0002 25D8     		bhi	.L127
+1093:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   {
+1094:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     retr = EXTMEM_OK;
+ 1130              		.loc 1 1094 5 is_stmt 1 view .LVU280
+ 1131              	.LVL117:
+1095:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+1096:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     /* Check type of EXTMEM driver used to access memory */
+1097:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     switch (extmem_list_config[MemId].MemType)
+ 1132              		.loc 1 1097 5 view .LVU281
+ 1133              		.loc 1 1097 38 is_stmt 0 view .LVU282
+ 1134 0004 AC23     		movs	r3, #172
+ 1135 0006 00FB03F3 		mul	r3, r0, r3
+ 1136 000a 164A     		ldr	r2, .L132
+ 1137 000c D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 1138              		.loc 1 1097 5 view .LVU283
+ 1139 000e 0BB1     		cbz	r3, .L124
+ 1140 0010 022B     		cmp	r3, #2
+ 1141 0012 20D1     		bne	.L128
+ 1142              	.L124:
+1098:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+1099:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_NOR_SFDP == 1 || EXTMEM_DRIVER_PSRAM == 1
+1100:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_PSRAM:
+1101:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_NOR_SFDP:
+1102:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+1103:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Define Map address based on Instance used for memory access */
+1104:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if defined(XSPI1)
+1105:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (((XSPI_HandleTypeDef *)extmem_list_config[MemId].Handle)->Instance == XSPI1)
+ 1143              		.loc 1 1105 9 is_stmt 1 view .LVU284
+ 1144              		.loc 1 1105 61 is_stmt 0 view .LVU285
+ 1145 0014 134B     		ldr	r3, .L132
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 43
+
+
+ 1146 0016 AC22     		movs	r2, #172
+ 1147 0018 02FB0033 		mla	r3, r2, r0, r3
+ 1148 001c 5B68     		ldr	r3, [r3, #4]
+ 1149              		.loc 1 1105 69 view .LVU286
+ 1150 001e 1B68     		ldr	r3, [r3]
+ 1151              		.loc 1 1105 12 view .LVU287
+ 1152 0020 114A     		ldr	r2, .L132+4
+ 1153 0022 9342     		cmp	r3, r2
+ 1154 0024 0AD0     		beq	.L130
+1106:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1107:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           *BaseAddress = XSPI1_BASE;
+1108:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1109:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if defined(XSPI2)
+1110:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         else if (((XSPI_HandleTypeDef *)extmem_list_config[MemId].Handle)->Instance == XSPI2)
+ 1155              		.loc 1 1110 14 is_stmt 1 view .LVU288
+ 1156              		.loc 1 1110 17 is_stmt 0 view .LVU289
+ 1157 0026 114A     		ldr	r2, .L132+8
+ 1158 0028 9342     		cmp	r3, r2
+ 1159 002a 0CD0     		beq	.L131
+1111:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1112:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           *BaseAddress = XSPI2_BASE;
+1113:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1114:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if defined(XSPI3)
+1115:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         else if (((XSPI_HandleTypeDef *)extmem_list_config[MemId].Handle)->Instance == XSPI3)
+ 1160              		.loc 1 1115 14 is_stmt 1 view .LVU290
+ 1161              		.loc 1 1115 17 is_stmt 0 view .LVU291
+ 1162 002c 104A     		ldr	r2, .L132+12
+ 1163 002e 9342     		cmp	r3, r2
+ 1164 0030 14D1     		bne	.L129
+1116:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1117:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           *BaseAddress = XSPI3_BASE;
+ 1165              		.loc 1 1117 11 is_stmt 1 view .LVU292
+ 1166              		.loc 1 1117 24 is_stmt 0 view .LVU293
+ 1167 0032 4FF00043 		mov	r3, #-2147483648
+ 1168 0036 0B60     		str	r3, [r1]
+1094:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 1169              		.loc 1 1094 10 view .LVU294
+ 1170 0038 0020     		movs	r0, #0
+ 1171              	.LVL118:
+1094:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 1172              		.loc 1 1094 10 view .LVU295
+ 1173 003a 7047     		bx	lr
+ 1174              	.LVL119:
+ 1175              	.L130:
+1107:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 1176              		.loc 1 1107 11 is_stmt 1 view .LVU296
+1107:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 1177              		.loc 1 1107 24 is_stmt 0 view .LVU297
+ 1178 003c 4FF01043 		mov	r3, #-1879048192
+ 1179 0040 0B60     		str	r3, [r1]
+1094:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 1180              		.loc 1 1094 10 view .LVU298
+ 1181 0042 0020     		movs	r0, #0
+ 1182              	.LVL120:
+1094:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 1183              		.loc 1 1094 10 view .LVU299
+ 1184 0044 7047     		bx	lr
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 44
+
+
+ 1185              	.LVL121:
+ 1186              	.L131:
+1112:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 1187              		.loc 1 1112 11 is_stmt 1 view .LVU300
+1112:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+ 1188              		.loc 1 1112 24 is_stmt 0 view .LVU301
+ 1189 0046 4FF0E043 		mov	r3, #1879048192
+ 1190 004a 0B60     		str	r3, [r1]
+1094:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 1191              		.loc 1 1094 10 view .LVU302
+ 1192 004c 0020     		movs	r0, #0
+ 1193              	.LVL122:
+1094:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+ 1194              		.loc 1 1094 10 view .LVU303
+ 1195 004e 7047     		bx	lr
+ 1196              	.LVL123:
+ 1197              	.L127:
+1088:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+ 1198              		.loc 1 1088 24 view .LVU304
+ 1199 0050 6FF00400 		mvn	r0, #4
+ 1200              	.LVL124:
+1088:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   EXTMEM_FUNC_CALL();
+ 1201              		.loc 1 1088 24 view .LVU305
+ 1202 0054 7047     		bx	lr
+ 1203              	.LVL125:
+ 1204              	.L128:
+1097:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 1205              		.loc 1 1097 5 view .LVU306
+ 1206 0056 6FF00100 		mvn	r0, #1
+ 1207              	.LVL126:
+1097:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     {
+ 1208              		.loc 1 1097 5 view .LVU307
+ 1209 005a 7047     		bx	lr
+ 1210              	.LVL127:
+ 1211              	.L129:
+1118:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1119:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* XSPI3 */
+1120:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* XSPI2 */
+1121:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #else  /* XSPI1 */
+1122:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (((XSPI_HandleTypeDef *)extmem_list_config[MemId].Handle)->Instance == OCTOSPI1)
+1123:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1124:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           *BaseAddress = OCTOSPI1_BASE;
+1125:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1126:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif  /* XSPI1 */
+1127:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         else
+1128:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1129:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+ 1212              		.loc 1 1129 16 view .LVU308
+ 1213 005c 6FF00200 		mvn	r0, #2
+ 1214              	.LVL128:
+1130:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1131:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** 
+1132:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1133:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1134:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_NOR_SFDP == 1 || EXTMEM_DRIVER_PSRAM == 1 */
+1135:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_SDCARD == 1
+1136:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_SDCARD :
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 45
+
+
+1137:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+1138:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_NOTSUPPORTED;
+1139:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1140:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1141:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_SDCARD == 1 */
+1142:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_CUSTOM == 1
+1143:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_CUSTOM:
+1144:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+1145:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Get Map Address operation using the CUSTOM driver */
+1146:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         if (EXTMEM_DRV_CUSTOM_OK != EXTMEM_DRIVER_CUSTOM_GetMapAddress(&extmem_list_config[MemId].C
+1147:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****                                                                        BaseAddress))
+1148:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1149:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           retr = EXTMEM_ERROR_DRIVER;
+1150:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1151:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1152:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1153:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_CUSTOM == 1 */
+1154:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #if EXTMEM_DRIVER_USER == 1
+1155:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       case EXTMEM_USER:
+1156:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+1157:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         /* Perform the Get Map Address operation using the USER driver */
+1158:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         switch (EXTMEM_DRIVER_USER_GetMapAddress(&extmem_list_config[MemId].UserObject, BaseAddress
+1159:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         {
+1160:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_OK:
+1161:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+1162:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           case EXTMEM_DRIVER_USER_NOTSUPPORTED:
+1163:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_NOTSUPPORTED;
+1164:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+1165:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****           default :
+1166:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             retr = EXTMEM_ERROR_DRIVER;
+1167:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****             break;
+1168:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         }
+1169:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1170:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1171:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** #endif /* EXTMEM_DRIVER_USER == 1 */
+1172:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       /* Unknown type of EXTMEM driver */
+1173:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       default :
+1174:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       {
+1175:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         EXTMEM_DEBUG("\terror : unknown memory type\n");
+1176:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         retr = EXTMEM_ERROR_UNKNOWNMEMORY;
+1177:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****         break;
+1178:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****       }
+1179:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****     }
+1180:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   }
+1181:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c ****   return retr;
+ 1215              		.loc 1 1181 3 is_stmt 1 view .LVU309
+1182:../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c **** }
+ 1216              		.loc 1 1182 1 is_stmt 0 view .LVU310
+ 1217 0060 7047     		bx	lr
+ 1218              	.L133:
+ 1219 0062 00BF     		.align	2
+ 1220              	.L132:
+ 1221 0064 00000000 		.word	extmem_list_config
+ 1222 0068 00500258 		.word	1476546560
+ 1223 006c 00A00258 		.word	1476567040
+ 1224 0070 00D00258 		.word	1476579328
+ 1225              		.cfi_endproc
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 46
+
+
+ 1226              	.LFE871:
+ 1228              		.global	extmem_list_config
+ 1229              		.section	.bss.extmem_list_config,"aw",%nobits
+ 1230              		.align	2
+ 1233              	extmem_list_config:
+ 1234 0000 00000000 		.space	344
+ 1234      00000000 
+ 1234      00000000 
+ 1234      00000000 
+ 1234      00000000 
+ 1235              		.text
+ 1236              	.Letext0:
+ 1237              		.file 2 "C:\\ST\\STM32CubeIDE_2.0.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 1238              		.file 3 "C:\\ST\\STM32CubeIDE_2.0.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 1239              		.file 4 "../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.h"
+ 1240              		.file 5 "../../Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n657xx.h"
+ 1241              		.file 6 "../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h"
+ 1242              		.file 7 "../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dma.h"
+ 1243              		.file 8 "../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dma_ex.h"
+ 1244              		.file 9 "../../Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h"
+ 1245              		.file 10 "../../Middlewares/ST/STM32_ExtMem_Manager/sal/stm32_sal_xspi_type.h"
+ 1246              		.file 11 "../../Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver_type.h"
+ 1247              		.file 12 "../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver_type.h"
+ 1248              		.file 13 "../../Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem_type.h"
+ 1249              		.file 14 "../../Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver_api.h"
+ 1250              		.file 15 "../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver_api.h"
+ 1251              		.file 16 "../../FSBL/Core/Inc/stm32_extmem_conf.h"
+ARM GAS  C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s 			page 47
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32_extmem.c
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:26     .text.EXTMEM_Init:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:32     .text.EXTMEM_Init:00000000 EXTMEM_Init
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:133    .text.EXTMEM_Init:0000006c $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:1233   .bss.extmem_list_config:00000000 extmem_list_config
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:138    .text.EXTMEM_DeInit:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:144    .text.EXTMEM_DeInit:00000000 EXTMEM_DeInit
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:235    .text.EXTMEM_DeInit:00000050 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:240    .text.EXTMEM_Read:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:246    .text.EXTMEM_Read:00000000 EXTMEM_Read
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:328    .text.EXTMEM_Read:00000048 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:333    .text.EXTMEM_Write:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:339    .text.EXTMEM_Write:00000000 EXTMEM_Write
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:421    .text.EXTMEM_Write:00000048 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:426    .text.EXTMEM_WriteInMappedMode:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:432    .text.EXTMEM_WriteInMappedMode:00000000 EXTMEM_WriteInMappedMode
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:514    .text.EXTMEM_WriteInMappedMode:00000048 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:519    .text.EXTMEM_EraseSector:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:525    .text.EXTMEM_EraseSector:00000000 EXTMEM_EraseSector
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:773    .text.EXTMEM_EraseSector:00000110 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:778    .text.EXTMEM_EraseAll:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:784    .text.EXTMEM_EraseAll:00000000 EXTMEM_EraseAll
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:866    .text.EXTMEM_EraseAll:00000044 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:871    .text.EXTMEM_GetInfo:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:877    .text.EXTMEM_GetInfo:00000000 EXTMEM_GetInfo
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:958    .text.EXTMEM_GetInfo:00000040 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:963    .text.EXTMEM_MemoryMappedMode:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:969    .text.EXTMEM_MemoryMappedMode:00000000 EXTMEM_MemoryMappedMode
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:1105   .text.EXTMEM_MemoryMappedMode:00000098 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:1110   .text.EXTMEM_GetMapAddress:00000000 $t
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:1116   .text.EXTMEM_GetMapAddress:00000000 EXTMEM_GetMapAddress
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:1221   .text.EXTMEM_GetMapAddress:00000064 $d
+C:\Users\SMART\AppData\Local\Temp\ccbnLkpy.s:1230   .bss.extmem_list_config:00000000 $d
+
+UNDEFINED SYMBOLS
+EXTMEM_DRIVER_NOR_SFDP_Init
+EXTMEM_DRIVER_PSRAM_Init
+EXTMEM_DRIVER_NOR_SFDP_DeInit
+EXTMEM_DRIVER_PSRAM_DeInit
+EXTMEM_DRIVER_NOR_SFDP_Read
+EXTMEM_DRIVER_NOR_SFDP_Write
+EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode
+EXTMEM_DRIVER_NOR_SFDP_SectorErase
+EXTMEM_DRIVER_NOR_SFDP_MassErase
+EXTMEM_DRIVER_NOR_SFDP_GetFlashInfo
+EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode
+EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode
+EXTMEM_DRIVER_PSRAM_Enable_MemoryMappedMode
+EXTMEM_DRIVER_PSRAM_Disable_MemoryMappedMode
