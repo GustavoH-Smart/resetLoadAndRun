@@ -61,8 +61,9 @@ C_SOURCES =  \
 ../../Middlewares/ST/STM32_ExtMem_Manager/psram/stm32_psram_driver.c \
 ../../Middlewares/ST/STM32_ExtMem_Manager/sdcard/stm32_sdcard_driver.c \
 ../../Middlewares/ST/STM32_ExtMem_Manager/user/stm32_user_driver.c \
+../../Shared/Src/psram_shutdown.c \
 ../../FSBL/Core/Src/sysmem.c \
-../../FSBL/Core/Src/syscalls.c  
+../../FSBL/Core/Src/syscalls.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -131,6 +132,7 @@ AS_INCLUDES =  \
 -I../../Middlewares/ST/STM32_ExtMem_Manager/psram \
 -I../../Middlewares/ST/STM32_ExtMem_Manager/sdcard \
 -I../../Middlewares/ST/STM32_ExtMem_Manager/user \
+-I../../Shared/Inc \
 -I../../Drivers/CMSIS/Include
 
 # C includes
@@ -146,6 +148,7 @@ C_INCLUDES =  \
 -I../../Middlewares/ST/STM32_ExtMem_Manager/psram \
 -I../../Middlewares/ST/STM32_ExtMem_Manager/sdcard \
 -I../../Middlewares/ST/STM32_ExtMem_Manager/user \
+-I../../Shared/Inc \
 -I../../Drivers/CMSIS/Include
 
 

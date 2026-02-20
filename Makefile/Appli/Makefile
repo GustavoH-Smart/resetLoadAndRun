@@ -64,8 +64,9 @@ C_SOURCES =  \
 ../../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM55_NTZ/non_secure/port.c \
 ../../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM55_NTZ/non_secure/portasm.c \
 ../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c \
+../../Shared/Src/psram_shutdown.c \
 ../../Appli/Core/Src/sysmem.c \
-../../Appli/Core/Src/syscalls.c  
+../../Appli/Core/Src/syscalls.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -132,6 +133,7 @@ AS_INCLUDES =  \
 -I../../Drivers/STM32N6xx_HAL_Driver/Inc \
 -I../../Drivers/CMSIS/Device/ST/STM32N6xx/Include \
 -I../../Drivers/STM32N6xx_HAL_Driver/Inc/Legacy \
+-I../../Shared/Inc \
 -I../../Drivers/CMSIS/Include
 
 # C includes
@@ -145,6 +147,7 @@ C_INCLUDES =  \
 -I../../Drivers/STM32N6xx_HAL_Driver/Inc \
 -I../../Drivers/CMSIS/Device/ST/STM32N6xx/Include \
 -I../../Drivers/STM32N6xx_HAL_Driver/Inc/Legacy \
+-I../../Shared/Inc \
 -I../../Drivers/CMSIS/Include
 
 

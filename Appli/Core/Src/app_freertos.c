@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "psram_shutdown.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -111,6 +111,11 @@ void StartDefaultTask(void *argument)
     HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, GPIO_PIN_RESET);
     osDelay(200);
   }
+
+  osDelay(2000);
+  
+  /* Shutdown PSRAM and reset */
+  PSRAM_ShutdownAndReset();
   /* Infinite loop */
   for(;;)
   {

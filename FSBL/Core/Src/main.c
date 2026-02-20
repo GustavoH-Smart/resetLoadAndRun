@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "psram_shutdown.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +58,7 @@ static void MX_GPDMA1_Init(void);
 static void MX_XSPI2_Init(void);
 static void MX_XSPI1_Init(void);
 /* USER CODE BEGIN PFP */
-
+static void PSRAM_GlobalReset(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -108,6 +108,7 @@ int main(void)
   MX_GPDMA1_Init();
   MX_XSPI2_Init();
   MX_XSPI1_Init();
+  PSRAM_GlobalReset();  /* Reset PSRAM to known power-up state */
   MX_EXTMEM_MANAGER_Init();
   /* USER CODE BEGIN 2 */
   for(int i = 0; i < 5; i++)
@@ -446,6 +447,52 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/**
+  * @brief  Send Global Reset (0xFF) command to AP Memory PSRAM via XSPI1.
+  *         Datasheet Section 5.1: resets all PSRAM registers to defaults.
+  *         Memory content is NOT guaranteed after Global Reset.
+  *         Requires tRST >= 2us recovery time.
+  */
+static void PSRAM_GlobalReset(void)
+{
+  XSPI_RegularCmdTypeDef sCommand = {0};
+
+  sCommand.OperationType      = HAL_XSPI_OPTYPE_COMMON_CFG;
+  sCommand.Instruction        = 0xFFU;  /* Global Reset command */
+  sCommand.InstructionMode    = HAL_XSPI_INSTRUCTION_8_LINES;
+  sCommand.InstructionWidth   = HAL_XSPI_INSTRUCTION_8_BITS;
+  sCommand.InstructionDTRMode = HAL_XSPI_INSTRUCTION_DTR_DISABLE;
+  sCommand.AddressMode        = HAL_XSPI_ADDRESS_NONE;
+  sCommand.AlternateBytesMode = HAL_XSPI_ALT_BYTES_NONE;
+  sCommand.DataMode           = HAL_XSPI_DATA_NONE;
+  sCommand.DummyCycles        = 0;
+  sCommand.DQSMode            = HAL_XSPI_DQS_DISABLE;
+
+  HAL_XSPI_Command(&hxspi1, &sCommand, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+
+  /* Wait tRST >= 2us. At 400MHz CPU this is ~800 cycles; loop provides margin. */
+  for (volatile uint32_t d = 0; d < 1000U; d++) {}
+}
+
+/**
+  * @brief  Override weak BOOT_GetApplicationVectorTable() to disable PSRAM
+  *         memory-mapped mode before jumping to the Application.
+  *         This prevents boot ROM hang on warm reset (NRST) because XSPI1
+  *         will NOT be in memory-mapped mode when the next boot occurs.
+  * @retval Address of the application vector table.
+  */
+uint32_t BOOT_GetApplicationVectorTable(void)
+{
+  /* Disable PSRAM memory-mapped mode (XSPI1 goes back to indirect mode) */
+  EXTMEM_MemoryMappedMode(EXTMEMORY_2, EXTMEM_DISABLE);
+
+  /* Fully shutdown PSRAM: global reset + disable XSPI1 peripheral */
+  PSRAM_Shutdown();
+
+  /* Return the application vector table address (same logic as default weak) */
+  return EXTMEM_LRUN_DESTINATION_ADDRESS + EXTMEM_HEADER_OFFSET;
+}
 
 /* USER CODE END 4 */
 

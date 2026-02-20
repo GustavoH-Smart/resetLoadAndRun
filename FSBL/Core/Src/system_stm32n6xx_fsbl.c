@@ -182,6 +182,16 @@ void SystemInit(void)
   SCB->VTOR = INTVECT_START;
 #endif  /* USER_VECT_TAB_ADDRESS */
 
+  /* === DIAGNOSTIC: pulse LED PG10 to confirm SystemInit() is reached ===
+   * Uses only AHB4/APB registers (GPIOG, RCC) - safe even if AHB5 is hung.
+   * Short blink (~100ms) = SystemInit reached. No blink = boot ROM hung. */
+  RCC->AHB4ENSR = (1UL << 6);       /* Enable GPIOG clock (bit 6) */
+  (void)RCC->AHB4ENSR;
+  GPIOG->MODER = (GPIOG->MODER & ~(3UL << 20)) | (1UL << 20); /* PG10 output */
+  GPIOG->BSRR = (1UL << 26);        /* PG10 = 0 (LED ON, active low) */
+  for (volatile uint32_t d = 0; d < 2000000U; d++) {}  /* ~100ms at HSI 64MHz */
+  GPIOG->BSRR = (1UL << 10);        /* PG10 = 1 (LED OFF) */
+
   /* RNG reset */
   RCC->AHB3RSTSR = RCC_AHB3RSTSR_RNGRSTS;
   RCC->AHB3RSTCR = RCC_AHB3RSTCR_RNGRSTC;
@@ -248,9 +258,25 @@ void SystemInit(void)
   (void) RCC->APB4ENR2;
   RCC->APB4ENR2 &= ~(0x00000010UL);
 
-  /* XSPI1, XSPI2 & XSPIM reset                           */
-  RCC->AHB5RSTSR = RCC_AHB5RSTSR_XSPIMRSTS | RCC_AHB5RSTSR_XSPI2RSTS | RCC_AHB5RSTSR_XSPI1RSTS;
-  RCC->AHB5RSTCR = RCC_AHB5RSTCR_XSPIMRSTC | RCC_AHB5RSTCR_XSPI2RSTC | RCC_AHB5RSTCR_XSPI1RSTC;
+  /* ---- PSRAM warm-reset workaround ----------------------------------------
+   * AP Memory PSRAM has no hardware reset pin. After a warm reset (NRST),
+   * XSPI1 may still be in memory-mapped mode from the previous boot.
+   * IMPORTANT: Do NOT read any XSPI1 registers (AHB5 access) as this can
+   * hang the bus. Use only RCC register writes (APB4) to reset XSPI1.
+   * ---------------------------------------------------------------------- */
+
+  /* Step 1: Enable XSPI1 clock so the RCC reset can propagate */
+  RCC->AHB5ENSR = RCC_AHB5ENSR_XSPI1ENS;
+  (void)RCC->AHB5ENSR; /* read-back ensures clock is active */
+
+  /* Step 2: Reset XSPI1 via RCC (APB4 writes only - safe if AHB5 is hung) */
+  RCC->AHB5RSTSR = RCC_AHB5RSTSR_XSPI1RSTS;
+  (void)RCC->AHB5RSTSR; /* ensure reset is asserted before clearing */
+  RCC->AHB5RSTCR = RCC_AHB5RSTCR_XSPI1RSTC;
+
+  /* Step 3: Now safe to reset XSPIM and XSPI2 (clocks enabled by boot ROM) */
+  RCC->AHB5RSTSR = RCC_AHB5RSTSR_XSPIMRSTS | RCC_AHB5RSTSR_XSPI2RSTS;
+  RCC->AHB5RSTCR = RCC_AHB5RSTCR_XSPIMRSTC | RCC_AHB5RSTCR_XSPI2RSTC;
 
   /* TIM2 reset */
   RCC->APB1RSTSR1 = RCC_APB1RSTSR1_TIM2RSTS;
