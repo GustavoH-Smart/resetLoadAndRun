@@ -91,7 +91,13 @@ int main(void)
   MX_XSPI2_Init();
   MX_EXTMEM_MANAGER_Init();
   /* USER CODE BEGIN 2 */
-
+  for(int i = 0; i < 5; i++)
+  {
+    HAL_GPIO_WritePin(RED_LED_GPIO_Port, RED_LED_Pin, GPIO_PIN_RESET);
+    HAL_Delay(200);
+    HAL_GPIO_WritePin(RED_LED_GPIO_Port, RED_LED_Pin, GPIO_PIN_SET);
+    HAL_Delay(200);
+  }
   /* USER CODE END 2 */
 
   /* Launch the application */
