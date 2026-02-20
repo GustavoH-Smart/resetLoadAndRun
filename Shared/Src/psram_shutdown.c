@@ -1,11 +1,16 @@
 /**
   ******************************************************************************
   * @file    psram_shutdown.c
-  * @brief   PSRAM shutdown via direct XSPI1 register access.
+  * @brief   Complete PSRAM + XSPI1 shutdown for safe software reset.
+  *
+  *          Performs a full teardown:
+  *            - Global Reset command to PSRAM chip
+  *            - XSPI1 peripheral disable + RCC force-reset
+  *            - GPIO pins deinit (back to analog/floating)
+  *            - XSPI1 clock disable
   *
   *          This file does NOT require HAL_XSPI_MODULE_ENABLED.
-  *          It uses only CMSIS register definitions (XSPI_TypeDef, XSPI1)
-  *          that are always available from the device header (stm32n657xx.h).
+  *          Uses CMSIS register definitions + HAL RCC/GPIO macros only.
   ******************************************************************************
   */
 
@@ -22,44 +27,69 @@
  * ----------------------------------------------------------------------- */
 #define PSRAM_GRESET_CCR  (4U << XSPI_CCR_IMODE_Pos)
 
+/* XSPI1 GPIO pins (from HAL_XSPI_MspInit / HAL_XSPI_MspDeInit) */
+#define XSPI1_GPIOP_PINS  (GPIO_PIN_0  | GPIO_PIN_1  | GPIO_PIN_2  | GPIO_PIN_3  | \
+                            GPIO_PIN_4  | GPIO_PIN_5  | GPIO_PIN_6  | GPIO_PIN_7  | \
+                            GPIO_PIN_8  | GPIO_PIN_9  | GPIO_PIN_10 | GPIO_PIN_11 | \
+                            GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15)
+
+#define XSPI1_GPIOO_PINS  (GPIO_PIN_0 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4)
+
 void PSRAM_Shutdown(void)
 {
-  /* ------ 1. Abort ongoing XSPI1 operation (exits memory-mapped mode) -- */
+  /* ===== PHASE 1: Ensure XSPI1 is alive and can talk to PSRAM ========= */
+
+  __HAL_RCC_XSPI1_CLK_ENABLE();
+  __HAL_RCC_GPIOP_CLK_ENABLE();
+  __HAL_RCC_GPIOO_CLK_ENABLE();
+
+  /* Re-enable XSPI1 if it was disabled (e.g. by a previous shutdown) */
+  SET_BIT(XSPI1->CR, XSPI_CR_EN);
+
+  /* ===== PHASE 2: Abort memory-mapped mode ============================ */
+
   SET_BIT(XSPI1->CR, XSPI_CR_ABORT);
+  while (READ_BIT(XSPI1->CR, XSPI_CR_ABORT)) {}   /* auto-clears */
 
-  /* ABORT bit auto-clears when the abort completes */
-  while (READ_BIT(XSPI1->CR, XSPI_CR_ABORT)) {}
-
-  /* ------ 2. Set functional mode to Indirect Write (FMODE = 00) -------- */
-  CLEAR_BIT(XSPI1->CR, XSPI_CR_FMODE);
-
-  /* ------ 3. Wait for peripheral to be free ----------------------------- */
+  CLEAR_BIT(XSPI1->CR, XSPI_CR_FMODE);            /* Indirect Write */
   while (READ_BIT(XSPI1->SR, XSPI_SR_BUSY)) {}
 
-  /* ------ 4. Configure command: 8-line instruction, no addr/data -------- */
+  /* ===== PHASE 3: Send Global Reset (0xFF) to PSRAM chip ============== */
+
   WRITE_REG(XSPI1->CCR, PSRAM_GRESET_CCR);
-  WRITE_REG(XSPI1->TCR, 0U);   /* 0 dummy cycles, DQS disabled */
-  WRITE_REG(XSPI1->DLR, 0U);   /* no data bytes */
+  WRITE_REG(XSPI1->TCR, 0U);
+  WRITE_REG(XSPI1->DLR, 0U);
+  WRITE_REG(XSPI1->IR,  0xFFU);                    /* triggers command */
 
-  /* ------ 5. Write instruction: 0xFF = Global Reset --------------------- */
-  /*         Writing IR triggers the command when ADMODE=0 and DMODE=0.     */
-  WRITE_REG(XSPI1->IR, 0xFFU);
-
-  /* ------ 6. Wait for Transfer Complete --------------------------------- */
   while (!READ_BIT(XSPI1->SR, XSPI_SR_TCF)) {}
-
-  /* ------ 7. Clear Transfer Complete Flag ------------------------------- */
   WRITE_REG(XSPI1->FCR, XSPI_FCR_CTCF);
 
-  /* ------ 8. Wait tRST >= 2 us (at 400 MHz ~800 cycles; margin added) -- */
-  for (volatile uint32_t d = 0; d < 1000U; d++) {}
+  /* tRST >= 2 us  (generous margin) */
+  for (volatile uint32_t d = 0; d < 2000U; d++) {}
 
-  /* ------ 9. Disable the XSPI1 peripheral ------------------------------ */
+  /* ===== PHASE 4: Tear down XSPI1 peripheral completely =============== */
+
+  /* Disable the peripheral */
   CLEAR_BIT(XSPI1->CR, XSPI_CR_EN);
+
+  /* Force-reset via RCC -> all XSPI1 registers back to power-on defaults */
+  __HAL_RCC_XSPI1_FORCE_RESET();
+  __HAL_RCC_XSPI1_RELEASE_RESET();
+
+  /* ===== PHASE 5: Deinit GPIO pins (back to analog / floating) ======== */
+  /*       This removes any electrical drive to the PSRAM chip.           */
+
+  HAL_GPIO_DeInit(GPIOP, XSPI1_GPIOP_PINS);        /* PP0..PP15  data   */
+  HAL_GPIO_DeInit(GPIOO, XSPI1_GPIOO_PINS);        /* PO0 NCS, PO2-4   */
+
+  /* ===== PHASE 6: Kill XSPI1 clock ==================================== */
+
+  __HAL_RCC_XSPI1_CLK_DISABLE();
 }
 
 void PSRAM_ShutdownAndReset(void)
 {
+  __disable_irq();
   PSRAM_Shutdown();
   NVIC_SystemReset();
 }

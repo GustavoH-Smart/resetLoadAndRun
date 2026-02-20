@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
   * @file    psram_shutdown.h
-  * @brief   PSRAM shutdown and safe reset functions (shared between FSBL & Appli)
+  * @brief   Complete PSRAM + XSPI1 shutdown for safe software reset.
   *
-  *          Uses direct XSPI1 register access (CMSIS device headers only),
-  *          so it works without HAL_XSPI_MODULE_ENABLED.
+  *          Uses direct XSPI1 register access + HAL RCC/GPIO macros.
+  *          Does NOT require HAL_XSPI_MODULE_ENABLED.
   ******************************************************************************
   */
 
@@ -18,18 +18,19 @@ extern "C" {
 #include "stm32n6xx_hal.h"
 
 /**
-  * @brief  Fully shuts down the PSRAM on XSPI1:
-  *         1. Aborts memory-mapped mode (returns XSPI1 to indirect mode)
-  *         2. Sends Global Reset command (0xFF) to PSRAM
-  *         3. Waits tRST >= 2 us for PSRAM internal reset
-  *         4. Disables the XSPI1 peripheral
-  *
-  *         Safe to call from both FSBL and Appli contexts.
+  * @brief  Complete PSRAM + XSPI1 teardown:
+  *         1. Ensures XSPI1 clock + peripheral are enabled
+  *         2. Aborts memory-mapped mode
+  *         3. Sends Global Reset (0xFF) to PSRAM chip
+  *         4. Disables XSPI1 peripheral
+  *         5. Force-resets XSPI1 via RCC (all registers -> power-on defaults)
+  *         6. Deinits all XSPI1 GPIO pins (analog/floating)
+  *         7. Disables XSPI1 clock
   */
 void PSRAM_Shutdown(void);
 
 /**
-  * @brief  Convenience: calls PSRAM_Shutdown() then NVIC_SystemReset().
+  * @brief  Disables interrupts, calls PSRAM_Shutdown(), then NVIC_SystemReset().
   *         Use this instead of calling NVIC_SystemReset() directly.
   */
 void PSRAM_ShutdownAndReset(void);

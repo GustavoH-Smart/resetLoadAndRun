@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "psram_shutdown.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -487,8 +487,8 @@ uint32_t BOOT_GetApplicationVectorTable(void)
   /* Disable PSRAM memory-mapped mode (XSPI1 goes back to indirect mode) */
   EXTMEM_MemoryMappedMode(EXTMEMORY_2, EXTMEM_DISABLE);
 
-  /* Fully shutdown PSRAM: global reset + disable XSPI1 peripheral */
-  PSRAM_Shutdown();
+  /* Send Global Reset to PSRAM - resets all internal registers */
+  PSRAM_GlobalReset();
 
   /* Return the application vector table address (same logic as default weak) */
   return EXTMEM_LRUN_DESTINATION_ADDRESS + EXTMEM_HEADER_OFFSET;
