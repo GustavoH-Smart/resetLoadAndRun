@@ -107,7 +107,7 @@ int main(void)
   MX_HPDMA1_Init();
   MX_GPDMA1_Init();
   MX_XSPI2_Init();
-  // MX_XSPI1_Init();
+  MX_XSPI1_Init();
   MX_EXTMEM_MANAGER_Init();
   /* USER CODE BEGIN 2 */
   for(int i = 0; i < 5; i++)
