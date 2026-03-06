@@ -108,6 +108,7 @@ ULONG _ux_utility_time_get(VOID)
   ULONG time_tick = 0U;
 
   /* USER CODE BEGIN _ux_utility_time_get */
+  time_tick = HAL_GetTick();
 
   /* USER CODE END _ux_utility_time_get */
 
@@ -127,11 +128,20 @@ UINT usb_device_send(uint8_t *buffer, uint32_t length)
 {
   UX_SLAVE_CLASS_CDC_ACM *cdc_acm = ux_device_cdc_acm_get_instance();
   ULONG actual_length = 0;
-  
+  UINT status;
+
   if (cdc_acm == UX_NULL)
     return UX_ERROR;
-    
+
+#if defined(UX_DEVICE_STANDALONE)
+  do
+  {
+    status = ux_device_class_cdc_acm_write_run(cdc_acm, buffer, length, &actual_length);
+  } while (status == UX_STATE_WAIT);
+  return status;
+#else
   return ux_device_class_cdc_acm_write(cdc_acm, buffer, length, &actual_length);
+#endif
 }
 
 /**
@@ -145,13 +155,26 @@ UINT usb_device_receive(uint8_t *buffer, uint32_t max_length, uint32_t timeout_m
 {
   UX_SLAVE_CLASS_CDC_ACM *cdc_acm = ux_device_cdc_acm_get_instance();
   ULONG actual_length = 0;
-  
+  UINT status;
+
+  (void)timeout_ms;
+
   if (cdc_acm == UX_NULL)
     return 0;
-    
+
+#if defined(UX_DEVICE_STANDALONE)
+  do
+  {
+    status = ux_device_class_cdc_acm_read_run(cdc_acm, buffer, max_length, &actual_length);
+  } while (status == UX_STATE_WAIT);
+
+  if (status == UX_SUCCESS)
+    return (UINT)actual_length;
+#else
   if (ux_device_class_cdc_acm_read(cdc_acm, buffer, max_length, &actual_length) == UX_SUCCESS)
     return actual_length;
-    
+#endif
+
   return 0;
 }
 
