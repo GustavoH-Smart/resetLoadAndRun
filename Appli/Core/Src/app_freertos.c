@@ -199,10 +199,10 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* USB Device test task (receives and echoes data) */
-  osThreadNew(usb_device_test_task, NULL, &defaultTask_attributes);
+  // osThreadNew(usb_device_test_task, NULL, &defaultTask_attributes);
 
   /* USB Host test task (sends and receives test messages) */
-  osThreadNew(usb_host_test_task, NULL, &defaultTask_attributes);
+  // osThreadNew(usb_host_test_task, NULL, &defaultTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

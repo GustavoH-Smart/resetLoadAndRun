@@ -79,7 +79,7 @@ extern "C" {
 /*#define HAL_SPDIFRX_MODULE_ENABLED   */
 /*#define HAL_SPI_MODULE_ENABLED   */
 /*#define HAL_SRAM_MODULE_ENABLED   */
-/*#define HAL_TIM_MODULE_ENABLED   */
+#define HAL_TIM_MODULE_ENABLED
 #define HAL_UART_MODULE_ENABLED
 /*#define HAL_USART_MODULE_ENABLED   */
 /*#define HAL_WWDG_MODULE_ENABLED   */
@@ -153,7 +153,7 @@ extern "C" {
   * @brief This is the HAL system configuration section
   */
 #define  VDD_VALUE                  3300UL /*!< Value of VDD in mv */
-#define  TICK_INT_PRIORITY          0U  /*!< tick interrupt priority */
+#define  TICK_INT_PRIORITY          0U  /*!< tick interrupt priority (lowest by default) */
 #define  USE_RTOS                   0U
 
 /* ########################## Assert Selection ############################## */
