@@ -1,3 +1,16 @@
-MakeFile/Appli/build
-MakeFile/FSBL/build
+# Build output folders (case-sensitive on Linux)
+Makefile/Appli/build/
+Makefile/FSBL/build/
 output/
+
+# Compatibility with older path typo that may exist in history
+MakeFile/Appli/build/
+MakeFile/FSBL/build/
+
+# Generic build artifacts
+*.o
+*.d
+*.lst
+*.map
+*.elf
+*.bin
