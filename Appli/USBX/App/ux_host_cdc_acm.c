@@ -45,6 +45,11 @@
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
+/* Global CDC ACM host instance */
+static UX_HOST_CLASS_CDC_ACM *g_cdc_acm_host = NULL;
+/* CDC ACM Host Callbacks */
+VOID ux_host_cdc_acm_instance_activate(VOID *cdc_acm_instance);
+VOID ux_host_cdc_acm_instance_deactivate(VOID *cdc_acm_instance);
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
@@ -55,7 +60,36 @@
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
+/**
+  * @brief  CDC ACM Host Instance Activate callback
+  * @param  cdc_acm_instance: pointer to CDC ACM instance
+  * @retval None
+  */
+VOID ux_host_cdc_acm_instance_activate(VOID *cdc_acm_instance)
+{
+  g_cdc_acm_host = (UX_HOST_CLASS_CDC_ACM *)cdc_acm_instance;
+}
+
+/**
+  * @brief  CDC ACM Host Instance Deactivate callback
+  * @param  cdc_acm_instance: pointer to CDC ACM instance
+  * @retval None
+  */
+VOID ux_host_cdc_acm_instance_deactivate(VOID *cdc_acm_instance)
+{
+  g_cdc_acm_host = NULL;
+}
+
+/**
+  * @brief  Get CDC ACM host instance
+  * @retval pointer to CDC ACM instance or NULL
+  */
+UX_HOST_CLASS_CDC_ACM *ux_host_cdc_acm_get_instance(void)
+{
+  return g_cdc_acm_host;
+}
 
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
+

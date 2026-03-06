@@ -54,6 +54,11 @@ extern "C" {
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
+UX_HOST_CLASS_CDC_ACM *ux_host_cdc_acm_get_instance(void);
+
+/* Callback functions for CDC ACM activation/deactivation */
+VOID ux_host_cdc_acm_instance_activate(VOID *cdc_acm_instance);
+VOID ux_host_cdc_acm_instance_deactivate(VOID *cdc_acm_instance);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN PD */
@@ -68,3 +73,4 @@ extern "C" {
 }
 #endif
 #endif  /* __UX_HOST_CDC_ACM_H__ */
+

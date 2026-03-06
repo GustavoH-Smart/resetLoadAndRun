@@ -20,6 +20,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "app_usbx.h"
+#include "ux_device_cdc_acm.h"
+#include "ux_host_cdc_acm.h"
 
 /**
   * @brief  Application USBX Initialization.
@@ -113,5 +115,108 @@ ULONG _ux_utility_time_get(VOID)
 }
 
 /* USER CODE BEGIN 1 */
+
+/* ── USB Device Helper Functions ────────────────────────────────────── */
+/**
+  * @brief  Send data via USB Device CDC ACM
+  * @param  buffer: pointer to data buffer
+  * @param  length: data length
+  * @retval UX_SUCCESS if OK, UX_ERROR otherwise
+  */
+UINT usb_device_send(uint8_t *buffer, uint32_t length)
+{
+  UX_SLAVE_CLASS_CDC_ACM *cdc_acm = ux_device_cdc_acm_get_instance();
+  ULONG actual_length = 0;
+  
+  if (cdc_acm == UX_NULL)
+    return UX_ERROR;
+    
+  return ux_device_class_cdc_acm_write(cdc_acm, buffer, length, &actual_length);
+}
+
+/**
+  * @brief  Receive data via USB Device CDC ACM
+  * @param  buffer: pointer to data buffer
+  * @param  length: max data length
+  * @param  timeout_ms: timeout in milliseconds (not used currently)
+  * @retval number of bytes received
+  */
+UINT usb_device_receive(uint8_t *buffer, uint32_t max_length, uint32_t timeout_ms)
+{
+  UX_SLAVE_CLASS_CDC_ACM *cdc_acm = ux_device_cdc_acm_get_instance();
+  ULONG actual_length = 0;
+  
+  if (cdc_acm == UX_NULL)
+    return 0;
+    
+  if (ux_device_class_cdc_acm_read(cdc_acm, buffer, max_length, &actual_length) == UX_SUCCESS)
+    return actual_length;
+    
+  return 0;
+}
+
+/**
+  * @brief  Check if USB Device is connected
+  * @retval UX_TRUE if connected, UX_FALSE otherwise
+  */
+UINT usb_device_is_connected(void)
+{
+  UX_SLAVE_CLASS_CDC_ACM *cdc_acm = ux_device_cdc_acm_get_instance();
+  
+  if (cdc_acm == UX_NULL)
+    return UX_FALSE;
+    
+  /* Check DTR state - indicates host is connected and ready */
+  return (cdc_acm->ux_slave_class_cdc_acm_data_dtr_state != 0) ? UX_TRUE : UX_FALSE;
+}
+
+/* ── USB Host Helper Functions ──────────────────────────────────────── */
+/**
+  * @brief  Send data via USB Host CDC ACM
+  * @param  buffer: pointer to data buffer
+  * @param  length: data length
+  * @retval UX_SUCCESS if OK, UX_ERROR otherwise
+  */
+UINT usb_host_send(uint8_t *buffer, uint32_t length)
+{
+  UX_HOST_CLASS_CDC_ACM *cdc_acm = ux_host_cdc_acm_get_instance();
+  ULONG actual_length = 0;
+  
+  if (cdc_acm == UX_NULL)
+    return UX_ERROR;
+    
+  return ux_host_class_cdc_acm_write(cdc_acm, buffer, length, &actual_length);
+}
+
+/**
+  * @brief  Receive data via USB Host CDC ACM
+  * @param  buffer: pointer to data buffer
+  * @param  length: max data length
+  * @retval number of bytes received
+  */
+UINT usb_host_receive(uint8_t *buffer, uint32_t max_length)
+{
+  UX_HOST_CLASS_CDC_ACM *cdc_acm = ux_host_cdc_acm_get_instance();
+  ULONG actual_length = 0;
+  
+  if (cdc_acm == UX_NULL)
+    return 0;
+    
+  if (ux_host_class_cdc_acm_read(cdc_acm, buffer, max_length, &actual_length) == UX_SUCCESS)
+    return actual_length;
+    
+  return 0;
+}
+
+/**
+  * @brief  Check if USB Host device is connected
+  * @retval UX_TRUE if connected, UX_FALSE otherwise
+  */
+UINT usb_host_is_connected(void)
+{
+  UX_HOST_CLASS_CDC_ACM *cdc_acm = ux_host_cdc_acm_get_instance();
+  
+  return (cdc_acm != UX_NULL) ? UX_TRUE : UX_FALSE;
+}
 
 /* USER CODE END 1 */

@@ -52,6 +52,16 @@ extern "C" {
 /* Exported functions prototypes ---------------------------------------------*/
 UINT MX_USBX_Init(VOID);
 
+/* USB Device Helper Functions */
+UINT usb_device_send(uint8_t *buffer, uint32_t length);
+UINT usb_device_receive(uint8_t *buffer, uint32_t max_length, uint32_t timeout_ms);
+UINT usb_device_is_connected(void);
+
+/* USB Host Helper Functions */
+UINT usb_host_send(uint8_t *buffer, uint32_t length);
+UINT usb_host_receive(uint8_t *buffer, uint32_t max_length);
+UINT usb_host_is_connected(void);
+
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
