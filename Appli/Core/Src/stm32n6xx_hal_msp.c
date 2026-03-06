@@ -97,9 +97,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
   /** Initializes the peripherals clock
   */
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART1;
-    PeriphClkInitStruct.Usart1ClockSelection = RCC_USART1CLKSOURCE_IC9;
-    PeriphClkInitStruct.ICSelection[RCC_IC9].ClockSelection = RCC_ICCLKSOURCE_PLL2;
-    PeriphClkInitStruct.ICSelection[RCC_IC9].ClockDivider = 20;
+    PeriphClkInitStruct.Usart1ClockSelection = RCC_USART1CLKSOURCE_IC14;
+    PeriphClkInitStruct.ICSelection[RCC_IC14].ClockSelection = RCC_ICCLKSOURCE_PLL3;
+    PeriphClkInitStruct.ICSelection[RCC_IC14].ClockDivider = 30;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
       Error_Handler();
