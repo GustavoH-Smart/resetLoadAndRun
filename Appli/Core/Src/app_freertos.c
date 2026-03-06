@@ -133,7 +133,12 @@ void usb_device_test_task(void *argument)
 
     if(!connected) {
       if ((wait_log_div++ % 1000U) == 0U) {
-        printf("[USB_DEV] Waiting for host...\n");
+        extern volatile uint32_t usb1_irq_count;
+        extern PCD_HandleTypeDef hpcd_USB_OTG_HS1;
+        uint32_t dsts = ((USB_OTG_DeviceTypeDef *)((uint32_t)hpcd_USB_OTG_HS1.Instance + 0x800UL))->DSTS;
+        uint32_t gintsts = hpcd_USB_OTG_HS1.Instance->GINTSTS;
+        printf("[USB_DEV] Waiting... IRQs=%lu DSTS=0x%08lX GINTSTS=0x%08lX speed=%u\n",
+               usb1_irq_count, dsts, gintsts, hpcd_USB_OTG_HS1.Init.speed);
       }
       /*
        * In standalone mode USBX tasks must run frequently for EP0 control

@@ -41,7 +41,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
+volatile uint32_t usb1_irq_count = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -196,7 +196,7 @@ void TIM6_IRQHandler(void)
 void USB1_OTG_HS_IRQHandler(void)
 {
   /* USER CODE BEGIN USB1_OTG_HS_IRQn 0 */
-
+  usb1_irq_count++;
   /* USER CODE END USB1_OTG_HS_IRQn 0 */
   HAL_PCD_IRQHandler(&hpcd_USB_OTG_HS1);
   /* USER CODE BEGIN USB1_OTG_HS_IRQn 1 */
