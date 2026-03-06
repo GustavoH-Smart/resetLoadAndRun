@@ -1402,9 +1402,11 @@ HAL_StatusTypeDef USB_EP0_OutStart(const USB_OTG_GlobalTypeDef *USBx, uint8_t dm
   if (dma == 1U)
   {
     USBx_OUTEP(0U)->DOEPDMA = (uint32_t)psetup;
-    /* EP enable */
-    USBx_OUTEP(0U)->DOEPCTL |= USB_OTG_DOEPCTL_EPENA | USB_OTG_DOEPCTL_USBAEP;
   }
+
+  /* EP enable – required for SETUP reception on newer OTG cores (> 300A) even
+     in non-DMA mode; harmless on older cores where STUPCNT alone suffices. */
+  USBx_OUTEP(0U)->DOEPCTL |= USB_OTG_DOEPCTL_EPENA | USB_OTG_DOEPCTL_USBAEP;
 
   return HAL_OK;
 }
