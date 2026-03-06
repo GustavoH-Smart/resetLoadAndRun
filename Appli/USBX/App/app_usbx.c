@@ -31,6 +31,9 @@ __attribute__((section(".noncacheable"), aligned(32)))
 #endif
 static UCHAR usbx_cache_safe_pool[8 * 1024];
 
+/* Prevent double initialization when multiple tasks call MX_USBX_Init. */
+static UINT usbx_initialized = 0U;
+
 /**
   * @brief  Application USBX Initialization.
   * @param  none
@@ -39,6 +42,11 @@ static UCHAR usbx_cache_safe_pool[8 * 1024];
 UINT MX_USBX_Init(VOID)
 {
   UINT ret = UX_SUCCESS;
+
+  if (usbx_initialized != 0U)
+  {
+    return UX_SUCCESS;
+  }
 
   /* USER CODE BEGIN MX_USBX_Init0 */
 
@@ -69,6 +77,8 @@ UINT MX_USBX_Init(VOID)
   // }
 
   /* USER CODE BEGIN MX_USBX_Init1 */
+
+  usbx_initialized = 1U;
 
   /* USER CODE END MX_USBX_Init1 */
 
@@ -193,12 +203,16 @@ UINT usb_device_receive(uint8_t *buffer, uint32_t max_length, uint32_t timeout_m
 UINT usb_device_is_connected(void)
 {
   UX_SLAVE_CLASS_CDC_ACM *cdc_acm = ux_device_cdc_acm_get_instance();
-  
+
   if (cdc_acm == UX_NULL)
     return UX_FALSE;
-    
-  /* Check DTR state - indicates host is connected and ready */
-  return (cdc_acm->ux_slave_class_cdc_acm_data_dtr_state != 0) ? UX_TRUE : UX_FALSE;
+
+  /*
+   * CDC instance is set on USBX activate callback (after host configures the
+   * device). DTR depends on the host serial app and can stay low even when the
+   * cable is connected and enumeration is successful.
+   */
+  return UX_TRUE;
 }
 
 /* ── USB Host Helper Functions ──────────────────────────────────────── */

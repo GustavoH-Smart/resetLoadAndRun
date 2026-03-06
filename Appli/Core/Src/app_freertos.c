@@ -91,6 +91,7 @@ void usb_device_test_task(void *argument)
   static uint32_t counter = 0;
   static uint8_t was_connected = 0;
   uint32_t tick_count = 0;
+  uint32_t wait_log_div = 0;
   (void)argument;
 
   printf("[RTOS] usb device task started\r\n");
@@ -131,8 +132,14 @@ void usb_device_test_task(void *argument)
     }
 
     if(!connected) {
-      printf("[USB_DEV] Waiting for host...\n");
-      osDelay(1000);
+      if ((wait_log_div++ % 1000U) == 0U) {
+        printf("[USB_DEV] Waiting for host...\n");
+      }
+      /*
+       * In standalone mode USBX tasks must run frequently for EP0 control
+       * transfers during enumeration.
+       */
+      osDelay(1);
       continue;
     }
 
@@ -157,7 +164,7 @@ void usb_device_test_task(void *argument)
       }
     }
 
-    osDelay(100);
+    osDelay(1);
   }
 }
 

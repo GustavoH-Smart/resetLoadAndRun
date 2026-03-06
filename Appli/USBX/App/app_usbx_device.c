@@ -145,6 +145,17 @@ UINT MX_USBX_Device_Stack_Init(void)
   }
 
   HAL_NVIC_EnableIRQ(USB1_OTG_HS_IRQn);
+
+  /* USBX STM32 DCD init does not start the peripheral; start it explicitly. */
+  if (HAL_PCD_Start(&hpcd_USB_OTG_HS1) != HAL_OK)
+  {
+    return UX_ERROR;
+  }
+
+  if (HAL_PCD_DevConnect(&hpcd_USB_OTG_HS1) != HAL_OK)
+  {
+    return UX_ERROR;
+  }
   
   /* USER CODE END MX_USBX_Device_Stack_Init_PostTreatment */
 

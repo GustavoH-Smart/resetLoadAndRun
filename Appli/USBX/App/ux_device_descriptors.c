@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "ux_device_descriptors.h"
+#include <string.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -370,6 +371,9 @@ static uint8_t *USBD_Device_Framework_Builder(USBD_DevClassHandleTypeDef *pdev,
   /* Set Dev and conf descriptors size to 0 */
   pdev->CurrConfDescSz = 0U;
   pdev->CurrDevDescSz = 0U;
+  pdev->classId = 0U;
+  pdev->NumClasses = 0U;
+  (void)memset(pdev->tclasslist, 0, sizeof(pdev->tclasslist));
 
   /* Set the pointer to the device descriptor area*/
   pDevDesc = (USBD_DeviceDescTypedef *)pDevFrameWorkDesc;

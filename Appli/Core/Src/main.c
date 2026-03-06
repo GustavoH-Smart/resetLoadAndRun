@@ -266,16 +266,15 @@ static void MX_USB1_OTG_HS_PCD_Init(void)
   /* USER CODE END USB1_OTG_HS_Init 1 */
   hpcd_USB_OTG_HS1.Instance = USB1_OTG_HS;
   hpcd_USB_OTG_HS1.Init.dev_endpoints = 9;
-  hpcd_USB_OTG_HS1.Init.speed = PCD_SPEED_HIGH;
+  /* Force FS during bring-up to avoid HS PHY/clock negotiation issues. */
+  hpcd_USB_OTG_HS1.Init.speed = PCD_SPEED_FULL;
   hpcd_USB_OTG_HS1.Init.phy_itface = USB_OTG_HS_EMBEDDED_PHY;
   hpcd_USB_OTG_HS1.Init.Sof_enable = DISABLE;
   hpcd_USB_OTG_HS1.Init.low_power_enable = DISABLE;
   hpcd_USB_OTG_HS1.Init.lpm_enable = DISABLE;
   hpcd_USB_OTG_HS1.Init.use_dedicated_ep1 = DISABLE;
   hpcd_USB_OTG_HS1.Init.vbus_sensing_enable = DISABLE;
-   /* Keep DMA disabled for device bring-up; USBX can run without DMA and this
-      avoids cache/coherency issues while isolating descriptor/device init faults. */
-   hpcd_USB_OTG_HS1.Init.dma_enable = DISABLE;
+  hpcd_USB_OTG_HS1.Init.dma_enable = DISABLE;
   if (HAL_PCD_Init(&hpcd_USB_OTG_HS1) != HAL_OK)
   {
     Error_Handler();
