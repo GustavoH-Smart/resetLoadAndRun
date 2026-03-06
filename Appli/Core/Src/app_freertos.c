@@ -143,10 +143,16 @@ void usb_device_test_task(void *argument)
         uint32_t gnptxfsiz = USBx->DIEPTXF0_HNPTXFSIZ;
         uint32_t dsts = ((USB_OTG_DeviceTypeDef *)((uint32_t)USBx + 0x800UL))->DSTS;
         uint32_t dctl = ((USB_OTG_DeviceTypeDef *)((uint32_t)USBx + 0x800UL))->DCTL;
+        uint32_t doepctl0 = ((USB_OTG_OUTEndpointTypeDef *)((uint32_t)USBx + 0xB00UL))->DOEPCTL;
+        uint32_t doeptsiz0 = ((USB_OTG_OUTEndpointTypeDef *)((uint32_t)USBx + 0xB00UL))->DOEPTSIZ;
+        uint32_t doepint0 = ((USB_OTG_OUTEndpointTypeDef *)((uint32_t)USBx + 0xB00UL))->DOEPINT;
+        uint32_t diepctl0 = ((USB_OTG_INEndpointTypeDef *)((uint32_t)USBx + 0x900UL))->DIEPCTL;
         printf("[USB_DEV] IRQs=%lu GAHBCFG=0x%08lX GINTMSK=0x%08lX GINTSTS=0x%08lX\n",
                usb1_irq_count, gahbcfg, gintmsk, gintsts);
         printf("[USB_DEV] GRXFSIZ=0x%04lX GNPTXFSIZ=0x%08lX DSTS=0x%08lX DCTL=0x%08lX\n",
                grxfsiz, gnptxfsiz, dsts, dctl);
+        printf("[USB_DEV] DOEPCTL0=0x%08lX DOEPTSIZ0=0x%08lX DOEPINT0=0x%08lX DIEPCTL0=0x%08lX\n",
+               doepctl0, doeptsiz0, doepint0, diepctl0);
       }
       /*
        * In standalone mode USBX tasks must run frequently for EP0 control
