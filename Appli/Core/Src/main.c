@@ -281,6 +281,14 @@ static void MX_USB1_OTG_HS_PCD_Init(void)
   }
   /* USER CODE BEGIN USB1_OTG_HS_Init 2 */
 
+  /* Configure USB OTG FIFO sizes (in 32-bit words).
+     Without this the TX FIFOs are all zero and the device cannot
+     respond to any IN transfer, including EP0 GET_DESCRIPTOR. */
+  HAL_PCDEx_SetRxFiFo(&hpcd_USB_OTG_HS1, 0x80);   /* 128 words – shared RX FIFO */
+  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS1, 0, 0x40); /* 64 words – EP0 IN */
+  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS1, 1, 0x10); /* 16 words – EP1 IN (CDC CMD) */
+  HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS1, 2, 0x40); /* 64 words – EP2 IN (CDC Data) */
+
   /* USER CODE END USB1_OTG_HS_Init 2 */
 
 }
