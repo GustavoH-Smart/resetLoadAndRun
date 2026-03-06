@@ -40,6 +40,8 @@ UINT MX_USBX_Init(VOID)
   /* USER CODE BEGIN MX_USBX_Device_Init_Error */
     while(1)
     {
+      printf("USBX Device Init Error\n");
+      HAL_Delay(1000);
     }
   /* USER CODE END MX_USBX_Device_Init_Error */
   }
@@ -50,6 +52,8 @@ UINT MX_USBX_Init(VOID)
   /* USER CODE BEGIN MX_USBX_Host_Init_Error */
     while(1)
     {
+      printf("USBX Host Init Error\n");
+      HAL_Delay(1000);
     }
   /* USER CODE END MX_USBX_Host_Init_Error */
   }
