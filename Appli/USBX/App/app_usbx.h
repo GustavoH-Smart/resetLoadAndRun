@@ -1,11 +1,11 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
+  * @file    app_usbx.h
+  * @author  MCD Application Team
+  * @brief   USBX applicative header file
   ******************************************************************************
-  * @attention
+   * @attention
   *
   * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
@@ -17,25 +17,19 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
+#ifndef __APP_USBX_H__
+#define __APP_USBX_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if defined ( __ICCARM__ )
-#  define CMSE_NS_CALL  __cmse_nonsecure_call
-#  define CMSE_NS_ENTRY __cmse_nonsecure_entry
-#else
-#  define CMSE_NS_CALL  __attribute((cmse_nonsecure_call))
-#  define CMSE_NS_ENTRY __attribute((cmse_nonsecure_entry))
-#endif
-
 /* Includes ------------------------------------------------------------------*/
-#include "stm32n6xx_hal.h"
+#include "ux_api.h"
+
+#include "app_usbx_device.h"
+#include "app_usbx_host.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -43,48 +37,26 @@ extern "C" {
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
-/* Function pointer declaration in non-secure*/
-#if defined ( __ICCARM__ )
-typedef void (CMSE_NS_CALL *funcptr)(void);
-#else
-typedef void CMSE_NS_CALL (*funcptr)(void);
-#endif
-
-/* typedef for non-secure callback functions */
-typedef funcptr funcptr_NS;
-
 /* USER CODE BEGIN ET */
 
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
+#define USBX_APP_MEM_POOL_SIZE       1024
+#define USBX_MEMORY_STACK_SIZE       1024
+
 /* USER CODE BEGIN EC */
 
 /* USER CODE END EC */
 
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
-
-/* USER CODE END EM */
-
 /* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
-void MX_USB2_OTG_HS_HCD_Init(void);
+UINT MX_USBX_Init(VOID);
 
-/* USER CODE BEGIN EFP */
+/* USER CODE BEGIN 1 */
 
-/* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
-#define GREEN_LED_Pin GPIO_PIN_1
-#define GREEN_LED_GPIO_Port GPIOO
-
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
+/* USER CODE END 1 */
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __MAIN_H */
+#endif /* __APP_USBX_H__ */

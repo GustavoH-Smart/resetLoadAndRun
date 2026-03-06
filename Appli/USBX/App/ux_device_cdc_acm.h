@@ -1,11 +1,11 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
+  * @file    ux_device_cdc_acm.h
+  * @author  MCD Application Team
+  * @brief   USBX Device CDC ACM interface header file
   ******************************************************************************
-  * @attention
+    * @attention
   *
   * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
@@ -17,25 +17,17 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
+#ifndef __UX_DEVICE_CDC_ACM_H__
+#define __UX_DEVICE_CDC_ACM_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if defined ( __ICCARM__ )
-#  define CMSE_NS_CALL  __cmse_nonsecure_call
-#  define CMSE_NS_ENTRY __cmse_nonsecure_entry
-#else
-#  define CMSE_NS_CALL  __attribute((cmse_nonsecure_call))
-#  define CMSE_NS_ENTRY __attribute((cmse_nonsecure_entry))
-#endif
-
 /* Includes ------------------------------------------------------------------*/
-#include "stm32n6xx_hal.h"
+#include "ux_api.h"
+#include "ux_device_class_cdc_acm.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -43,16 +35,6 @@ extern "C" {
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
-/* Function pointer declaration in non-secure*/
-#if defined ( __ICCARM__ )
-typedef void (CMSE_NS_CALL *funcptr)(void);
-#else
-typedef void CMSE_NS_CALL (*funcptr)(void);
-#endif
-
-/* typedef for non-secure callback functions */
-typedef funcptr funcptr_NS;
-
 /* USER CODE BEGIN ET */
 
 /* USER CODE END ET */
@@ -68,23 +50,20 @@ typedef funcptr funcptr_NS;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
-void MX_USB2_OTG_HS_HCD_Init(void);
-
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define GREEN_LED_Pin GPIO_PIN_1
-#define GREEN_LED_GPIO_Port GPIOO
+/* USER CODE BEGIN PD */
 
-/* USER CODE BEGIN Private defines */
+/* USER CODE END PD */
 
-/* USER CODE END Private defines */
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __MAIN_H */
+#endif  /* __UX_DEVICE_CDC_ACM_H__ */

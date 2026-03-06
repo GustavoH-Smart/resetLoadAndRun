@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os2.h"
+#include "app_usbx.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -42,14 +43,18 @@
 
 /* Private variables ---------------------------------------------------------*/
 
+PCD_HandleTypeDef hpcd_USB_OTG_HS1;
+HCD_HandleTypeDef hhcd_USB_OTG_HS2;
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void MX_FREERTOS_Init(void);
-static void SystemIsolation_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_USB1_OTG_HS_PCD_Init(void);
+static void SystemIsolation_Config(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -82,8 +87,10 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  SystemIsolation_Config();
   MX_GPIO_Init();
+  MX_USB1_OTG_HS_PCD_Init();
+  MX_USBX_Init();
+  SystemIsolation_Config();
   /* USER CODE BEGIN 2 */
   /* USER CODE END 2 */
 
@@ -166,6 +173,76 @@ int main(void)
   /* USER CODE BEGIN RIF_Init 2 */
 
   /* USER CODE END RIF_Init 2 */
+
+}
+
+/**
+  * @brief USB1_OTG_HS Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USB1_OTG_HS_PCD_Init(void)
+{
+
+  /* USER CODE BEGIN USB1_OTG_HS_Init 0 */
+
+  /* USER CODE END USB1_OTG_HS_Init 0 */
+
+  /* USER CODE BEGIN USB1_OTG_HS_Init 1 */
+
+  /* USER CODE END USB1_OTG_HS_Init 1 */
+  hpcd_USB_OTG_HS1.Instance = USB1_OTG_HS;
+  hpcd_USB_OTG_HS1.Init.dev_endpoints = 9;
+  hpcd_USB_OTG_HS1.Init.speed = PCD_SPEED_HIGH;
+  hpcd_USB_OTG_HS1.Init.phy_itface = USB_OTG_HS_EMBEDDED_PHY;
+  hpcd_USB_OTG_HS1.Init.Sof_enable = DISABLE;
+  hpcd_USB_OTG_HS1.Init.low_power_enable = DISABLE;
+  hpcd_USB_OTG_HS1.Init.lpm_enable = DISABLE;
+  hpcd_USB_OTG_HS1.Init.use_dedicated_ep1 = DISABLE;
+  hpcd_USB_OTG_HS1.Init.vbus_sensing_enable = DISABLE;
+  hpcd_USB_OTG_HS1.Init.dma_enable = ENABLE;
+  if (HAL_PCD_Init(&hpcd_USB_OTG_HS1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USB1_OTG_HS_Init 2 */
+
+  /* USER CODE END USB1_OTG_HS_Init 2 */
+
+}
+
+/**
+  * @brief USB2_OTG_HS Initialization Function
+  * @param None
+  * @retval None
+  */
+void MX_USB2_OTG_HS_HCD_Init(void)
+{
+
+  /* USER CODE BEGIN USB2_OTG_HS_Init 0 */
+
+  /* USER CODE END USB2_OTG_HS_Init 0 */
+
+  /* USER CODE BEGIN USB2_OTG_HS_Init 1 */
+
+  /* USER CODE END USB2_OTG_HS_Init 1 */
+  hhcd_USB_OTG_HS2.Instance = USB2_OTG_HS;
+  hhcd_USB_OTG_HS2.Init.dev_endpoints = 9;
+  hhcd_USB_OTG_HS2.Init.Host_channels = 16;
+  hhcd_USB_OTG_HS2.Init.speed = HCD_SPEED_HIGH;
+  hhcd_USB_OTG_HS2.Init.dma_enable = ENABLE;
+  hhcd_USB_OTG_HS2.Init.phy_itface = USB_OTG_HS_EMBEDDED_PHY;
+  hhcd_USB_OTG_HS2.Init.Sof_enable = DISABLE;
+  hhcd_USB_OTG_HS2.Init.low_power_enable = DISABLE;
+  hhcd_USB_OTG_HS2.Init.vbus_sensing_enable = DISABLE;
+  hhcd_USB_OTG_HS2.Init.use_external_vbus = DISABLE;
+  if (HAL_HCD_Init(&hhcd_USB_OTG_HS2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USB2_OTG_HS_Init 2 */
+
+  /* USER CODE END USB2_OTG_HS_Init 2 */
 
 }
 
