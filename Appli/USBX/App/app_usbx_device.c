@@ -22,6 +22,8 @@
 #include "app_usbx_device.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ux_device_descriptors.h"
+#include "ux_device_cdc_acm.h"
 
 /* USER CODE END Includes */
 
@@ -96,6 +98,34 @@ UINT MX_USBX_Device_Stack_Init(void)
   /* Initialize and link controller HAL driver */
   ux_dcd_stm32_initialize((ULONG)USB1_OTG_HS, (ULONG)&hpcd_USB_OTG_HS1);
   /* USER CODE BEGIN MX_USBX_Device_Stack_Init_PostTreatment */
+  
+  /* Get device framework descriptors */
+  ULONG hs_length, fs_length, string_length, language_length;
+  UCHAR *device_framework_high_speed = USBD_Get_Device_Framework_Speed(USBD_HIGH_SPEED, &hs_length);
+  UCHAR *device_framework_full_speed = USBD_Get_Device_Framework_Speed(USBD_FULL_SPEED, &fs_length);
+  UCHAR *string_framework = USBD_Get_String_Framework(&string_length);
+  UCHAR *language_id_framework = USBD_Get_Language_Id_Framework(&language_length);
+
+  /* Initialize the USB device stack */
+  if (ux_device_stack_initialize(device_framework_high_speed, hs_length,
+                                 device_framework_full_speed, fs_length,
+                                 string_framework, string_length,
+                                 language_id_framework, language_length,
+                                 UX_NULL) != UX_SUCCESS)
+  {
+    return UX_ERROR;
+  }
+
+  /* Register CDC ACM class */
+  extern UX_SLAVE_CLASS_CDC_ACM_PARAMETER cdc_acm_parameter;
+  if (ux_device_stack_class_register(_ux_system_slave_class_cdc_acm_name,
+                                     _ux_device_class_cdc_acm_entry,
+                                     1, 0,
+                                     &cdc_acm_parameter) != UX_SUCCESS)
+  {
+    return UX_ERROR;
+  }
+  
   /* USER CODE END MX_USBX_Device_Stack_Init_PostTreatment */
 
   /* USER CODE BEGIN MX_USBX_Device_Stack_Init 1 */

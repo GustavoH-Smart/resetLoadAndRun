@@ -53,6 +53,12 @@ extern "C" {
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
+UX_SLAVE_CLASS_CDC_ACM *ux_device_cdc_acm_get_instance(void);
+extern UX_SLAVE_CLASS_CDC_ACM_PARAMETER cdc_acm_parameter;
+
+/* Callback functions for CDC ACM activation/deactivation */
+VOID ux_device_cdc_acm_instance_activate(VOID *cdc_acm_instance);
+VOID ux_device_cdc_acm_instance_deactivate(VOID *cdc_acm_instance);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN PD */

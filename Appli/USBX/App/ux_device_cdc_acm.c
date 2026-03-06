@@ -45,17 +45,56 @@
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
+/* Global CDC ACM device instance */
+static UX_SLAVE_CLASS_CDC_ACM *g_cdc_acm_device = NULL;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
+/* CDC ACM Device Callbacks */
+VOID ux_device_cdc_acm_instance_activate(VOID *cdc_acm_instance);
+VOID ux_device_cdc_acm_instance_deactivate(VOID *cdc_acm_instance);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
+/**
+  * @brief  CDC ACM Instance Activate callback
+  * @param  cdc_acm_instance: pointer to CDC ACM instance
+  * @retval None
+  */
+VOID ux_device_cdc_acm_instance_activate(VOID *cdc_acm_instance)
+{
+  g_cdc_acm_device = (UX_SLAVE_CLASS_CDC_ACM *)cdc_acm_instance;
+}
+
+/**
+  * @brief  CDC ACM Instance Deactivate callback
+  * @param  cdc_acm_instance: pointer to CDC ACM instance
+  * @retval None
+  */
+VOID ux_device_cdc_acm_instance_deactivate(VOID *cdc_acm_instance)
+{
+  g_cdc_acm_device = NULL;
+}
+
+/**
+  * @brief  Get CDC ACM device instance
+  * @retval pointer to CDC ACM instance or NULL
+  */
+UX_SLAVE_CLASS_CDC_ACM *ux_device_cdc_acm_get_instance(void)
+{
+  return g_cdc_acm_device;
+}
 
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
+/* Export activation/deactivation callbacks */
+UX_SLAVE_CLASS_CDC_ACM_PARAMETER cdc_acm_parameter = {
+  .ux_slave_class_cdc_acm_instance_activate = ux_device_cdc_acm_instance_activate,
+  .ux_slave_class_cdc_acm_instance_deactivate = ux_device_cdc_acm_instance_deactivate
+};
+

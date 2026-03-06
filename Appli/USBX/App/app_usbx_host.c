@@ -23,6 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ux_host_cdc_acm.h"
 
 /* USER CODE END Includes */
 
@@ -54,6 +55,8 @@ extern HCD_HandleTypeDef hhcd_USB_OTG_HS2;
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
+/* CDC ACM Host callback */
+static UINT cdc_acm_host_callback(ULONG event, UX_HOST_CLASS *host_class, VOID *instance);
 
 /**
   * @brief  Application USBX Host Initialization.
@@ -96,6 +99,27 @@ UINT MX_USBX_Host_Stack_Init(void)
   UINT ret = UX_SUCCESS;
   /* USER CODE BEGIN MX_USBX_Host_Stack_Init_PreTreatment_0 */
   /* USER CODE END MX_USBX_Host_Stack_Init_PreTreatment_0 */
+
+  /* Initialize host stack */
+  if (ux_host_stack_initialize(cdc_acm_host_callback) != UX_SUCCESS)
+  {
+    return UX_ERROR;
+  }
+
+  /* Register HCD controller */
+  if (ux_host_stack_hcd_register(_ux_system_host_hcd_stm32_name,
+                                  ux_hcd_stm32_initialize,
+                                  USB2_OTG_HS_BASE,
+                                  (ULONG)&hhcd_USB_OTG_HS2) != UX_SUCCESS)
+  {
+    return UX_ERROR;
+  }
+
+  /* Register CDC ACM class */
+  if (ux_host_stack_class_register(_ux_system_host_class_cdc_acm_name, ux_host_class_cdc_acm_entry) != UX_SUCCESS)
+  {
+    return UX_ERROR;
+  }
 
   /* USER CODE BEGIN MX_USBX_Host_Stack_Init_PreTreatment_1 */
   /* USER CODE END MX_USBX_Host_Stack_Init_PreTreatment_1 */
@@ -141,3 +165,32 @@ UINT MX_USBX_Host_Stack_DeInit(void)
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
+
+/**
+  * @brief  CDC ACM Host callback
+  * @param  event: Event type (UX_DEVICE_INSERTION or UX_DEVICE_REMOVAL)
+  * @param  host_class: Pointer to host class
+  * @param  instance: Pointer to class instance
+  * @retval UX_SUCCESS
+  */
+static UINT cdc_acm_host_callback(ULONG event, UX_HOST_CLASS *host_class, VOID *instance)
+{
+  UX_HOST_CLASS_CDC_ACM *cdc_acm = (UX_HOST_CLASS_CDC_ACM *)instance;
+
+  /* Check event type */
+  if (event == UX_DEVICE_INSERTION)
+  {
+    /* Device inserted - activate */
+    if (cdc_acm != UX_NULL)
+    {
+      ux_host_cdc_acm_instance_activate(instance);
+    }
+  }
+  else if (event == UX_DEVICE_REMOVAL)
+  {
+    /* Device removed - deactivate */
+    ux_host_cdc_acm_instance_deactivate(instance);
+  }
+
+  return UX_SUCCESS;
+}
