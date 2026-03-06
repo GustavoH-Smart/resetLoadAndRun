@@ -135,10 +135,18 @@ void usb_device_test_task(void *argument)
       if ((wait_log_div++ % 1000U) == 0U) {
         extern volatile uint32_t usb1_irq_count;
         extern PCD_HandleTypeDef hpcd_USB_OTG_HS1;
-        uint32_t dsts = ((USB_OTG_DeviceTypeDef *)((uint32_t)hpcd_USB_OTG_HS1.Instance + 0x800UL))->DSTS;
-        uint32_t gintsts = hpcd_USB_OTG_HS1.Instance->GINTSTS;
-        printf("[USB_DEV] Waiting... IRQs=%lu DSTS=0x%08lX GINTSTS=0x%08lX speed=%u\n",
-               usb1_irq_count, dsts, gintsts, hpcd_USB_OTG_HS1.Init.speed);
+        USB_OTG_GlobalTypeDef *USBx = hpcd_USB_OTG_HS1.Instance;
+        uint32_t gahbcfg = USBx->GAHBCFG;
+        uint32_t gintmsk = USBx->GINTMSK;
+        uint32_t gintsts = USBx->GINTSTS;
+        uint32_t grxfsiz = USBx->GRXFSIZ;
+        uint32_t gnptxfsiz = USBx->DIEPTXF0_HNPTXFSIZ;
+        uint32_t dsts = ((USB_OTG_DeviceTypeDef *)((uint32_t)USBx + 0x800UL))->DSTS;
+        uint32_t dctl = ((USB_OTG_DeviceTypeDef *)((uint32_t)USBx + 0x800UL))->DCTL;
+        printf("[USB_DEV] IRQs=%lu GAHBCFG=0x%08lX GINTMSK=0x%08lX GINTSTS=0x%08lX\n",
+               usb1_irq_count, gahbcfg, gintmsk, gintsts);
+        printf("[USB_DEV] GRXFSIZ=0x%04lX GNPTXFSIZ=0x%08lX DSTS=0x%08lX DCTL=0x%08lX\n",
+               grxfsiz, gnptxfsiz, dsts, dctl);
       }
       /*
        * In standalone mode USBX tasks must run frequently for EP0 control
