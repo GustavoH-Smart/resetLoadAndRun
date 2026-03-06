@@ -95,8 +95,8 @@ UINT MX_USBX_Device_Stack_Init(void)
 
   /* USER CODE END MX_USBX_Device_Stack_Init 0 */
 
-  /* Initialize and link controller HAL driver */
-  ux_dcd_stm32_initialize((ULONG)USB1_OTG_HS, (ULONG)&hpcd_USB_OTG_HS1);
+  /* Avoid IRQ race while USBX device structures are being created. */
+  HAL_NVIC_DisableIRQ(USB1_OTG_HS_IRQn);
   /* USER CODE BEGIN MX_USBX_Device_Stack_Init_PostTreatment */
   
   /* Get device framework descriptors */
@@ -106,6 +106,15 @@ UINT MX_USBX_Device_Stack_Init(void)
   UCHAR *string_framework = USBD_Get_String_Framework(&string_length);
   UCHAR *language_id_framework = USBD_Get_Language_Id_Framework(&language_length);
 
+  if ((device_framework_high_speed == UX_NULL) || (hs_length == 0U) ||
+      (device_framework_full_speed == UX_NULL) || (fs_length == 0U) ||
+      (string_framework == UX_NULL) || (string_length == 0U) ||
+      (language_id_framework == UX_NULL) || (language_length == 0U))
+  {
+    HAL_NVIC_EnableIRQ(USB1_OTG_HS_IRQn);
+    return UX_ERROR;
+  }
+
   /* Initialize the USB device stack */
   if (ux_device_stack_initialize(device_framework_high_speed, hs_length,
                                  device_framework_full_speed, fs_length,
@@ -113,6 +122,7 @@ UINT MX_USBX_Device_Stack_Init(void)
                                  language_id_framework, language_length,
                                  UX_NULL) != UX_SUCCESS)
   {
+    HAL_NVIC_EnableIRQ(USB1_OTG_HS_IRQn);
     return UX_ERROR;
   }
 
@@ -123,8 +133,18 @@ UINT MX_USBX_Device_Stack_Init(void)
                                      1, 0,
                                      &cdc_acm_parameter) != UX_SUCCESS)
   {
+    HAL_NVIC_EnableIRQ(USB1_OTG_HS_IRQn);
     return UX_ERROR;
   }
+
+  /* Initialize and link controller HAL driver after stack setup. */
+  if (ux_dcd_stm32_initialize((ULONG)USB1_OTG_HS, (ULONG)&hpcd_USB_OTG_HS1) != UX_SUCCESS)
+  {
+    HAL_NVIC_EnableIRQ(USB1_OTG_HS_IRQn);
+    return UX_ERROR;
+  }
+
+  HAL_NVIC_EnableIRQ(USB1_OTG_HS_IRQn);
   
   /* USER CODE END MX_USBX_Device_Stack_Init_PostTreatment */
 

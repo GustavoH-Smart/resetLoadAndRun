@@ -175,6 +175,9 @@ extern void *g_pfnVectors;
 
 void SystemInit(void)
 {
+  /* USB descriptor builders use packed structures that may issue unaligned accesses. */
+  SCB->CCR &= ~SCB_CCR_UNALIGN_TRP_Msk;
+
   /* SAU/IDAU, FPU and Interrupts secure/non-secure allocation settings */
   TZ_SAU_Setup();
 

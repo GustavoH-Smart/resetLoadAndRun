@@ -98,6 +98,8 @@ UINT MX_USBX_Host_Stack_Init(void)
 {
   UINT ret = UX_SUCCESS;
   /* USER CODE BEGIN MX_USBX_Host_Stack_Init_PreTreatment_0 */
+  /* Prevent HAL host callbacks from firing before USBX host context is ready. */
+  HAL_NVIC_DisableIRQ(USB2_OTG_HS_IRQn);
   /* USER CODE END MX_USBX_Host_Stack_Init_PreTreatment_0 */
 
   /* Initialize host stack */
@@ -118,8 +120,11 @@ UINT MX_USBX_Host_Stack_Init(void)
   /* Register CDC ACM class */
   if (ux_host_stack_class_register(_ux_system_host_class_cdc_acm_name, ux_host_class_cdc_acm_entry) != UX_SUCCESS)
   {
+    HAL_NVIC_EnableIRQ(USB2_OTG_HS_IRQn);
     return UX_ERROR;
   }
+
+  HAL_NVIC_EnableIRQ(USB2_OTG_HS_IRQn);
 
   /* USER CODE BEGIN MX_USBX_Host_Stack_Init_PreTreatment_1 */
   /* USER CODE END MX_USBX_Host_Stack_Init_PreTreatment_1 */

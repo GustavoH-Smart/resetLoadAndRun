@@ -23,6 +23,14 @@
 #include "ux_device_cdc_acm.h"
 #include "ux_host_cdc_acm.h"
 
+/* USBX system memory pool (required by ux_system_initialize). */
+static UCHAR usbx_memory_pool[USBX_APP_MEM_POOL_SIZE];
+/* Cache-safe pool for USB DMA access. Linker maps .noncacheable in RAM. */
+#if defined(__GNUC__)
+__attribute__((section(".noncacheable"), aligned(32)))
+#endif
+static UCHAR usbx_cache_safe_pool[8 * 1024];
+
 /**
   * @brief  Application USBX Initialization.
   * @param  none
@@ -36,28 +44,28 @@ UINT MX_USBX_Init(VOID)
 
   /* USER CODE END MX_USBX_Init0 */
 
+  ret = ux_system_initialize(usbx_memory_pool,
+                             sizeof(usbx_memory_pool),
+                             usbx_cache_safe_pool,
+                             sizeof(usbx_cache_safe_pool));
+  if(ret != UX_SUCCESS)
+  {
+    printf("USBX System Init Error: %u\n", ret);
+    return ret;
+  }
+
   ret = MX_USBX_Device_Init();
   if(ret != UX_SUCCESS)
   {
-  /* USER CODE BEGIN MX_USBX_Device_Init_Error */
-    while(1)
-    {
-      printf("USBX Device Init Error\n");
-      HAL_Delay(1000);
-    }
-  /* USER CODE END MX_USBX_Device_Init_Error */
+    printf("USBX Device Init Error: %u\n", ret);
+    return ret;
   }
 
   ret = MX_USBX_Host_Init();
   if(ret != UX_SUCCESS)
   {
-  /* USER CODE BEGIN MX_USBX_Host_Init_Error */
-    while(1)
-    {
-      printf("USBX Host Init Error\n");
-      HAL_Delay(1000);
-    }
-  /* USER CODE END MX_USBX_Host_Init_Error */
+    printf("USBX Host Init Error: %u\n", ret);
+    return ret;
   }
 
   /* USER CODE BEGIN MX_USBX_Init1 */

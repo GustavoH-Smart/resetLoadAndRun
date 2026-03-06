@@ -110,6 +110,9 @@ int main(void)
   printf("USB Device Initialized\r\n");
   MX_USB2_OTG_HS_HCD_Init();  
   printf("USB Host Initialized\r\n");
+  /* Keep USB IRQs disabled until USBX binds host/device contexts. */
+  HAL_NVIC_DisableIRQ(USB1_OTG_HS_IRQn);
+  HAL_NVIC_DisableIRQ(USB2_OTG_HS_IRQn);
   // MX_USBX_Init();
   // printf("USBX Initialized\r\n");
   SystemIsolation_Config();
@@ -272,7 +275,9 @@ static void MX_USB1_OTG_HS_PCD_Init(void)
   hpcd_USB_OTG_HS1.Init.lpm_enable = DISABLE;
   hpcd_USB_OTG_HS1.Init.use_dedicated_ep1 = DISABLE;
   hpcd_USB_OTG_HS1.Init.vbus_sensing_enable = DISABLE;
-  hpcd_USB_OTG_HS1.Init.dma_enable = ENABLE;
+   /* Keep DMA disabled for device bring-up; USBX can run without DMA and this
+      avoids cache/coherency issues while isolating descriptor/device init faults. */
+   hpcd_USB_OTG_HS1.Init.dma_enable = DISABLE;
   if (HAL_PCD_Init(&hpcd_USB_OTG_HS1) != HAL_OK)
   {
     Error_Handler();

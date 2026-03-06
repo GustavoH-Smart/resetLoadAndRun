@@ -52,7 +52,7 @@ osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 128 * 4
+  .stack_size = 1024 * 4
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -220,16 +220,32 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN defaultTask */
-  for(int i = 0; i < 5; i++)
-  {
-    HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, GPIO_PIN_SET);
-    osDelay(200);
-    HAL_GPIO_WritePin(GREEN_LED_GPIO_Port, GREEN_LED_Pin, GPIO_PIN_RESET);
-    osDelay(200);
+  UINT ux_ret;
+  uint8_t usbx_ready = 0;
+
+  printf("[RTOS] defaultTask started\r\n");
+  osDelay(1000); /* Let clocks/peripherals settle before USBX init. */
+
+  printf("[RTOS] calling MX_USBX_Init()\r\n");
+  ux_ret = MX_USBX_Init();
+  if (ux_ret == UX_SUCCESS) {
+    usbx_ready = 1;
+    printf("[RTOS] USBX Initialized\r\n");
+  } else {
+    printf("[RTOS] USBX Init Failed: %u\r\n", ux_ret);
   }
+
+  printf("[RTOS] entering main loop\r\n");
   /* Infinite loop */
   for(;;)
   {
+#if defined(UX_STANDALONE)
+    if (usbx_ready)
+    {
+      ux_host_stack_tasks_run();
+      ux_device_stack_tasks_run();
+    }
+#endif
     osDelay(1);
   }
   /* USER CODE END defaultTask */

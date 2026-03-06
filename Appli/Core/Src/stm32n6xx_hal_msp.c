@@ -187,8 +187,8 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* hpcd)
     /* Peripheral clock enable */
     __HAL_RCC_USB1_OTG_HS_CLK_ENABLE();
     __HAL_RCC_USB1_OTG_HS_PHY_CLK_ENABLE();
-    /* USB1_OTG_HS interrupt Init */
-    HAL_NVIC_SetPriority(USB1_OTG_HS_IRQn, 0, 0);
+    /* USB IRQ priority must be RTOS-safe when USBX runs with FreeRTOS. */
+    HAL_NVIC_SetPriority(USB1_OTG_HS_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(USB1_OTG_HS_IRQn);
     /* USER CODE BEGIN USB1_OTG_HS_MspInit 1 */
 
@@ -228,6 +228,9 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef* hhcd)
     /* Peripheral clock enable */
     __HAL_RCC_USB2_OTG_HS_CLK_ENABLE();
     __HAL_RCC_USB2_OTG_HS_PHY_CLK_ENABLE();
+    /* USB2_OTG_HS interrupt Init */
+    HAL_NVIC_SetPriority(USB2_OTG_HS_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(USB2_OTG_HS_IRQn);
     /* USER CODE BEGIN USB2_OTG_HS_MspInit 1 */
 
     /* USER CODE END USB2_OTG_HS_MspInit 1 */
@@ -255,6 +258,8 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* hpcd)
 
     /* Disable VDDUSB */
       HAL_PWREx_DisableVddUSB();
+    /* USB2_OTG_HS interrupt DeInit */
+    HAL_NVIC_DisableIRQ(USB2_OTG_HS_IRQn);
 
     /* USB1_OTG_HS interrupt DeInit */
     HAL_NVIC_DisableIRQ(USB1_OTG_HS_IRQn);
