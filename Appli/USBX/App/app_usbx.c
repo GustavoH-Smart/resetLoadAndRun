@@ -61,12 +61,12 @@ UINT MX_USBX_Init(VOID)
     return ret;
   }
 
-  ret = MX_USBX_Host_Init();
-  if(ret != UX_SUCCESS)
-  {
-    printf("USBX Host Init Error: %u\n", ret);
-    return ret;
-  }
+  // ret = MX_USBX_Host_Init();
+  // if(ret != UX_SUCCESS)
+  // {
+  //   printf("USBX Host Init Error: %u\n", ret);
+  //   return ret;
+  // }
 
   /* USER CODE BEGIN MX_USBX_Init1 */
 

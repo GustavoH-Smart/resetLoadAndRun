@@ -67,7 +67,14 @@ VOID ux_host_cdc_acm_instance_deactivate(VOID *cdc_acm_instance);
   */
 VOID ux_host_cdc_acm_instance_activate(VOID *cdc_acm_instance)
 {
-  g_cdc_acm_host = (UX_HOST_CLASS_CDC_ACM *)cdc_acm_instance;
+  UX_HOST_CLASS_CDC_ACM *cdc_acm = (UX_HOST_CLASS_CDC_ACM *)cdc_acm_instance;
+
+  if ((cdc_acm != UX_NULL) &&
+      (cdc_acm->ux_host_class_cdc_acm_interface != UX_NULL) &&
+      (cdc_acm->ux_host_class_cdc_acm_interface->ux_interface_descriptor.bInterfaceClass == UX_HOST_CLASS_CDC_DATA_CLASS))
+  {
+    g_cdc_acm_host = cdc_acm;
+  }
 }
 
 /**
@@ -77,7 +84,10 @@ VOID ux_host_cdc_acm_instance_activate(VOID *cdc_acm_instance)
   */
 VOID ux_host_cdc_acm_instance_deactivate(VOID *cdc_acm_instance)
 {
-  g_cdc_acm_host = NULL;
+  if (g_cdc_acm_host == (UX_HOST_CLASS_CDC_ACM *)cdc_acm_instance)
+  {
+    g_cdc_acm_host = NULL;
+  }
 }
 
 /**

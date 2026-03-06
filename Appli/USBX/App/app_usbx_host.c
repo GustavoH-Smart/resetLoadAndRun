@@ -103,27 +103,36 @@ UINT MX_USBX_Host_Stack_Init(void)
   /* USER CODE END MX_USBX_Host_Stack_Init_PreTreatment_0 */
 
   /* Initialize host stack */
+  printf("[USBX-HOST] ux_host_stack_initialize...\r\n");
   if (ux_host_stack_initialize(cdc_acm_host_callback) != UX_SUCCESS)
   {
+    printf("[USBX-HOST] ux_host_stack_initialize FAILED\r\n");
+    HAL_NVIC_EnableIRQ(USB2_OTG_HS_IRQn);
     return UX_ERROR;
   }
 
   /* Register HCD controller */
+  printf("[USBX-HOST] ux_host_stack_hcd_register...\r\n");
   if (ux_host_stack_hcd_register(_ux_system_host_hcd_stm32_name,
                                   ux_hcd_stm32_initialize,
                                   USB2_OTG_HS_BASE,
                                   (ULONG)&hhcd_USB_OTG_HS2) != UX_SUCCESS)
   {
-    return UX_ERROR;
-  }
-
-  /* Register CDC ACM class */
-  if (ux_host_stack_class_register(_ux_system_host_class_cdc_acm_name, ux_host_class_cdc_acm_entry) != UX_SUCCESS)
-  {
+    printf("[USBX-HOST] ux_host_stack_hcd_register FAILED\r\n");
     HAL_NVIC_EnableIRQ(USB2_OTG_HS_IRQn);
     return UX_ERROR;
   }
 
+  /* Register CDC ACM class */
+  printf("[USBX-HOST] ux_host_stack_class_register...\r\n");
+  if (ux_host_stack_class_register(_ux_system_host_class_cdc_acm_name, ux_host_class_cdc_acm_entry) != UX_SUCCESS)
+  {
+    printf("[USBX-HOST] ux_host_stack_class_register FAILED\r\n");
+    HAL_NVIC_EnableIRQ(USB2_OTG_HS_IRQn);
+    return UX_ERROR;
+  }
+
+  printf("[USBX-HOST] host stack init OK\r\n");
   HAL_NVIC_EnableIRQ(USB2_OTG_HS_IRQn);
 
   /* USER CODE BEGIN MX_USBX_Host_Stack_Init_PreTreatment_1 */

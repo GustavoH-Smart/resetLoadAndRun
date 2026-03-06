@@ -108,13 +108,11 @@ int main(void)
   printf("Starting USB Host/Device Test Application\r\n");  
   MX_USB1_OTG_HS_PCD_Init();
   printf("USB Device Initialized\r\n");
-  MX_USB2_OTG_HS_HCD_Init();  
-  printf("USB Host Initialized\r\n");
+  // MX_USB2_OTG_HS_HCD_Init();  
+  // printf("USB Host Initialized\r\n");
   /* Keep USB IRQs disabled until USBX binds host/device contexts. */
   HAL_NVIC_DisableIRQ(USB1_OTG_HS_IRQn);
-  HAL_NVIC_DisableIRQ(USB2_OTG_HS_IRQn);
-  // MX_USBX_Init();
-  // printf("USBX Initialized\r\n");
+  // HAL_NVIC_DisableIRQ(USB2_OTG_HS_IRQn);
   SystemIsolation_Config();
   /* USER CODE BEGIN 2 */
   /* USER CODE END 2 */

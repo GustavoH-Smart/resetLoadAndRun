@@ -508,7 +508,7 @@
 /* #define UX_NAME_REFERENCED_BY_POINTER  */
 
 /* Defined, this value will only enable the host side of usbx.  */
-#define UX_HOST_SIDE_ONLY
+// #define UX_HOST_SIDE_ONLY
 
 /* Defined, this value will only enable the device side of usbx.  */
 #define UX_DEVICE_SIDE_ONLY

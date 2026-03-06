@@ -55,6 +55,21 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 1024 * 4
 };
 
+/* Host task kept separate to control stack/priority explicitly. */
+osThreadId_t usbHostTaskHandle;
+const osThreadAttr_t usbHostTask_attributes = {
+  .name = "usbHostTask",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 1024 * 6
+};
+
+osThreadId_t usbDeviceTaskHandle;
+const osThreadAttr_t usbDeviceTask_attributes = {
+  .name = "usbDeviceTask",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 1024 * 6
+};
+
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
@@ -68,15 +83,42 @@ const osThreadAttr_t defaultTask_attributes = {
   */
 void usb_device_test_task(void *argument)
 {
+  UINT ux_ret;
+  uint8_t usbx_ready = 0;
   uint8_t rx_buf[256];
   uint8_t tx_buf[256];
   uint32_t rx_len = 0;
   static uint32_t counter = 0;
   static uint8_t was_connected = 0;
   uint32_t tick_count = 0;
+  (void)argument;
 
+  printf("[RTOS] usb device task started\r\n");
+  osDelay(1000); /* Let clocks/peripherals settle before USBX init. */
+
+  printf("[RTOS] calling MX_USBX_Init()\r\n");
+  ux_ret = MX_USBX_Init();
+  if (ux_ret == UX_SUCCESS) {
+    usbx_ready = 1;
+    printf("[RTOS] USBX Initialized\r\n");
+  } else {
+    printf("[RTOS] USBX Init Failed: %u\r\n", ux_ret);
+  }
+  
   while (1)
   {
+#if defined(UX_STANDALONE)
+    if (usbx_ready)
+    {
+      ux_device_stack_tasks_run();
+    }
+    else
+    {
+      osDelay(1);
+      continue;
+    }
+#endif
+
     uint8_t connected = usb_device_is_connected();
     
     /* Log connection state transitions */
@@ -86,6 +128,12 @@ void usb_device_test_task(void *argument)
     } else if (!connected && was_connected) {
       printf("[USB_DEV] ✗ Host disconnected\n");
       was_connected = 0;
+    }
+
+    if(!connected) {
+      printf("[USB_DEV] Waiting for host...\n");
+      osDelay(1000);
+      continue;
     }
 
     /* Always try to receive data */
@@ -121,14 +169,42 @@ void usb_device_test_task(void *argument)
   */
 void usb_host_test_task(void *argument)
 {
+  UINT ux_ret;
+  uint8_t usbx_ready = 0;
   uint8_t rx_buf[256];
   uint8_t tx_buf[256];
   uint32_t rx_len = 0;
   static uint32_t counter = 0;
   static uint8_t was_connected = 0;
 
+  (void)argument;
+
+  printf("[RTOS] usb host task started\r\n");
+  osDelay(1000); /* Let clocks/peripherals settle before USBX init. */
+
+  printf("[RTOS] calling MX_USBX_Init()\r\n");
+  ux_ret = MX_USBX_Init();
+  if (ux_ret == UX_SUCCESS) {
+    usbx_ready = 1;
+    printf("[RTOS] USBX Initialized\r\n");
+  } else {
+    printf("[RTOS] USBX Init Failed: %u\r\n", ux_ret);
+  }
+  
   while (1)
   {
+#if defined(UX_STANDALONE)
+    if (usbx_ready)
+    {
+      ux_host_stack_tasks_run();
+    }
+    else
+    {
+      osDelay(1);
+      continue;
+    }
+#endif
+
     uint8_t connected = usb_host_is_connected();
     
     /* Log connection state transitions */
@@ -141,18 +217,19 @@ void usb_host_test_task(void *argument)
     }
 
     if (!connected) {
+      printf("[USB_HOST] Waiting for device...\n");
       osDelay(1000);
       continue;
     }
 
     /* Send test message to device */
-    counter++;
-    int len = snprintf((char*)tx_buf, sizeof(tx_buf), "[HOST] Test message %ld\r\n", counter);
-    if (usb_host_send(tx_buf, len) == UX_SUCCESS) {
-      printf("[USB_HOST] ✓ TX: %s", (char*)tx_buf);
-    } else {
-      printf("[USB_HOST] ✗ TX Error\n");
-    }
+    // counter++;
+    // int len = snprintf((char*)tx_buf, sizeof(tx_buf), "[HOST] Test message %ld\r\n", counter);
+    // if (usb_host_send(tx_buf, len) == UX_SUCCESS) {
+    //   printf("[USB_HOST] ✓ TX: %s", (char*)tx_buf);
+    // } else {
+    //   printf("[USB_HOST] ✗ TX Error\n");
+    // }
 
     /* Try to receive data from device */
     rx_len = usb_host_receive(rx_buf, sizeof(rx_buf));
@@ -195,14 +272,23 @@ void MX_FREERTOS_Init(void) {
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* USB Device test task (receives and echoes data) */
-  // osThreadNew(usb_device_test_task, NULL, &defaultTask_attributes);
-
+  usbDeviceTaskHandle = osThreadNew(usb_device_test_task, NULL, &usbDeviceTask_attributes);
+  if (usbDeviceTaskHandle == NULL)
+  {
+    /* If this prints, the task never starts because creation failed. */
+    printf("[RTOS] ERROR: usb_device_test_task creation failed\r\n");
+  }
   /* USB Host test task (sends and receives test messages) */
-  // osThreadNew(usb_host_test_task, NULL, &defaultTask_attributes);
+  // usbHostTaskHandle = osThreadNew(usb_host_test_task, NULL, &usbHostTask_attributes);
+  // if (usbHostTaskHandle == NULL)
+  // {
+  //   /* If this prints, the task never starts because creation failed. */
+  //   printf("[RTOS] ERROR: usb_host_test_task creation failed\r\n");
+  // }
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -220,34 +306,12 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN defaultTask */
-  UINT ux_ret;
-  uint8_t usbx_ready = 0;
-
-  printf("[RTOS] defaultTask started\r\n");
-  osDelay(1000); /* Let clocks/peripherals settle before USBX init. */
-
-  printf("[RTOS] calling MX_USBX_Init()\r\n");
-  ux_ret = MX_USBX_Init();
-  if (ux_ret == UX_SUCCESS) {
-    usbx_ready = 1;
-    printf("[RTOS] USBX Initialized\r\n");
-  } else {
-    printf("[RTOS] USBX Init Failed: %u\r\n", ux_ret);
-  }
-
-  printf("[RTOS] entering main loop\r\n");
-  /* Infinite loop */
+  (void)argument;
   for(;;)
   {
-#if defined(UX_STANDALONE)
-    if (usbx_ready)
-    {
-      ux_host_stack_tasks_run();
-      ux_device_stack_tasks_run();
-    }
-#endif
-    osDelay(1);
+    osDelay(1000);
   }
+  
   /* USER CODE END defaultTask */
 }
 
