@@ -49,29 +49,19 @@ HCD_HandleTypeDef hhcd_USB_OTG_HS2;
 
 /* USER CODE BEGIN PV */
 #ifdef __GNUC__
-static osMutexId_t uart_write_mutex = NULL;
-
-void uart_mutex_init(void)
-{
-  static const osMutexAttr_t attr = { .name = "uartWrMx" };
-  uart_write_mutex = osMutexNew(&attr);
-}
 
 int __io_putchar(int ch)
 {
-  if (uart_write_mutex) osMutexAcquire(uart_write_mutex, osWaitForever);
   HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
-  if (uart_write_mutex) osMutexRelease(uart_write_mutex);
   return ch;
 }
 
 int _write(int file, char *ptr, int len)
 {
-  if (uart_write_mutex) osMutexAcquire(uart_write_mutex, osWaitForever);
   HAL_UART_Transmit(&huart1, (uint8_t *)ptr, len, HAL_MAX_DELAY);
-  if (uart_write_mutex) osMutexRelease(uart_write_mutex);
   return len;
 }
+
 #endif
 /* USER CODE END PV */
 
@@ -115,11 +105,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
-  // printf("Starting USB Host/Device Test Application\r\n");
-  // MX_USB1_OTG_HS_PCD_Init();
-  // printf("USB Device Initialized\r\n");
-  // MX_USB2_OTG_HS_HCD_Init();  
-  // printf("USB Host Initialized\r\n");
+  printf("Starting USB Host/Device Test Application\r\n");  
+  MX_USB1_OTG_HS_PCD_Init();
+  printf("USB Device Initialized\r\n");
+  MX_USB2_OTG_HS_HCD_Init();  
+  printf("USB Host Initialized\r\n");
   // MX_USBX_Init();
   // printf("USBX Initialized\r\n");
   SystemIsolation_Config();
